@@ -87,6 +87,7 @@ button {
     height: 100vh;
     background-color: var(--bg-color);
     flex-direction: column;
+    align-items: center;
     max-width: 500px;
 }
 

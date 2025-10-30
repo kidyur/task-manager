@@ -11,12 +11,15 @@
 </head>
 <body>
     <div id="calendar-page" class="page">
-        <input id="month-input" type="month">        
+        <div id="calendar-page__month-picker-btn">
+            <p id="calendar-page__year">2025</p>
+            <button id="calendar-page__month">Октябрь</button>
+        </div>
+        <div id="month-picker"></div>
         <div id="calendar"></div>
     </div>
 
     <div id="tasks-page" class="page">
-        <h1>Задачи</h1>
         <div id="tasks-page__tag-line">
             <button class="tasks-page__tag">#без_тега</button>
             <button class="tasks-page__tag">#повтор</button>
@@ -63,7 +66,6 @@
     </div>
 
     <div id="schedule-page" class="page">
-        <h1>График</h1>
         <div id="schedule-page__groups-line">
             <div id="schedule-page__groups-sector"></div>
             <button id="schedule-page__add-group-btn" class="schedule-page__groups-line-btn"></button>

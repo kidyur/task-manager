@@ -2,7 +2,7 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
     const shifts = currSchedule.shifts;
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
-    const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
     for (const day of weekDays) {
         const el = document.createElement('div');
         el.innerText = day;
@@ -48,11 +48,22 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
     }
 }
 
+activeMonth = 0;
+activeYear = 0;
+function setActiveDate() {
+    const currentDate = new Date();
+    activeMonth = currentDate.getMonth()+1;
+    activeYear = currentDate.getFullYear();
+    updateCalendarView();
+}
 
-const monthInput = document.getElementById('month-input');
+window.addEventListener('DOMContentLoaded', () => {
+    setActiveDate();
+    setMonthPicker();
+})
 
 function updateCalendarView() {
-    const [year, month] = monthInput.value.split('-').map(el => parseInt(el));
+    const [year, month] = [activeYear, activeMonth];
     let nextMonth = month + 1;
     let nextYear = year;
     if (nextMonth > 12) {
@@ -70,9 +81,61 @@ function updateCalendarView() {
     fillCalendar(amountOfDays, Math.floor((monthBeginning - currentMonthBeginning) / msInDay), monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0));
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    monthInput.addEventListener('change', () => updateCalendarView());
-    const today = new Date();
-    monthInput.value = today.toISOString().slice(0, 7);
-    monthInput.dispatchEvent(new Event('change'));
+
+function setMonthPicker() {
+    const months = [
+        "Январь",   "Февраль", 
+        "Март",     "Апрель",  "Май", 
+        "Июнь",     "Июль",    "Август", 
+        "Сентябрь", "Октябрь", "Ноябрь",
+        "Декабрь"
+    ];
+    const seasons = [
+        'Зима', "Весна", "Лето", "Осень"
+    ];
+    const picker = document.getElementById('month-picker');
+    const now = new Date();
+    const currYear = now.getFullYear();
+    for (let year = currYear; year <= currYear+4; year++) {
+        const separatorLine = document.createElement('div');
+        separatorLine.className = 'month-picker__separator-line';
+        for (let i = 0; i < 4; i++) {
+            const season = document.createElement('div');
+            season.className = 'month-picker__season';
+            season.textContent = seasons[i];
+            separatorLine.appendChild(season);
+        }
+        const yearEl = document.createElement('div');
+        picker.appendChild(yearEl);
+        picker.appendChild(separatorLine);
+        yearEl.className = 'month-picker__year';
+        yearEl.textContent = year;
+        const monthsBlock = document.createElement('div');
+        picker.appendChild(monthsBlock);
+        monthsBlock.className = 'month-picker__months-block';
+        for (let month = 1; month <= 12; month++) {
+            const monthEl = document.createElement('button');
+            monthsBlock.appendChild(monthEl);
+            monthEl.className = 'month-picker__month';
+            monthEl.textContent = month;
+            if (month == activeMonth && year == activeYear) {
+                monthEl.className = 'month-picker__month month-picker__month--active';
+            }
+            monthEl.addEventListener('click', () => {
+                activeMonth = month;
+                activeYear = year;
+                const activeMonthEl = document.getElementById('calendar-page__month');
+                activeMonthEl.textContent = months[month-1];
+                const activeYearEl = document.getElementById('calendar-page__year');
+                activeYearEl.textContent = year;
+                picker.style.display = 'none';
+            })
+        }
+    }
+}
+
+const monthPickerBtn = document.getElementById('calendar-page__month-picker-btn');
+monthPickerBtn.addEventListener('click', () => {
+    const picker = document.getElementById('month-picker');
+    picker.style.display = 'block';
 })

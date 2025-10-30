@@ -1,17 +1,16 @@
 #calendar {
-    width: calc(100vw - 4 * var(--margin-big));
+    width: calc(100vw - 2 * var(--margin-medium));
     height: 400px;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     margin-bottom: 20px;
     gap: 0px;
     align-content: flex-start;
 }
 
 .calendar__day {
-    width: calc(100% / 7 - 6px);
-    margin: 3px 3px;
+    width: calc(100% / 7);
     height: calc(100% / 7);
     display: flex;
     /* background-color: var(--fg-color); */
@@ -32,7 +31,7 @@
 }
 
 .week-day-name {
-    color: var(--fg-color);
+    color: #93b39d;
     margin-bottom: 0;
     height: 24px;
     background-color: var(--bg-color);
@@ -41,10 +40,89 @@
 #month-input {
     background-color: var(--bg-color);
     color: var(--text-color-500);
-    margin-top: var(--margin-medium);
+    margin-top: -50px;
+    z-index: 2;
+    opacity: 0%;
     padding-left: var(--padding-medium);
     padding-right: var(--padding-medium);
     border: none;
     font-size: 40px;
     width: calc(100vw - 2 * var(--padding-medium));
+}
+
+#calendar-page__month-picker-btn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-top: var(--margin-medium);
+    width: calc(100% - var(--margin-big));
+    margin-left: var(--margin-big);
+    cursor: pointer;
+    z-index: 2;
+}
+
+#calendar-page__year {
+    color: var(--fg-color);
+    display: inline;
+    font-size: 24px;
+}
+
+#calendar-page__month {
+    margin-left: var(--margin-medium);
+    display: inline;
+    color: var(--fg-color);
+    text-align: left;
+    font-size: 24px;
+    border-radius: 99px;
+    padding: 0;
+    box-shadow: none;
+}
+
+#month-picker {
+    width: calc(100vw - 2 * var(--padding-medium));
+    height: 100vh;
+    background-color: var(--bg-color);
+    position: absolute;
+    padding: 0 var(--padding-medium);
+}
+
+.month-picker__year {
+    width: 100%;
+    font-size: 24px;
+    color: var(--fg-color);
+    padding-left: var(--padding-medium);
+    margin-top: var(--margin-medium)
+}
+
+.month-picker__month {
+    width: calc(100% / 12);
+    aspect-ratio: 1;
+    border-radius: 6px;
+    box-shadow: none;
+    color: var(--fg-color)
+}
+
+.month-picker__month--active {
+    border: 2px var(--fg-color) solid;
+}
+
+.month-picker__separator-line {
+    height: 24px;
+    margin-left: var(--margin-medium);
+}
+
+.month-picker__season {
+    margin-left: 12%;
+    width: 50px;
+    color: var(--fg-color);
+    display: inline-block
+}
+
+
+.month-picker__season:first-child {
+    margin-left: 0px;
+}
+
+.month-picker__season:nth-child(2) {
+    margin-left: 3%;
 }
