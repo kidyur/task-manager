@@ -33,7 +33,7 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
             }
         }
     } 
-
+    
     for (let day = 1; day <= amountOfDays; day += 1) {
         const el = document.createElement('div');
         el.innerText = day;
@@ -129,6 +129,7 @@ function setMonthPicker() {
                 const activeYearEl = document.getElementById('calendar-page__year');
                 activeYearEl.textContent = year;
                 picker.style.display = 'none';
+                updateCalendarView();
             })
         }
     }

@@ -79,6 +79,7 @@
 }
 
 #month-picker {
+    display: none;
     width: calc(100vw - 2 * var(--padding-medium));
     height: 100vh;
     background-color: var(--bg-color);
@@ -126,3 +127,4 @@
 .month-picker__season:nth-child(2) {
     margin-left: 3%;
 }
+

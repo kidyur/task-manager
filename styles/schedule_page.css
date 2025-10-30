@@ -19,7 +19,6 @@
     width: fit-content;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
 }
 
 .schedule-page__groups-line-btn {
@@ -129,8 +128,9 @@
 .schedule-page__choose-group-btn {
     padding: var(--padding-small) var(--padding-medium);
     border-radius: 99px; /* To make it circle-like */
-    border: 2px var(--fg-color) solid;
+    /* border: 2px var(--fg-color) solid; */
     color: var(--fg-color);
+    box-shadow: none;
 }
 
 .schedule-page__choose-group-btn--active {
