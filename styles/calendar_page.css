@@ -1,0 +1,50 @@
+#calendar {
+    width: calc(100vw - 4 * var(--margin-big));
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 0px;
+    align-content: flex-start;
+}
+
+.calendar__day {
+    width: calc(100% / 7 - 6px);
+    margin: 3px 3px;
+    height: calc(100% / 7);
+    display: flex;
+    /* background-color: var(--fg-color); */
+    color: var(--fg-color);
+    border-radius: 2px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-top: var(--padding-small);
+}
+
+.calendar__icon {
+    height: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: 1;
+    /* border: 2px white solid; */
+}
+
+.week-day-name {
+    color: var(--fg-color);
+    margin-bottom: 0;
+    height: 24px;
+    background-color: var(--bg-color);
+}
+
+#month-input {
+    background-color: var(--bg-color);
+    color: var(--text-color-500);
+    margin-top: var(--margin-medium);
+    padding-left: var(--padding-medium);
+    padding-right: var(--padding-medium);
+    border: none;
+    font-size: 40px;
+    width: calc(100vw - 2 * var(--padding-medium));
+}

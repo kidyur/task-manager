@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/calendar_page.css">
+    <link rel="stylesheet" href="styles/tasks_page.css">
+    <link rel="stylesheet" href="styles/schedule_page.css">
+    <link rel="stylesheet" href="styles/common.css">
+    <title>Работа не Волк | Календарь смен, управление задачами</title>
+</head>
+<body>
+    <div id="calendar-page" class="page">
+        <input id="month-input" type="month">        
+        <div id="calendar"></div>
+    </div>
+
+    <div id="tasks-page" class="page">
+        <h1>Задачи</h1>
+        <div id="tasks-page__tag-line">
+            <button class="tasks-page__tag">#без_тега</button>
+            <button class="tasks-page__tag">#повтор</button>
+            <button class="tasks-page__tag">#события</button>
+        </div>
+        <div id="tasks-page__task-list">
+            <div class="tasks-page__separator">
+                <div class="tasks-page__separator-date">Завтра</div>
+                <div class="tasks-page__separator-line"></div>
+            </div>
+            <div class="tasks-page__task">
+                <div class="tasks-page__task-name">Полить цветы</div>
+                <button class="tasks-page__complete-task-btn"></button>
+            </div>
+            <div class="tasks-page__task">
+                <div class="tasks-page__task-name">Покормить кота</div>
+                <button class="tasks-page__complete-task-btn"></button>
+            </div>
+            <div class="tasks-page__task">
+                <div class="tasks-page__task-name">Купить себе квартиру</div>
+                <button class="tasks-page__complete-task-btn"></button>
+            </div>
+            <div class="tasks-page__separator">
+                <div class="tasks-page__separator-date">3 февр. 2025</div>
+                <div class="tasks-page__separator-line"></div>
+            </div>
+            <div class="tasks-page__task">
+                <div class="tasks-page__task-name">Позаниматься спортом</div>
+                <button class="tasks-page__complete-task-btn"></button>
+            </div>
+            <div class="tasks-page__separator">
+                <div class="tasks-page__separator-date">12 февр. 2025</div>
+                <div class="tasks-page__separator-line"></div>
+            </div>
+            <div class="tasks-page__task">
+                <div class="tasks-page__task-name">Вспомнить что-то важное</div>
+                <button class="tasks-page__complete-task-btn"></button>
+            </div>
+            <div class="tasks-page__task">
+                <div class="tasks-page__task-name">Отдохнуть от мирской суеты</div>
+                <button class="tasks-page__complete-task-btn"></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="schedule-page" class="page">
+        <h1>График</h1>
+        <div id="schedule-page__groups-line">
+            <div id="schedule-page__groups-sector"></div>
+            <button id="schedule-page__add-group-btn" class="schedule-page__groups-line-btn"></button>
+        </div>
+        <div id="schedule-page__shift-list"></div>
+        <div style="width: 100%; display: flex; justify-content: flex-end;">
+            <button id="schedule-page__add-shift-btn">+ Добавить смену</button> 
+        </div>
+
+        <div id="icons-window">
+        </div>
+
+        <div id="group-editor">
+            <div id="group-editor__window">
+                <div style="display: flex; width: 100%; justify-content: space-between; font-size: 24px; height: 20px; align-items: center;">
+                    <p id="group-editor__group-name">График №1</p>
+                    <button id="group-editor__close-btn"></button>
+                </div>
+                <input id="group-editor__input" placeholder="Новое название" />
+                <div style="display: flex; justify-content: space-between; height: 40px; width: 100%">
+                    <button id="group-editor__delete-btn"></button>
+                    <button id="group-editor__rename-btn"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <button id="add-task-btn"></button>
+        <button id="open-schedule-page-btn" class="footer__btn"></button>
+        <button id="open-calendar-page-btn" class="footer__btn"></button>
+        <button id="open-tasks-page-btn" class="footer__btn"></button>
+    </footer>
+
+    <script src="scripts/footer_buttons.js"></script>
+    <script src="scripts/calendar.js"></script>
+    <script src="scripts/schedule.js"></script>
+    <script src="scripts/tasks.js"></script>
+</body>
+</html>
