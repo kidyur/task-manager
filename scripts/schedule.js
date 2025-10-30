@@ -1,11 +1,23 @@
 let currSchedule = [];
+const schedules = [];
 
 class Shift {
     iconURL = 'url("../icons/question.svg")';
-
+    
     constructor(name) {
         this.name = name;
     }
+}
+
+class Schedule {
+    shifts = [];
+
+    constructor(el, name, chooseBtn, editBtn) {
+        this.name = name;
+        this.element = el;
+        this.chooseBtn = chooseBtn;
+        this.editBtn = editBtn;
+    }    
 }
 
 const shiftInput = document.getElementById('schedule-page__shift-input');
@@ -18,24 +30,11 @@ addShiftBtn.addEventListener('click', () => {
 })
 
 
-class Schedule {
-    shifts = [];
-    element = null;
 
-    constructor(el, name, chooseBtn, editBtn) {
-        this.name = name;
-        this.element = el;
-        this.chooseBtn = chooseBtn;
-        this.editBtn = editBtn;
-    }    
-}
-
-const schedules = [];
 
 const addScheduleBtn = document.getElementById('schedule-page__add-group-btn');
 
 function appendShift(shift) {
-    console.log(1);
     const shiftList = document.getElementById('schedule-page__shift-list');
     const shiftEl = document.createElement('div');
     shiftEl.className = 'schedule-page__shift';
@@ -72,7 +71,7 @@ function appendShift(shift) {
     shiftEl.appendChild(deleteBtn);
 
     deleteBtn.addEventListener('click', () => {
-        currSchedule.shifts.splice(currSchedule.shifts.indexOf(shift), 1)
+        currSchedule.shifts.splice(currSchedule.shifts.indexOf(shift), 1);
         shiftList.removeChild(shiftEl);
         updateCalendarView();
     })
@@ -85,13 +84,11 @@ function showAddShiftBtn() {
     addShiftBtn.style.display = 'block';
 }
 
-function listShifts(schedule=0) {
+function listShifts() {
     const shiftList = document.getElementById('schedule-page__shift-list');
     shiftList.innerHTML = '';
-    if (schedule) {
-        for (const shift of schedule.shifts) {
-            appendShift(shift);
-        }
+    for (const shift of currSchedule.shifts) {
+        appendShift(shift);
     }
 }
 
