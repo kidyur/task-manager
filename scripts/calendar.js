@@ -1,6 +1,5 @@
-let shifts = [];
-
 function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
+    const shifts = currSchedule.shifts;
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
     const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
@@ -17,9 +16,8 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
         calendar.appendChild(el);
     }
 
-    console.log(shifts)
     const seq = [];
-    if (shifts.length > 1) {
+    if (shifts && shifts.length > 1) {
         const date = new Date();
         let remainder = date.getDate() % shifts.length;
         let idx = 0;
@@ -72,9 +70,9 @@ function updateCalendarView() {
     fillCalendar(amountOfDays, Math.floor((monthBeginning - currentMonthBeginning) / msInDay), monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0));
 }
 
-monthInput.addEventListener('change', () => updateCalendarView());
-
-
-const today = new Date();
-monthInput.value = today.toISOString().slice(0, 7);
-monthInput.dispatchEvent(new Event('change'));
+window.addEventListener('DOMContentLoaded', () => {
+    monthInput.addEventListener('change', () => updateCalendarView());
+    const today = new Date();
+    monthInput.value = today.toISOString().slice(0, 7);
+    monthInput.dispatchEvent(new Event('change'));
+})

@@ -1,5 +1,4 @@
-
-let currScheduleIdx = 0;
+let currSchedule = [];
 
 class Shift {
     iconURL = 'url("../icons/question.svg")';
@@ -13,7 +12,7 @@ const shiftInput = document.getElementById('schedule-page__shift-input');
 const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
 addShiftBtn.addEventListener('click', () => {
     const shift = new Shift("1");
-    schedules[currScheduleIdx].shifts.push(shift);
+    currSchedule.shifts.push(shift);
     appendShift(shift);
     updateCalendarView();
 })
@@ -47,6 +46,7 @@ function appendShift(shift) {
 
     const icon = document.createElement('button');
     icon.className = 'schedule-page__shift-icon';
+    icon.style.backgroundImage = shift.iconURL;
     icon.addEventListener('click', () => {
         const field = document.getElementById('icons-window');
         field.style.display = 'block';
@@ -71,12 +71,8 @@ function appendShift(shift) {
     deleteBtn.className = 'schedule-page__delete-shift-btn';
     shiftEl.appendChild(deleteBtn);
 
-    if (shift == 0) {
-
-    }
-
     deleteBtn.addEventListener('click', () => {
-        schedules[currScheduleIdx].shifts.splice(schedules[currScheduleIdx].shifts.indexOf(shift), 1)
+        currSchedule.shifts.splice(currSchedule.shifts.indexOf(shift), 1)
         shiftList.removeChild(shiftEl);
         updateCalendarView();
     })
@@ -117,46 +113,40 @@ function offAllGroups() {
 }
 
 function chooseSchedule(schedule) {
-    console.log(0)
     offAllGroups();
-    console.log(1)
     schedule.element.className = 'schedule-page__group schedule-page__group--active';
     schedule.chooseBtn.className = 'schedule-page__choose-group-btn schedule-page__choose-group-btn--active';
     schedule.editBtn.className = 'schedule-page__edit-group-btn schedule-page__edit-group-btn--active'; 
-    currScheduleIdx = schedules.indexOf(schedule);
-    shifts = schedules[currScheduleIdx].shifts;
+    currSchedule = schedule;
     listShifts(schedule);
-    console.log(2)
     updateCalendarView();
-    console.log(3);
 }
 
 addScheduleBtn.addEventListener('click', () => {
-    if (schedules.length < 3) {
-        const sector = document.getElementById('schedule-page__groups-sector');
-        const group = document.createElement('div');
-        sector.appendChild(group);
-        
-        const groupName = 'График №' + schedules.length;
-        const editBtn = document.createElement('button');
-        const chooseBtn = document.createElement('button');
-        const schedule = new Schedule(group, groupName, chooseBtn, editBtn);
-        schedules.push(schedule);
+    const sector = document.getElementById('schedule-page__groups-sector');
+    const group = document.createElement('div');
+    sector.appendChild(group);
+    
+    const groupName = 'График №' + schedules.length;
+    const editBtn = document.createElement('button');
+    const chooseBtn = document.createElement('button');
+    const schedule = new Schedule(group, groupName, chooseBtn, editBtn);
+    schedules.push(schedule);
 
-        editBtn.addEventListener('click', () => openEditor(schedule));
-        group.appendChild(editBtn);
+    editBtn.addEventListener('click', () => openEditor(schedule));
+    group.appendChild(editBtn);
 
-        chooseBtn.textContent = groupName;
-        chooseBtn.addEventListener('click', () => chooseSchedule(schedule));
-        group.appendChild(chooseBtn);
-        
-        chooseSchedule(schedule);
+    chooseBtn.textContent = groupName;
+    chooseBtn.addEventListener('click', () => chooseSchedule(schedule));
+    group.appendChild(chooseBtn);
+    
+    chooseSchedule(schedule);
 
-        if (schedules.length == 1) {
-            showAddShiftBtn();
-        }
-    } else {
-        alert("Слишком много графиков!!!");
+    if (schedules.length == 1) {
+        showAddShiftBtn();
+    }
+    if (schedules.length == 3) {
+        addScheduleBtn.style.display = "none";
     }
 })
 
@@ -191,6 +181,7 @@ function openEditor(schedule) {
             chooseSchedule(schedules[0]);
         }
         updateCalendarView();
+        addScheduleBtn.style.display = "inline-block";
     })
 
     const renameBtn = document.getElementById('group-editor__rename-btn');
