@@ -2,7 +2,7 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
     const shifts = currSchedule.shifts;
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
-    const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
+    const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
     for (const day of weekDays) {
         const el = document.createElement('div');
         el.innerText = day;
