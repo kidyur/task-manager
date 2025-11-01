@@ -37,28 +37,15 @@ const addScheduleBtn = document.getElementById('schedule-page__add-group-btn');
 function appendShift(shift) {
     const shiftList = document.getElementById('schedule-page__shift-list');
     const shiftEl = document.createElement('div');
-    shiftEl.className = 'schedule-page__shift';
+    shiftEl.className = 'schedule-page__shift schedule-page__shift--editing';
 
     const editZone = document.createElement('div');
-    editZone.className = 'schedule-page__shift-edit-zone';
+    editZone.className = 'shift__header';
     shiftEl.appendChild(editZone);
 
     const icon = document.createElement('button');
     icon.className = 'schedule-page__shift-icon';
     icon.style.backgroundImage = shift.iconURL;
-    icon.addEventListener('click', () => {
-        const field = document.getElementById('icons-window');
-        field.style.display = 'block';
-        const iconButtons = document.getElementsByClassName('icons-window__icon');
-        for (const btn of iconButtons) {
-            btn.onclick = () => {
-                icon.style.backgroundImage = btn.style.backgroundImage;
-                shift.iconURL = btn.style.backgroundImage;
-                closeIconField();
-                updateCalendarView();
-            }
-        }
-    })
     editZone.appendChild(icon);
 
     const input = document.createElement('input');
@@ -68,15 +55,24 @@ function appendShift(shift) {
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'schedule-page__delete-shift-btn';
-    shiftEl.appendChild(deleteBtn);
-
+    const approveBtn = document.createElement('button');
+    approveBtn.className = 'shift__approve-btn';
+    
     deleteBtn.addEventListener('click', () => {
         currSchedule.shifts.splice(currSchedule.shifts.indexOf(shift), 1);
         shiftList.removeChild(shiftEl);
         updateCalendarView();
     })
+    
+    const buttonsField = document.createElement('div');
+    buttonsField.className = 'shift__buttons-field';
+    buttonsField.appendChild(deleteBtn);
+    buttonsField.appendChild(approveBtn);
 
+    shiftEl.appendChild(getIconsField());
     shiftList.appendChild(shiftEl);
+    buttonsField.appendChild(deleteBtn);
+    shiftEl.appendChild(buttonsField);
 }
 
 function showAddShiftBtn() {
@@ -119,7 +115,7 @@ function chooseSchedule(schedule) {
     updateCalendarView();
 }
 
-addScheduleBtn.addEventListener('click', () => {
+function addSchedule() {
     const sector = document.getElementById('schedule-page__groups-sector');
     const group = document.createElement('div');
     sector.appendChild(group);
@@ -145,7 +141,12 @@ addScheduleBtn.addEventListener('click', () => {
     if (schedules.length == 3) {
         addScheduleBtn.style.display = "none";
     }
+}
+
+addScheduleBtn.addEventListener('click', () => {
+    addSchedule();
 })
+
 
 
 const closeEditorBtn = document.getElementById('group-editor__close-btn');
@@ -199,7 +200,7 @@ function closeIconField() {
     field.style.display = 'none';
 }
 
-function addIconButtons() {
+function getIconsField() {
     const iconPaths = [
         'question.svg',
         'books.svg',
@@ -213,13 +214,16 @@ function addIconButtons() {
         'sun.svg',
         'sunset.svg'
     ]
-    const field = document.getElementById('icons-window');
+    const field = document.createElement('div');
+    field.className = 'schedule-page__icons-field';
     for (const path of iconPaths) {
         const btn = document.createElement('button');
-        btn.className = 'icons-window__icon';
+        btn.className = 'schedule-page__shift-icon';
         btn.style.backgroundImage = 'url(../icons/' + path + ')';
         field.appendChild(btn);
     }
+    return field;
 }
 
-addIconButtons();
+addSchedule();
+appendShift(new Shift("Название"));

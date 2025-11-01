@@ -42,6 +42,8 @@
 .schedule-page__group-input {
     max-width: 80px;
     border: none;
+    height: 20px;
+    font-size: 20px;
     background-color: unset;
 }
 
@@ -55,35 +57,46 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--padding-big);
+    flex-direction: column;
+    margin: 0 var(--padding-big);
     width: calc(100% - 2 * var(--padding-big));
-    height: 30px;
+    border: 1px solid black;
     margin-bottom: var(--margin-medium);
+    transition: 0.3s;
+    box-shadow: 4px 2px 0 1px black;
 }
 
-.schedule-page__shift-edit-zone {
-    display: flex; 
-    justify-content: flex-end; 
-    height: 100%
+.schedule-page__shift--editing  {
+    height: 100px;
 }
 
-.schedule-page__delete-shift-btn {
-    height: 6px;
-    width: 18px;
-    background-color: var(--fg-color);
-    border-radius: 99px;
-    aspect-ratio: 1;
+.schedule-page__shift--editing button {
+    display: block;
+}
+
+.schedule-page__shift--editing .schedule-page__icons-field {
+    display: flex;
+}
+
+.schedule-page__icons-field {
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    width: calc(100% - var(--margin-medium));
+    height: 100px;
+    margin-left: var(--margin-medium);
 }
 
 .schedule-page__shift-icon {
     margin-right: var(--margin-medium);
-    height: 100%;
+    height: 24px;
+    background-size: cover;
     aspect-ratio: 1;
     background-image: url('../icons/question.svg');
     background-repeat: no-repeat;
     background-position: center;
+    box-shadow: none;
     /* border: 2px white solid; */
-    border-radius: 100%;
 }
 
 #schedule-page__add-shift-btn {
@@ -102,18 +115,39 @@
 .schedule-page__shift-input {
     height: fit-content;
     padding: 0;
+    height: 24px;
     color: var(--font-main-color);
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: 100;
     margin: 0;
     background-color: unset;
     border: none;
 }
 
-.schedule-page__shift-edit-zone {
+.shift__header {
     display: flex;
     align-items: center;
-    height: 100%;
-    justify-content: center;
+    height: 100px;
+    margin-top: var(--margin-medium);
+    justify-content: flex-start;
+    width: calc(100% - var(--margin-medium));
+    margin-left: var(--margin-medium);
+}
+
+.shift__buttons-field {
+    width: calc(100% - 2 * var(--padding-medium));
+    height: 100px;
+    padding-left: var(--padding-medium);
+    padding-right: var(--padding-medium);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shift__buttons-field button {
+    height: 80%;
+    aspect-ratio: 1;
+    border-radius: 100%;
 }
 
 #schedule-page__delete-schedule-btn {
@@ -194,17 +228,4 @@
     border-radius: 100%;
     aspect-ratio: 1;
     height: 100%;
-}
-
-#icons-window {
-    background-color: var(--fg-color);
-    aspect-ratio: 1;
-    width: 100px;
-    display: none;
-}
-
-.icons-window__icon {
-    width: 20px;
-    aspect-ratio: 1;
-    background-image: url('../icons/question.svg');
 }
