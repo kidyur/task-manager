@@ -1,6 +1,6 @@
 #tasks-page {
-    visibility: hidden;
-    pointer-events: none;
+    /* visibility: hidden;
+    pointer-events: none; */
 }
 
 #tasks-page__tag-line {

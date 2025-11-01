@@ -2,7 +2,7 @@ let currSchedule = [];
 const schedules = [];
 
 class Shift {
-    iconURL = 'url("../icons/books.svg")';
+    iconURL = '';
     
     constructor(name) {
         this.name = name;
@@ -98,9 +98,9 @@ function listShifts() {
 }
 
 function offAllGroups() {
-    const chooseButtons = document.getElementsByClassName('schedule-page__choose-group-btn');
+    const chooseButtons = document.getElementsByClassName('schedule__input--active');
     for (const button of chooseButtons) {
-        button.className = 'schedule-page__choose-group-btn';
+        button.className = 'schedule__input';
     }
 
     const groups = document.getElementsByClassName('schedule-page__group');
@@ -117,8 +117,7 @@ function offAllGroups() {
 function chooseSchedule(schedule) {
     offAllGroups();
     schedule.element.className = 'schedule-page__group schedule-page__group--active';
-    schedule.chooseBtn.className = 'schedule-page__choose-group-btn schedule-page__choose-group-btn--active';
-    schedule.editBtn.className = 'schedule-page__edit-group-btn schedule-page__edit-group-btn--active'; 
+    schedule.chooseBtn.className = 'schedule__input schedule__input--active';
     currSchedule = schedule;
     listShifts(schedule);
     updateCalendarView();
@@ -129,57 +128,13 @@ function addSchedule() {
     const group = document.createElement('div');
     sector.appendChild(group);
     
-    const groupName = 'График №' + schedules.length;
-    const editBtn = document.createElement('button');
-    const chooseBtn = document.createElement('button');
-    const schedule = new Schedule(group, groupName, chooseBtn, editBtn);
-    schedules.push(schedule);
-
-    editBtn.addEventListener('click', () => openEditor(schedule));
-    group.appendChild(editBtn);
-
-    chooseBtn.textContent = groupName;
-    chooseBtn.addEventListener('click', () => chooseSchedule(schedule));
-    group.appendChild(chooseBtn);
-    
-    chooseSchedule(schedule);
-
-    if (schedules.length == 1) {
-        showAddShiftBtn();
-    }
-    if (schedules.length == 3) {
-        addScheduleBtn.style.display = "none";
-    }
-}
-
-addScheduleBtn.addEventListener('click', () => {
-    addSchedule();
-})
-
-
-
-const closeEditorBtn = document.getElementById('group-editor__close-btn');
-
-function closeEditor() {
-    const editor = document.getElementById('group-editor');
-    editor.style.display = 'none';
-}
-
-closeEditorBtn.addEventListener('click', () => closeEditor())
-
-
-function openEditor(schedule) {
-    const editor = document.getElementById('group-editor');
-    editor.style.display = 'flex';
-    const title = document.getElementById('group-editor__group-name');
-    title.textContent = schedule.name;
-
-    const deleteBtn = document.getElementById('group-editor__delete-btn');
+    const groupName = '№' + (schedules.length+1);
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'schedule__delete-btn';
     deleteBtn.addEventListener('click', () => {
         schedules.splice(schedules.indexOf(schedule), 1);
         const groupsLine = document.getElementById('schedule-page__groups-sector');
         groupsLine.removeChild(schedule.element);
-        closeEditor();
         listShifts();
         if (schedules.length == 0) {
             const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
@@ -188,21 +143,37 @@ function openEditor(schedule) {
             chooseSchedule(schedules[0]);
         }
         updateCalendarView();
-        addScheduleBtn.style.display = "inline-block";
+        addScheduleBtn.className = "schedule-page__add-schedule-btn";
     })
+    const input = document.createElement('input');
+    input.addEventListener('blur', () => {
+        schedule.name = input.value;
+    })
+    input.className = 'schedule__input';
+    const schedule = new Schedule(group, groupName, input, deleteBtn);
+    schedules.push(schedule);
 
-    const renameBtn = document.getElementById('group-editor__rename-btn');
-    renameBtn.addEventListener('click', () => {
-        const input = document.getElementById('group-editor__input');
-        if (input.value != '') {
-            schedule.name = input.value;
-            const groupTitle = document.getElementsByClassName('schedule-page__choose-group-btn--active')[0];
-            groupTitle.textContent = input.value;
-            input.value = '';
-            closeEditor();
-        }
-    })
+    group.appendChild(deleteBtn);
+
+    input.value = groupName;
+    group.addEventListener('click', () => chooseSchedule(schedule));
+    group.appendChild(input);
+    
+    chooseSchedule(schedule);
+
+    if (schedules.length == 1) {
+        showAddShiftBtn();
+    }
+    if (schedules.length == 3) {
+        addScheduleBtn.className = 'schedule-page__add-schedule-btn--passive';
+    }
+    input.focus();
 }
+
+addScheduleBtn.addEventListener('click', () => {
+    addSchedule();
+})
+
 
 function closeIconField() {
     const field = document.getElementById('icons-window');
@@ -235,6 +206,7 @@ function getIconsField(shift) {
                 prevIcon.className = 'shift__icon';
             }
             btn.className = 'shift__icon shift__icon--first';
+            updateCalendarView();
         })
         field.appendChild(btn);
     }

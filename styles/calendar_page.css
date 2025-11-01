@@ -1,5 +1,5 @@
 #calendar {
-    width: calc(100vw - 2 * var(--margin-medium));
+    width: calc(100% - 2 * var(--margin-medium));
     height: 400px;
     display: flex;
     flex-wrap: wrap;
@@ -10,17 +10,22 @@
 }
 
 .calendar__day {
-    width: calc(100% / 7);
+    width: calc(100% / 7 - 2px);
     height: calc(100% / 7);
     display: flex;
+    opacity: 30%;
+    /* box-shadow: 0px -10px 10px 0 black; */
     /* background-color: var(--fg-color); */
     color: var(--font-main-color);
-    border-radius: 2px;
     align-items: center;
+    cursor: pointer;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     padding-top: var(--padding-small);
+    transition: .5s;
+    padding-bottom: var(--margin-small);
 }
+
 
 .calendar__icon {
     height: 50%;
@@ -32,9 +37,14 @@
 
 .week-day-name {
     color: var(--fg-color);
+    opacity: 100%;
     margin-bottom: 0;
     height: 24px;
-    background-color: var(--bg-color);
+}
+
+.calendar__day--active {
+    opacity: 100%;
+    box-shadow: 4px 4px 10px 1px black;
 }
 
 #month-input {
@@ -80,9 +90,11 @@
 
 #month-picker {
     display: none;
-    width: calc(100vw - 2 * var(--padding-medium));
-    height: 100vh;
+    width: 400px;
+    top: 0;
+    height: 100%;
     background-color: var(--bg-color);
+    z-index: 10;;
     position: absolute;
     padding: 0 var(--padding-medium);
 }
@@ -90,7 +102,7 @@
 .month-picker__year {
     width: 100%;
     font-size: 24px;
-    color: var(--fg-color);
+    color: white;
     padding-left: var(--padding-medium);
     margin-top: var(--margin-medium)
 }
@@ -98,13 +110,15 @@
 .month-picker__month {
     width: calc(100% / 12);
     aspect-ratio: 1;
-    border-radius: 6px;
     box-shadow: none;
-    color: var(--fg-color)
+    color: var(--font-main-color);
+    opacity: 30%;
 }
 
 .month-picker__month--active {
-    border: 2px var(--fg-color) solid;
+    border-top: 3px solid white;
+    opacity: 100%;
+    box-shadow: 4px 4px 10px 1px black;
 }
 
 .month-picker__separator-line {

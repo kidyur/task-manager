@@ -1,3 +1,4 @@
+
 function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
     const shifts = currSchedule.shifts;
     const calendar = document.getElementById('calendar');
@@ -12,7 +13,7 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
 
     for (let i = 0; i < WeekIdxOfFirstMonthDay-1; ++i) {
         const el = document.createElement('div');
-        el.className = 'calendar__day week-day-name';
+        el.className = 'calendar__day';
         calendar.appendChild(el);
     }
 
@@ -34,10 +35,21 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
         }
     } 
     
+    let borderFlag = false;
     for (let day = 1; day <= amountOfDays; day += 1) {
         const el = document.createElement('div');
         el.innerText = day;
         el.className = 'calendar__day';
+        if (day == activeDay) {
+            el.classList.add('calendar__day--active');
+        }
+        el.addEventListener('click', () => {
+            const prevActiveDay = document.getElementsByClassName('calendar__day--active')[0];
+            if (prevActiveDay) {
+                prevActiveDay.className = 'calendar__day';
+            }
+            el.className = 'calendar__day calendar__day--active';            
+        })
         calendar.appendChild(el);
         if (seq.length > 0) {
             const icon = document.createElement('div');
@@ -45,15 +57,26 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
             icon.className = 'calendar__icon';
             el.appendChild(icon);
         } 
+        if (seq[(day-1) % seq.length] == 0) {
+            borderFlag = !borderFlag;
+        }
+        if (borderFlag) {
+            el.style.borderTop = '3px solid white';
+        } else if (seq.length > 1) {
+            el.style.borderTop = '3px solid red';
+        }
     }
 }
 
-activeMonth = 0;
-activeYear = 0;
+let activeMonth = 0;
+let activeYear = 0;
+let activeDay = 0;
+
 function setActiveDate() {
     const currentDate = new Date();
     activeMonth = currentDate.getMonth()+1;
     activeYear = currentDate.getFullYear();
+    activeDay = currentDate.getDate();
     updateCalendarView();
 }
 
@@ -124,6 +147,7 @@ function setMonthPicker() {
             monthEl.addEventListener('click', () => {
                 activeMonth = month;
                 activeYear = year;
+                activeDay = -1;
                 const activeMonthEl = document.getElementById('calendar-page__month');
                 activeMonthEl.textContent = months[month-1];
                 const activeYearEl = document.getElementById('calendar-page__year');
@@ -131,6 +155,16 @@ function setMonthPicker() {
                 picker.style.display = 'none';
                 updateCalendarView();
             })
+            if (year == activeYear && month == activeMonth) {
+                activeMonth = month;
+                activeYear = year;
+                const activeMonthEl = document.getElementById('calendar-page__month');
+                activeMonthEl.textContent = months[month-1];
+                const activeYearEl = document.getElementById('calendar-page__year');
+                activeYearEl.textContent = year;
+                picker.style.display = 'none';
+                updateCalendarView();
+            }
         }
     }
 }

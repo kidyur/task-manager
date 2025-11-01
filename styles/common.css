@@ -82,8 +82,13 @@ button {
     box-shadow: black 0px 0px 3px;
 }
 
+#schedule-page {
+    width: 430px;
+}
+
 .page {
-    width: 100vw;
+    width: 400px;
+    max-width: 300px;
     height: 100vh;
     background-color: var(--bg-color);
     flex-direction: column;
@@ -111,7 +116,8 @@ footer {
     position: fixed;
     bottom: 0;
     left: 0;
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
     justify-content: center;
 }
