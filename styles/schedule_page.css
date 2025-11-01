@@ -49,115 +49,129 @@
 
 #schedule-page__shift-list {
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
     width: 100%;
 }
 
-.schedule-page__shift {
+.shift {
     display: flex;
+    padding: var(--padding-small) var(--padding-medium);
     align-items: center;
     justify-content: space-between;
+    flex-direction: row;
+    width: calc(100% - 6 * var(--padding-medium));
+    height: 40px;
+    border-bottom: 1px black solid;
+    transition: 0.5s;
+}
+
+.shift--editing {
+    height: 80px;
+    width: calc(100% - 4 * var(--padding-medium));
+    box-shadow: 4px 4px 10px 0px black;
+    border: none;
+}
+
+.shift--editing .shift__icon {
+    display: inline;
+}
+
+.shift__input {
+    background-color: unset;
+    border: none;
+    color: var(--font-main-color);
+    font-size: 16px;
+    height: 16px;
+    width: calc(100% - 2 * var(--padding-medium));
+    pointer-events: none;
+}
+
+.shift--editing .shift__input {
+    pointer-events: all;
+}
+
+.shift__left-block {
+    display: flex;
+    justify-content: center;
     flex-direction: column;
-    margin: 0 var(--padding-big);
-    width: calc(100% - 2 * var(--padding-big));
-    border: 1px solid black;
-    margin-bottom: var(--margin-medium);
-    transition: 0.3s;
-    box-shadow: 4px 2px 0 1px black;
+    width: calc(100% - 150px);
+    height: 100%;
 }
 
-.schedule-page__shift--editing  {
-    height: 100px;
+.shift__right-block {
+    flex-direction: row-reverse;
+    width: 150px;
+    height: 50px;
+    gap: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
-.schedule-page__shift--editing button {
+.shift--editing .shift__right-block {
+    height: 80px;
+}
+
+.shift__delete-btn {
+    display: none;
+    border-radius: 100%;
+    height: 24px;
+    width: 24px;
+    margin-top: var(--margin-big);
+}
+
+.shift--editing .shift__delete-btn {
     display: block;
 }
 
-.schedule-page__shift--editing .schedule-page__icons-field {
-    display: flex;
+.shift .shift__icon--first {
+    display: inline;
 }
 
-.schedule-page__icons-field {
+.shift--editing .shift__icon--first {
+    border-bottom: 3px white solid;
+}
+
+.shift__icon {
+    width: 30px;
+    height: 30px;
     display: none;
-    align-items: center;
-    justify-content: flex-start;
-    width: calc(100% - var(--margin-medium));
-    height: 100px;
-    margin-left: var(--margin-medium);
-}
-
-.schedule-page__shift-icon {
-    margin-right: var(--margin-medium);
-    height: 24px;
-    background-size: cover;
-    aspect-ratio: 1;
+    background-size: 70%;
     background-image: url('../icons/question.svg');
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: none;
-    /* border: 2px white solid; */
 }
 
-#schedule-page__add-shift-btn {
-    display: none;
-    width: 100%;
-    color: var(--fg-color);
-    background: unset;
-    border: none;
-    height: 30px;
-    margin-top: var(--margin-medium);
-    font-size: 14px;
-    box-shadow: none;
-    text-shadow: 1px 1px black;
-}
-
-.schedule-page__shift-input {
-    height: fit-content;
-    padding: 0;
-    height: 24px;
-    color: var(--font-main-color);
-    font-size: 24px;
-    font-weight: 100;
-    margin: 0;
-    background-color: unset;
-    border: none;
-}
-
-.shift__header {
-    display: flex;
-    align-items: center;
-    height: 100px;
-    margin-top: var(--margin-medium);
-    justify-content: flex-start;
-    width: calc(100% - var(--margin-medium));
-    margin-left: var(--margin-medium);
-}
 
 .shift__buttons-field {
     width: calc(100% - 2 * var(--padding-medium));
-    height: 100px;
+    height: 40px;
     padding-left: var(--padding-medium);
     padding-right: var(--padding-medium);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
 }
 
+.shift--editing .shift__buttons-field {
+    display: flex;
+}
+
+.shift__button {
+    height: 100%;
+    aspect-ratio: 1;
+}
+
 .shift__buttons-field button {
-    height: 80%;
+    height: 24px;
     aspect-ratio: 1;
     border-radius: 100%;
 }
 
-#schedule-page__delete-schedule-btn {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    color: var(--font-warning-color);
-    font-weight: 900;
-    border-radius: 10px;
-}
 
 .schedule-page__choose-group-btn {
     padding: var(--padding-small) var(--padding-medium);
@@ -228,4 +242,17 @@
     border-radius: 100%;
     aspect-ratio: 1;
     height: 100%;
+}
+
+#schedule-page__add-shift-btn {
+    display: none;
+    width: 100%;
+    color: var(--fg-color);
+    background: unset;
+    border: none;
+    height: 30px;
+    margin-top: var(--margin-medium);
+    font-size: 14px;
+    box-shadow: none;
+    text-shadow: 1px 1px black;
 }

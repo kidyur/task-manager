@@ -24,8 +24,8 @@
     */
 
     /* Colors */
-    --bg-color: #343E3D;
-    --fg-color: #93b39d;
+    --bg-color: #202020;
+    --fg-color: #535353;
     --font-main-color: #EFF1F3;
     --font-warning-color: #A22C29; 
     --text-color-500: black;
@@ -89,6 +89,10 @@ button {
     flex-direction: column;
     align-items: center;
     max-width: 500px;
+}
+
+input {
+    outline: none
 }
 
 #add-task-btn {

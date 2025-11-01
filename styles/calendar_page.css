@@ -14,7 +14,7 @@
     height: calc(100% / 7);
     display: flex;
     /* background-color: var(--fg-color); */
-    color: var(--fg-color);
+    color: var(--font-main-color);
     border-radius: 2px;
     align-items: center;
     flex-direction: column;
@@ -31,7 +31,7 @@
 }
 
 .week-day-name {
-    color: #93b39d;
+    color: var(--fg-color);
     margin-bottom: 0;
     height: 24px;
     background-color: var(--bg-color);

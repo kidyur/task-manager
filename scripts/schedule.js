@@ -2,7 +2,7 @@ let currSchedule = [];
 const schedules = [];
 
 class Shift {
-    iconURL = 'url("../icons/question.svg")';
+    iconURL = 'url("../icons/books.svg")';
     
     constructor(name) {
         this.name = name;
@@ -37,26 +37,30 @@ const addScheduleBtn = document.getElementById('schedule-page__add-group-btn');
 function appendShift(shift) {
     const shiftList = document.getElementById('schedule-page__shift-list');
     const shiftEl = document.createElement('div');
-    shiftEl.className = 'schedule-page__shift schedule-page__shift--editing';
+    const elToDeactivate = document.getElementsByClassName('shift--editing')[0];
+    if (elToDeactivate) {
+        elToDeactivate.className = 'shift';
+    }
+    shiftEl.className = 'shift shift--editing';
 
-    const editZone = document.createElement('div');
-    editZone.className = 'shift__header';
-    shiftEl.appendChild(editZone);
-
-    const icon = document.createElement('button');
-    icon.className = 'schedule-page__shift-icon';
-    icon.style.backgroundImage = shift.iconURL;
-    editZone.appendChild(icon);
+    const leftBlock = document.createElement('div');
+    leftBlock.className = 'shift__left-block';
+    const rightBlock = document.createElement('div');
+    rightBlock.className = 'shift__right-block';
 
     const input = document.createElement('input');
-    input.className = 'schedule-page__shift-input';
-    input.value = shift.name;
-    editZone.appendChild(input);
+    input.className = 'shift__input';
+    input.maxLength = 24;
+    input.placeholder = "Введите название смены";
+    leftBlock.appendChild(input);
+
+    input.addEventListener('blur', () => {
+        shift.name = input.value;
+        console.log(shift.name)
+    })
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'schedule-page__delete-shift-btn';
-    const approveBtn = document.createElement('button');
-    approveBtn.className = 'shift__approve-btn';
+    deleteBtn.className = 'shift__delete-btn';
     
     deleteBtn.addEventListener('click', () => {
         currSchedule.shifts.splice(currSchedule.shifts.indexOf(shift), 1);
@@ -64,15 +68,20 @@ function appendShift(shift) {
         updateCalendarView();
     })
     
-    const buttonsField = document.createElement('div');
-    buttonsField.className = 'shift__buttons-field';
-    buttonsField.appendChild(deleteBtn);
-    buttonsField.appendChild(approveBtn);
+    shiftEl.addEventListener('click', () => {
+        const elToDeactivate = document.getElementsByClassName('shift--editing')[0];
+        if (elToDeactivate) {
+            elToDeactivate.className = 'shift';
+        }
+        shiftEl.className = 'shift shift--editing';
+        input.focus();
+    })
 
-    shiftEl.appendChild(getIconsField());
+    shiftEl.appendChild(leftBlock);
+    shiftEl.appendChild(getIconsField(shift));
     shiftList.appendChild(shiftEl);
-    buttonsField.appendChild(deleteBtn);
-    shiftEl.appendChild(buttonsField);
+    leftBlock.appendChild(deleteBtn);
+    input.focus();
 }
 
 function showAddShiftBtn() {
@@ -200,9 +209,8 @@ function closeIconField() {
     field.style.display = 'none';
 }
 
-function getIconsField() {
+function getIconsField(shift) {
     const iconPaths = [
-        'question.svg',
         'books.svg',
         'moon_and_sun.svg',
         'moon.svg',
@@ -213,17 +221,22 @@ function getIconsField() {
         'sun_and_moon.svg',
         'sun.svg',
         'sunset.svg'
-    ]
+    ];
     const field = document.createElement('div');
-    field.className = 'schedule-page__icons-field';
+    field.className = 'shift__right-block';
     for (const path of iconPaths) {
         const btn = document.createElement('button');
-        btn.className = 'schedule-page__shift-icon';
+        btn.className = 'shift__icon';
         btn.style.backgroundImage = 'url(../icons/' + path + ')';
+        btn.addEventListener('click', () => {
+            shift.iconURL = 'url(../icons/' + path + ')';
+            const prevIcon = field.getElementsByClassName('shift__icon--first')[0];
+            if (prevIcon) {
+                prevIcon.className = 'shift__icon';
+            }
+            btn.className = 'shift__icon shift__icon--first';
+        })
         field.appendChild(btn);
     }
     return field;
 }
-
-addSchedule();
-appendShift(new Shift("Название"));
