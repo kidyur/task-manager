@@ -159,7 +159,7 @@
     pointer-events: none;
 }
 
-.schedule__input--active {
+.schedule-page__group--active input {
     font-size: 24px;
     color: var(--font-main-color)
 }
