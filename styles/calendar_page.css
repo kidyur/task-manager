@@ -26,6 +26,10 @@
     padding-bottom: var(--margin-small);
 }
 
+.calendar__day--current-week {
+    opacity: 100%;
+}
+
 
 .calendar__icon {
     height: 50%;

@@ -56,7 +56,6 @@ function appendShift(shift) {
 
     input.addEventListener('blur', () => {
         shift.name = input.value;
-        console.log(shift.name)
     })
 
     const deleteBtn = document.createElement('button');
@@ -69,12 +68,14 @@ function appendShift(shift) {
     })
     
     shiftEl.addEventListener('click', () => {
-        const elToDeactivate = document.getElementsByClassName('shift--editing')[0];
-        if (elToDeactivate) {
-            elToDeactivate.className = 'shift';
+        if (shiftEl.className != "shift shift--editing") {
+            const elToDeactivate = document.getElementsByClassName('shift--editing')[0];
+            if (elToDeactivate) {
+                elToDeactivate.className = 'shift';
+            }
+            shiftEl.className = 'shift shift--editing';
+            input.focus();
         }
-        shiftEl.className = 'shift shift--editing';
-        input.focus();
     })
 
     shiftEl.appendChild(leftBlock);
@@ -134,16 +135,18 @@ function addSchedule() {
     deleteBtn.addEventListener('click', () => {
         schedules.splice(schedules.indexOf(schedule), 1);
         const groupsLine = document.getElementById('schedule-page__groups-sector');
-        groupsLine.removeChild(schedule.element);
-        listShifts();
         if (schedules.length == 0) {
+            currSchedule = {shifts: []};
+            console.log(currSchedule);
             const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
             addShiftBtn.style.display = 'none';
         } else {
             chooseSchedule(schedules[0]);
         }
+        listShifts();
         updateCalendarView();
         addScheduleBtn.className = "schedule-page__add-schedule-btn";
+        groupsLine.removeChild(schedule.element);
     })
     const input = document.createElement('input');
     input.addEventListener('blur', () => {
@@ -156,7 +159,11 @@ function addSchedule() {
     group.appendChild(deleteBtn);
 
     input.value = groupName;
-    group.addEventListener('click', () => chooseSchedule(schedule));
+    input.addEventListener('click', () => {
+        if (currSchedule != schedule) {
+            chooseSchedule(schedule)
+        }
+    });
     group.appendChild(input);
     
     chooseSchedule(schedule);
