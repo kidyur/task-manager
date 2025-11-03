@@ -71,7 +71,9 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
         calendar.appendChild(el);
         if (seq.length > 0) {
             const icon = document.createElement('div');
-            icon.style.backgroundImage = shifts[seq[(day-1) % seq.length]].iconURL;
+            if (shifts[seq[(day-1) % seq.length]]) {
+                icon.style.backgroundImage = shifts[seq[(day-1) % seq.length]].iconURL;
+            }
             icon.className = 'calendar__icon';
             el.appendChild(icon);
         } 

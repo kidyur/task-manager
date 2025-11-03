@@ -114,7 +114,7 @@ class Schedule {
         const shiftList = document.getElementById('schedule-page__shift-list');
         shiftList.innerHTML = '';
         for (const shift of this.shifts) {
-            appendShift(shift);
+            shift.appendToShiftsList();
         }
     }
 
@@ -192,7 +192,6 @@ function updateCreateShiftBtn() {
     } else {
         btn.style.display = 'none';
     }
-    console.log(btn)
 }
 
 function setupAddShiftBtn() {
