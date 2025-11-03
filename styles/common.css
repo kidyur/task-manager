@@ -24,8 +24,8 @@
     */
 
     /* Colors */
-    --bg-color: #343E3D;
-    --fg-color: #93b39d;
+    --bg-color: #202020;
+    --fg-color: #535353;
     --font-main-color: #EFF1F3;
     --font-warning-color: #A22C29; 
     --text-color-500: black;
@@ -82,13 +82,22 @@ button {
     box-shadow: black 0px 0px 3px;
 }
 
+#schedule-page {
+    width: 430px;
+}
+
 .page {
-    width: 100vw;
+    width: 400px;
+    max-width: 300px;
     height: 100vh;
     background-color: var(--bg-color);
     flex-direction: column;
     align-items: center;
     max-width: 500px;
+}
+
+input {
+    outline: none
 }
 
 #add-task-btn {
@@ -107,7 +116,8 @@ footer {
     position: fixed;
     bottom: 0;
     left: 0;
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
     justify-content: center;
 }

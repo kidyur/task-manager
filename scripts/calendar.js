@@ -3,6 +3,9 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
     const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+    let allDaysElementsCnt = 0;
+
     for (const day of weekDays) {
         const el = document.createElement('div');
         el.innerText = day;
@@ -12,9 +15,10 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
 
     for (let i = 0; i < WeekIdxOfFirstMonthDay-1; ++i) {
         const el = document.createElement('div');
-        el.className = 'calendar__day week-day-name';
+        el.className = 'calendar__day';
         calendar.appendChild(el);
     }
+    allDaysElementsCnt += WeekIdxOfFirstMonthDay-1;
 
     const seq = [];
     if (shifts && shifts.length > 1) {
@@ -32,12 +36,36 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
                 seq[i] = 4 + seq[i];
             }
         }
-    } 
-        
+    }     
+
+    let borderFlag = false;
     for (let day = 1; day <= amountOfDays; day += 1) {
         const el = document.createElement('div');
         el.innerText = day;
         el.className = 'calendar__day';
+        if (day == activeDay) {
+            el.classList.add('calendar__day--active');
+        }
+        el.addEventListener('click', () => {
+            const prevActiveWeekDays = document.querySelectorAll('.calendar__day--current-week');
+            for (let d of prevActiveWeekDays) {
+                d.className = 'calendar__day';
+            }
+            const prevActiveDay = document.getElementsByClassName('calendar__day--active')[0];
+            if (prevActiveDay) {
+                prevActiveDay.className = 'calendar__day';
+            }
+            el.className = 'calendar__day calendar__day--active';
+            const allDaysElements = document.getElementsByClassName('calendar__day');
+            const weekDay = (day + allDaysElementsCnt - 1) % 7;
+            const monthDay = day + allDaysElementsCnt + 7 - 1;
+            for (let i = weekDay; i >= 1; i--) {
+                allDaysElements[monthDay - i].classList.add('calendar__day--current-week');
+            }
+            for (let i = weekDay; i < 7; i++) {
+                allDaysElements[monthDay + i - weekDay].classList.add('calendar__day--current-week');
+            }
+        })
         calendar.appendChild(el);
         if (seq.length > 0) {
             const icon = document.createElement('div');
@@ -45,15 +73,26 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
             icon.className = 'calendar__icon';
             el.appendChild(icon);
         } 
+        if (seq[(day-1) % seq.length] == 0) {
+            borderFlag = !borderFlag;
+        }
+        if (borderFlag) {
+            el.style.borderTop = '3px solid white';
+        } else if (seq.length > 1) {
+            el.style.borderTop = '3px solid red';
+        }
     }
 }
 
 let activeMonth = 0;
 let activeYear = 0;
+let activeDay = 0;
+
 function setActiveDate() {
     const currentDate = new Date();
     activeMonth = currentDate.getMonth()+1;
     activeYear = currentDate.getFullYear();
+    activeDay = currentDate.getDate();
     updateCalendarView();
 }
 
@@ -124,6 +163,7 @@ function setMonthPicker() {
             monthEl.addEventListener('click', () => {
                 activeMonth = month;
                 activeYear = year;
+                activeDay = -1;
                 const activeMonthEl = document.getElementById('calendar-page__month');
                 activeMonthEl.textContent = months[month-1];
                 const activeYearEl = document.getElementById('calendar-page__year');
@@ -131,6 +171,16 @@ function setMonthPicker() {
                 picker.style.display = 'none';
                 updateCalendarView();
             })
+            if (year == activeYear && month == activeMonth) {
+                activeMonth = month;
+                activeYear = year;
+                const activeMonthEl = document.getElementById('calendar-page__month');
+                activeMonthEl.textContent = months[month-1];
+                const activeYearEl = document.getElementById('calendar-page__year');
+                activeYearEl.textContent = year;
+                picker.style.display = 'none';
+                updateCalendarView();
+            }
         }
     }
 }

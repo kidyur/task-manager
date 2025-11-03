@@ -33,5 +33,5 @@ function setupFooterButtons() {
 
 document.addEventListener('DOMContentLoaded', () => {
     setupFooterButtons();
-    openPage('calendar-page');
+    // openPage('schedule-page');
 });

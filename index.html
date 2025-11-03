@@ -10,15 +10,7 @@
     <title>Работа не Волк | Календарь смен, управление задачами</title>
 </head>
 <body>
-    <div id="calendar-page" class="page">
-        <div id="calendar-page__month-picker-btn">
-            <p id="calendar-page__year">2025</p>
-            <button id="calendar-page__month">Октябрь</button>
-        </div>
-        <div id="month-picker"></div>
-        <div id="calendar"></div>
-    </div>
-
+    
     <div id="tasks-page" class="page">
         <div id="tasks-page__tag-line">
             <button class="tasks-page__tag">#без_тега</button>
@@ -64,32 +56,26 @@
             </div>
         </div>
     </div>
-
+    
+    <div id="calendar-page" class="page">
+        <div id="calendar-page__month-picker-btn">
+            <p id="calendar-page__year"></p>
+            <button id="calendar-page__month"></button>
+        </div>
+        <div id="month-picker"></div>
+        <div id="calendar"></div>
+    </div>
     <div id="schedule-page" class="page">
         <div id="schedule-page__groups-line">
             <div id="schedule-page__groups-sector"></div>
-            <button id="schedule-page__add-group-btn" class="schedule-page__groups-line-btn"></button>
+            <button id="schedule-page__add-group-btn" class="schedule-page__add-schedule-btn">+</button>
         </div>
         <div id="schedule-page__shift-list"></div>
         <div style="width: 100%; display: flex; justify-content: flex-end;">
-            <button id="schedule-page__add-shift-btn">+ Добавить смену</button> 
+            <button id="schedule-page__add-shift-btn">+ Добавить день</button> 
         </div>
 
         <div id="icons-window">
-        </div>
-
-        <div id="group-editor">
-            <div id="group-editor__window">
-                <div style="display: flex; width: 100%; justify-content: space-between; font-size: 24px; height: 20px; align-items: center;">
-                    <p id="group-editor__group-name">График №1</p>
-                    <button id="group-editor__close-btn"></button>
-                </div>
-                <input id="group-editor__input" placeholder="Новое название" />
-                <div style="display: flex; justify-content: space-between; height: 40px; width: 100%">
-                    <button id="group-editor__delete-btn"></button>
-                    <button id="group-editor__rename-btn"></button>
-                </div>
-            </div>
         </div>
     </div>
 
