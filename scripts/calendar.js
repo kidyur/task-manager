@@ -1,89 +1,70 @@
 
-function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
-    const shifts = currSchedule.shifts;
-    const calendar = document.getElementById('calendar');
-    calendar.innerHTML = '';
-    const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
-
-    let allDaysElementsCnt = 0;
-
-    for (const day of weekDays) {
-        const el = document.createElement('div');
-        el.innerText = day;
-        el.className = 'calendar__day week-day-name';
-        calendar.appendChild(el);
+function offLastActiveWeek() {
+    const prevActiveWeekDays = document.querySelectorAll('.calendar__day--current-week');
+    for (let day of prevActiveWeekDays) {
+        day.className = 'calendar__day';
     }
+}
 
-    for (let i = 0; i < WeekIdxOfFirstMonthDay-1; ++i) {
-        const el = document.createElement('div');
-        el.className = 'calendar__day';
-        calendar.appendChild(el);
+function onWeek(dayIndex) {
+    const daysElements = document.getElementsByClassName('calendar__day');
+    const weekDay = (dayIndex - 1) % 7;
+    const monthDay = dayIndex + 7 - 1;
+    for (let i = weekDay; i >= 1; i--) {
+        daysElements[monthDay - i].classList.add('calendar__day--current-week');
     }
-    allDaysElementsCnt += WeekIdxOfFirstMonthDay-1;
+    for (let i = weekDay; i < 7; i++) {
+        daysElements[monthDay + i - weekDay].classList.add('calendar__day--current-week');
+    }
+}
 
-    const seq = [];
-    if (shifts && shifts.length > 1) {
-        const date = new Date();
-        let remainder = date.getDate() % shifts.length;
-        let idx = 0;
-        while (remainder != 1) {
-            ++idx;
-            remainder = (remainder + 1) % shifts.length; 
-        }
+class Day {
+    #borderFlag = undefined;
+    #dayIndex = undefined;
+    #dayEl = undefined;
+    #emptyDays = 0;
     
-        for (let i = 0; i < shifts.length; i++) {
-            seq.push((idx + i + gap) % shifts.length);
-            if (seq[i] < 0) {
-                seq[i] = 4 + seq[i];
-            }
-        }
-    } 
-    
-
-    let borderFlag = false;
-    for (let day = 1; day <= amountOfDays; day += 1) {
+    constructor(day, borderFlag, emptyDays) {
         const el = document.createElement('div');
+        this.#dayEl = el;
+        this.#dayIndex = day;
+        this.#borderFlag = borderFlag;
+        this.#emptyDays = emptyDays;
         el.innerText = day;
         el.className = 'calendar__day';
-        if (day == activeDay) {
-            el.classList.add('calendar__day--active');
-        }
         el.addEventListener('click', () => {
-            const prevActiveWeekDays = document.querySelectorAll('.calendar__day--current-week');
-            for (let d of prevActiveWeekDays) {
-                d.className = 'calendar__day';
-            }
-            const prevActiveDay = document.getElementsByClassName('calendar__day--active')[0];
-            if (prevActiveDay) {
-                prevActiveDay.className = 'calendar__day';
-            }
-            el.className = 'calendar__day calendar__day--active';
-            const allDaysElements = document.getElementsByClassName('calendar__day');
-            const weekDay = (day + allDaysElementsCnt - 1) % 7;
-            const monthDay = day + allDaysElementsCnt + 7 - 1;
-            for (let i = weekDay; i >= 1; i--) {
-                allDaysElements[monthDay - i].classList.add('calendar__day--current-week');
-            }
-            for (let i = weekDay; i < 7; i++) {
-                allDaysElements[monthDay + i - weekDay].classList.add('calendar__day--current-week');
-            }
+            this.select();
         })
-        calendar.appendChild(el);
         if (seq.length > 0) {
-            const icon = document.createElement('div');
-            if (shifts[seq[(day-1) % seq.length]]) {
-                icon.style.backgroundImage = shifts[seq[(day-1) % seq.length]].iconURL;
-            }
-            icon.className = 'calendar__icon';
-            el.appendChild(icon);
+            this.createIcon();
         } 
-        if (seq[(day-1) % seq.length] == 0) {
-            borderFlag = !borderFlag;
+        this.upperline();
+        const calendar = document.getElementById('calendar-page__calendar');
+        calendar.appendChild(el);
+    }
+
+    createIcon() {
+        const icon = document.createElement('div');
+        icon.style.backgroundImage = shifts[seq[(day-1) % seq.length]].iconURL;
+        icon.className = 'calendar__icon';
+        this.#dayEl.appendChild(icon);
+    }
+
+    upperline() {
+        if (this.#borderFlag) {
+            this.#dayEl.style.borderTop = '3px solid white';
+        } else {
+            this.#dayEl.style.borderTop = '3px solid red';
         }
-        if (borderFlag) {
-            el.style.borderTop = '3px solid white';
-        } else if (seq.length > 1) {
-            el.style.borderTop = '3px solid red';
+    }
+
+    select() {
+        offLastActiveWeek();
+        onWeek(this.#dayIndex + this.#emptyDays + 7);
+        if (this.#borderFlag) {
+            this.#dayEl.classList.add('calendar__day--selected1');
+        } else {
+            this.#dayEl.className.add('calendar__day--selected2');
         }
     }
 }
@@ -97,33 +78,91 @@ function setActiveDate() {
     activeMonth = currentDate.getMonth()+1;
     activeYear = currentDate.getFullYear();
     activeDay = currentDate.getDate();
-    updateCalendar();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     setActiveDate();
     setMonthPicker();
+    updateCalendar();
 })
 
-function updateCalendar() {
-    const [year, month] = [activeYear, activeMonth];
-    let nextMonth = month + 1;
-    let nextYear = year;
-    if (nextMonth > 12) {
-        nextMonth = 1;
-        ++nextYear;
-    }
-    const monthBeginning = new Date(`${year}-${month}-1`);
-    const nextMonthBeginning = new Date(`${nextYear}-${nextMonth}-1`);
-    const msInDay = 24 * 60 * 60 * 1000;
-    const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth()+1;
-    const currentYear = currentDate.getFullYear();
-    const currentMonthBeginning = new Date(`${currentYear}-${currentMonth}-1`);
-    fillCalendar(amountOfDays, Math.floor((monthBeginning - currentMonthBeginning) / msInDay), monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0));
-}
+let borderFlag = false;
 
+class Calendar {
+    #calendarEl = undefined;
+
+    constructor() {
+        const calendar = document.getElementById('calendar');
+        this.#calendarEl = calendar;
+        const monthBeginning = new Date(`${activeYear}-${activeMonth}-1`);
+        const weekIdxOfFirstMonthDay = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
+        this.createEmptyDays(weekIdxOfFirstMonthDay);
+        this.createWeekDays();
+        this.update();
+    }
+
+    update() {
+        const [year, month] = [activeYear, activeMonth];
+        let nextMonth = month + 1;
+        let nextYear = year;
+        if (nextMonth > 12) {
+            nextMonth = 1;
+            ++nextYear;
+        }
+        const monthBeginning = new Date(`${year}-${month}-1`);
+        const nextMonthBeginning = new Date(`${nextYear}-${nextMonth}-1`);
+        const msInDay = 24 * 60 * 60 * 1000;
+        const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
+        const currentMonthBeginning = new Date();
+        currentMonthBeginning.setDate(1);
+        const gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
+
+        this.#calendarEl.innerHTML = '';
+        const seq = [];
+        const shifts = currSchedule.shifts;
+        if (shifts && shifts.length > 1) {
+            const date = new Date();
+            let remainder = date.getDate() % shifts.length;
+            let idx = 0;
+            while (remainder != 1) {
+                ++idx;
+                remainder = (remainder + 1) % shifts.length; 
+            }
+        
+            for (let i = 0; i < shifts.length; i++) {
+                seq.push((idx + i + gap) % shifts.length);
+                if (seq[i] < 0) {
+                    seq[i] = 4 + seq[i];
+                }
+            }
+        } 
+        
+        for (let day = 1; day <= amountOfDays; day += 1) {
+            const day = new Day();
+            if (seq[(day-1) % seq.length] == 0) {
+                borderFlag = !borderFlag;
+            }
+        }
+    }
+
+    createWeekDays() {
+        const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
+        for (const day of weekDays) {
+            const dayEl = document.createElement('div');
+            dayEl.innerText = day;
+            dayEl.className = 'calendar__day week-day-name';
+            this.#calendarEl.appendChild(dayEl);
+        }
+    }
+
+    createEmptyDays(amountOfEmptyDays) {
+        for (let i = 0; i < amountOfEmptyDays-1; ++i) {
+            const el = document.createElement('div');
+            el.className = 'calendar__day';
+            this.#calendarEl.appendChild(el);
+        }
+    }
+}
 
 function setMonthPicker() {
     const months = [

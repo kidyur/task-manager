@@ -7,6 +7,26 @@ class Shift {
     #name = '';
     #input = undefined;
     iconURL = ''; // We make it public to access via calendar
+    
+    constructor() {
+        const shiftEl = document.createElement('div');
+        shiftEl.className = 'shift shift--editing';
+        this.#shiftEl = shiftEl;
+
+        const leftBlock = document.createElement('div');
+        leftBlock.className = 'shift__left-block';
+        this.#leftBlock = leftBlock;
+        shiftEl.appendChild(leftBlock);
+        
+        shiftEl.addEventListener('click', () => {
+            this.select();
+        })
+
+        this.createIconsField();
+        this.createInput();
+        this.createDeleteBtn();
+        this.appendToShiftsList();
+    }
 
     createInput() {
         const input = document.createElement('input');
@@ -76,26 +96,6 @@ class Shift {
         this.#shiftEl.className = 'shift shift--editing';
         this.#input.focus();
     }
-
-    constructor() {
-        const shiftEl = document.createElement('div');
-        shiftEl.className = 'shift shift--editing';
-        this.#shiftEl = shiftEl;
-
-        const leftBlock = document.createElement('div');
-        leftBlock.className = 'shift__left-block';
-        this.#leftBlock = leftBlock;
-        shiftEl.appendChild(leftBlock);
-        
-        shiftEl.addEventListener('click', () => {
-            this.select();
-        })
-
-        this.createIconsField();
-        this.createInput();
-        this.createDeleteBtn();
-        this.appendToShiftsList();
-    }
 }
 
 function offLastActiveShift() {
@@ -109,6 +109,18 @@ class Schedule {
     #scheduleEl = undefined;
     shifts = []; // We make it public to access it via calendar
     name = "";   // It also
+
+    constructor() {
+        const group = document.createElement('div');
+        this.#scheduleEl = group;
+        group.addEventListener('click', () => {
+            this.select();
+        })
+        this.createDeleteBtn();
+        this.createInput();
+        this.appendToSchedulesList();
+        this.select();
+    }  
 
     listShifts() {
         const shiftList = document.getElementById('schedule-page__shift-list');
@@ -162,18 +174,6 @@ class Schedule {
         const sector = document.getElementById('schedule-page__groups-sector');
         sector.appendChild(this.#scheduleEl);
     }
-
-    constructor() {
-        const group = document.createElement('div');
-        this.#scheduleEl = group;
-        group.addEventListener('click', () => {
-            this.select();
-        })
-        this.createDeleteBtn();
-        this.createInput();
-        this.appendToSchedulesList();
-        this.select();
-    }    
 }
 
 function updateCreateScheduleBtn() {
