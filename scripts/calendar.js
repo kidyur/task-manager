@@ -95,7 +95,7 @@ function setActiveDate() {
     activeMonth = currentDate.getMonth()+1;
     activeYear = currentDate.getFullYear();
     activeDay = currentDate.getDate();
-    updateCalendarView();
+    updateCalendar();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setMonthPicker();
 })
 
-function updateCalendarView() {
+function updateCalendar() {
     const [year, month] = [activeYear, activeMonth];
     let nextMonth = month + 1;
     let nextYear = year;
@@ -171,7 +171,7 @@ function setMonthPicker() {
                 const activeYearEl = document.getElementById('calendar-page__year');
                 activeYearEl.textContent = year;
                 picker.style.display = 'none';
-                updateCalendarView();
+                updateCalendar();
             })
             if (year == activeYear && month == activeMonth) {
                 activeMonth = month;
@@ -181,7 +181,7 @@ function setMonthPicker() {
                 const activeYearEl = document.getElementById('calendar-page__year');
                 activeYearEl.textContent = year;
                 picker.style.display = 'none';
-                updateCalendarView();
+                updateCalendar();
             }
         }
     }

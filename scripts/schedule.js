@@ -28,7 +28,7 @@ class Shift {
             currSchedule.shifts.splice(currSchedule.shifts.indexOf(this), 1);
             const shiftList = document.getElementById('schedule-page__shift-list');
             shiftList.removeChild(this.#element);
-            updateCalendarView();
+            updateCalendar();
         })
         return deleteBtn;
     }
@@ -59,7 +59,7 @@ class Shift {
                     prevIcon.className = 'shift__icon';
                 }
                 btn.className = 'shift__icon shift__icon--first';
-                updateCalendarView();
+                updateCalendar();
             })
             field.appendChild(btn);
         }
@@ -100,7 +100,7 @@ class Shift {
 }
 
 class Schedule {
-    #group = undefined;
+    #scheduleEl = undefined;
     shifts = []; // We make it public to access it via calendar
     name = "";   // It also
 
@@ -113,11 +113,11 @@ class Schedule {
     }
 
     select() {
-        offAllGroups();
-        this.#group.className = 'schedule-page__group schedule-page__group--active';
+        offAllSchedules();
+        this.#scheduleEl.className = 'schedule-page__group schedule-page__group--active';
         currSchedule = this;
         this.listShifts();
-        updateCalendarView();
+        updateCalendar();
     }
 
     createDeleteBtn() {
@@ -132,13 +132,13 @@ class Schedule {
             } else {
                 this.select();
             }
-            addScheduleBtn.className = "schedule-page__add-schedule-btn";
             const groupsLine = document.getElementById('schedule-page__groups-sector');
-            updateCalendarView();
+            updateCreateScheduleBtn();
+            updateCalendar();
 
-            groupsLine.removeChild(this.#group);
+            groupsLine.removeChild(this.#scheduleEl);
         })
-        return deleteBtn;
+        this.#scheduleEl.appendChild(deleteBtn);
     }
 
     createInput() {
@@ -149,63 +149,75 @@ class Schedule {
             this.name = input.value;
         })
         input.focus();
-        return input;
+        this.#scheduleEl.appendChild(input);
+    }
+
+    appendToSchedulesList() {
+        const sector = document.getElementById('schedule-page__groups-sector');
+        sector.appendChild(this.#scheduleEl);
     }
 
     constructor() {
-        const sector = document.getElementById('schedule-page__groups-sector');
         const group = document.createElement('div');
-        sector.appendChild(group);
-        group.appendChild(this.createDeleteBtn());
-        group.appendChild(this.createInput());
+        this.#scheduleEl = group;
         group.addEventListener('click', () => {
             this.select();
         })
-        if (schedules.length == 1) {
-            showAddShiftBtn();
-        }
-        if (schedules.length == 3) {
-            const addScheduleBtn = document.getElementById('schedule-page__add-schedule-btn');
-            addScheduleBtn.className = 'schedule-page__add-schedule-btn--passive';
-        }
-        const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
-        addShiftBtn.style.display = 'block';
-        this.#group = group;
+        this.createInput();
+        this.createDeleteBtn();
+        this.appendToSchedulesList();
         this.select();
     }    
 }
 
-const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
-addShiftBtn.addEventListener('click', () => {
-    currSchedule.shifts.push(new Shift());
-    updateCalendarView();
-})
-
-function showAddShiftBtn() {
-    const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
-    addShiftBtn.style.display = 'block';
+function updateCreateScheduleBtn() {
+    const btn = document.getElementById('schedule-page__add-schedule-btn');
+    if (schedules.length == 3) {
+        btn.className.add('schedule-page__add-schedule-btn--passive');
+    } else {
+        btn.className = 'schedule-page__add-schedule-btn';
+    }
 }
 
-function offAllGroups() {
-    const chooseButtons = document.getElementsByClassName('schedule__input--active');
-    for (const button of chooseButtons) {
-        button.className = 'schedule__input';
+function updateCreateShiftBtn() {
+    const btn = document.getElementById('schedule-page__add-shift-btn');
+    if (schedules.length >= 1) {
+        btn.style.display = 'block';
+    } else {
+        btn.style.display = 'none';
     }
+    console.log(btn)
+}
 
-    const groups = document.getElementsByClassName('schedule-page__group');
-    for (const group of groups) {
+function setupAddShiftBtn() {
+    const btn = document.getElementById('schedule-page__add-shift-btn');
+    btn.addEventListener('click', () => {
+        currSchedule.shifts.push(new Shift());
+        updateCalendar();
+    })
+}
+
+function setupAddScheduleBtn() {
+    const btn = document.getElementById('schedule-page__add-schedule-btn');
+    btn.addEventListener('click', () => {
+        schedules.push(new Schedule());
+        updateCalendar();
+        updateCreateShiftBtn();
+        updateCreateScheduleBtn();
+    })
+}
+
+function offAllSchedules() {
+    const scheduleEls = document.getElementsByClassName('schedule-page__group');
+    for (const group of scheduleEls) {
         group.className = 'schedule-page__group';
     }
-
-    const editButtons = document.getElementsByClassName('schedule-page__edit-group-btn');
-    for (const button of editButtons) {
-        button.className = 'schedule-page__edit-group-btn';
-    }
 }
 
-const addScheduleBtn = document.getElementById('schedule-page__add-group-btn');
-
-addScheduleBtn.addEventListener('click', () => {
-    schedules.push(new Schedule());
+window.addEventListener('DOMContentLoaded', () => {
+    setupAddScheduleBtn();
+    setupAddShiftBtn();
 })
+
+
 
