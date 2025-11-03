@@ -79,6 +79,7 @@ function appendShift(shift) {
     shiftList.appendChild(shiftEl);
 }
 
+
 function showAddShiftBtn() {
     const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
     addShiftBtn.style.display = 'block';

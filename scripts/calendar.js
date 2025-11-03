@@ -33,7 +33,7 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
             }
         }
     } 
-    
+        
     for (let day = 1; day <= amountOfDays; day += 1) {
         const el = document.createElement('div');
         el.innerText = day;
@@ -48,8 +48,8 @@ function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
     }
 }
 
-activeMonth = 0;
-activeYear = 0;
+let activeMonth = 0;
+let activeYear = 0;
 function setActiveDate() {
     const currentDate = new Date();
     activeMonth = currentDate.getMonth()+1;
