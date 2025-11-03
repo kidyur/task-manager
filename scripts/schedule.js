@@ -2,7 +2,8 @@ let currSchedule = [];
 const schedules = [];
 
 class Shift {
-    #element = undefined;
+    #shiftEl = undefined;
+    #leftBlock = undefined;
     #name = '';
     #input = undefined;
     iconURL = ''; // We make it public to access via calendar
@@ -17,20 +18,19 @@ class Shift {
         })
         input.focus();
         this.#input = input;
-        return input;
+        this.#leftBlock.appendChild(input);
     }
 
     createDeleteBtn() {
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'shift__delete-btn';
-        
-        deleteBtn.addEventListener('click', () => {
+        const btn = document.createElement('button');
+        btn.className = 'shift__delete-btn';
+        btn.addEventListener('click', () => {
             currSchedule.shifts.splice(currSchedule.shifts.indexOf(this), 1);
             const shiftList = document.getElementById('schedule-page__shift-list');
-            shiftList.removeChild(this.#element);
+            shiftList.removeChild(this.#shiftEl);
             updateCalendar();
         })
-        return deleteBtn;
+        this.#leftBlock.appendChild(btn);
     }
 
     createIconsField() {
@@ -63,39 +63,45 @@ class Shift {
             })
             field.appendChild(btn);
         }
-        return field;
+        this.#shiftEl.appendChild(field);
     }
 
+    appendToShiftsList() {
+        const shiftList = document.getElementById('schedule-page__shift-list');
+        shiftList.appendChild(this.#shiftEl);
+    }
+
+    select() {
+        offLastActiveShift();
+        this.#shiftEl.className = 'shift shift--editing';
+        this.#input.focus();
+    }
 
     constructor() {
-        const shiftList = document.getElementById('schedule-page__shift-list');
         const shiftEl = document.createElement('div');
-        this.#element = shiftEl;
-        const elToDeactivate = document.getElementsByClassName('shift--editing')[0];
-        if (elToDeactivate) {
-            elToDeactivate.className = 'shift';
-        }
         shiftEl.className = 'shift shift--editing';
+        this.#shiftEl = shiftEl;
 
         const leftBlock = document.createElement('div');
         leftBlock.className = 'shift__left-block';
-        leftBlock.appendChild(this.createInput());
-        leftBlock.appendChild(this.createDeleteBtn());
+        this.#leftBlock = leftBlock;
+        shiftEl.appendChild(leftBlock);
         
         shiftEl.addEventListener('click', () => {
-            if (shiftEl.className != "shift shift--editing") {
-                const elToDeactivate = document.getElementsByClassName('shift--editing')[0];
-                if (elToDeactivate) {
-                    elToDeactivate.className = 'shift';
-                }
-                shiftEl.className = 'shift shift--editing';
-                this.#input.focus();
-            }
+            this.select();
         })
 
-        shiftEl.appendChild(leftBlock);
-        shiftEl.appendChild(this.createIconsField());
-        shiftList.appendChild(shiftEl);
+        this.createIconsField();
+        this.createInput();
+        this.createDeleteBtn();
+        this.appendToShiftsList();
+    }
+}
+
+function offLastActiveShift() {
+    const shift = document.getElementsByClassName('shift--editing')[0];
+    if (shift) {
+        shift.className = 'shift';
     }
 }
 
@@ -163,8 +169,8 @@ class Schedule {
         group.addEventListener('click', () => {
             this.select();
         })
-        this.createInput();
         this.createDeleteBtn();
+        this.createInput();
         this.appendToSchedulesList();
         this.select();
     }    
@@ -192,18 +198,23 @@ function updateCreateShiftBtn() {
 function setupAddShiftBtn() {
     const btn = document.getElementById('schedule-page__add-shift-btn');
     btn.addEventListener('click', () => {
-        currSchedule.shifts.push(new Shift());
+        const shift = new Shift();
+        currSchedule.shifts.push(shift);
+        offLastActiveShift();
         updateCalendar();
+        shift.select();
     })
 }
 
 function setupAddScheduleBtn() {
     const btn = document.getElementById('schedule-page__add-schedule-btn');
     btn.addEventListener('click', () => {
-        schedules.push(new Schedule());
+        schedule = new Schedule();
+        schedules.push(schedule);
         updateCalendar();
         updateCreateShiftBtn();
         updateCreateScheduleBtn();
+        schedule.select();
     })
 }
 
