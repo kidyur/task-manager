@@ -1,51 +1,60 @@
 
-function offLastActiveWeek() {
-    const prevActiveWeekDays = document.querySelectorAll('.calendar__day--current-week');
-    for (let day of prevActiveWeekDays) {
-        day.className = 'calendar__day';
+function offLastWeek() {
+    const days = document.querySelectorAll('.calendar__day_week');
+    for (let day of days) {
+        day.className = 'calendar__day calendar__day_month calendar__day_active';
     }
 }
 
 function onWeek(dayIndex) {
-    const daysElements = document.getElementsByClassName('calendar__day');
-    const weekDay = (dayIndex - 1) % 7;
-    const monthDay = dayIndex + 7 - 1;
-    for (let i = weekDay; i >= 1; i--) {
-        daysElements[monthDay - i].classList.add('calendar__day--current-week');
+    const daysElements = document.getElementsByClassName('calendar__day_month');
+    const weekBeginningIdx = dayIndex - dayIndex % 7;
+    for (let i = 0; i < 7; i++) {
+        if (weekBeginningIdx + i >= daysElements.length) {
+            break;
+        }
+        daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
     }
-    for (let i = weekDay; i < 7; i++) {
-        daysElements[monthDay + i - weekDay].classList.add('calendar__day--current-week');
-    }
+}
+
+
+let currentDay = 0;
+
+function selectCurrentDay() {
+    currentDay.select();
 }
 
 class Day {
     #borderFlag = undefined;
-    #dayIndex = undefined;
     #dayEl = undefined;
-    #emptyDays = 0;
+    iconURL = undefined;
     
-    constructor(day, borderFlag, emptyDays) {
+    constructor(day, borderFlag, iconURL) {
         const el = document.createElement('div');
         this.#dayEl = el;
-        this.#dayIndex = day;
         this.#borderFlag = borderFlag;
-        this.#emptyDays = emptyDays;
+        this.iconURL = iconURL;
         el.innerText = day;
-        el.className = 'calendar__day';
+        el.className = 'calendar__day calendar__day_month';
         el.addEventListener('click', () => {
             this.select();
         })
-        if (seq.length > 0) {
+        
+        if (currSchedule.shifts.length > 0) {
             this.createIcon();
+            this.upperline();
         } 
-        this.upperline();
-        const calendar = document.getElementById('calendar-page__calendar');
-        calendar.appendChild(el);
+
+        const calendarEl = document.getElementById('calendar');
+        calendarEl.appendChild(el);
+        if (day == activeDay) {
+            currentDay = this;
+        }
     }
 
     createIcon() {
         const icon = document.createElement('div');
-        icon.style.backgroundImage = shifts[seq[(day-1) % seq.length]].iconURL;
+        icon.style.backgroundImage = this.iconURL;
         icon.className = 'calendar__icon';
         this.#dayEl.appendChild(icon);
     }
@@ -59,12 +68,19 @@ class Day {
     }
 
     select() {
-        offLastActiveWeek();
-        onWeek(this.#dayIndex + this.#emptyDays + 7);
+        offLastWeek();
+        const calendar = document.getElementById('calendar');
+        const days = calendar.getElementsByClassName('calendar__day_month');
+        for (let i = 0; i < days.length; i++) {
+            if (days[i] == this.#dayEl) {
+                onWeek(i);
+                break;
+            }
+        }
         if (this.#borderFlag) {
-            this.#dayEl.classList.add('calendar__day--selected1');
+            this.#dayEl.classList.add('calendar__day--active1');
         } else {
-            this.#dayEl.className.add('calendar__day--selected2');
+            this.#dayEl.classList.add('calendar__day--active2');
         }
     }
 }
@@ -80,23 +96,24 @@ function setActiveDate() {
     activeDay = currentDate.getDate();
 }
 
+let calendar = undefined;
+
 window.addEventListener('DOMContentLoaded', () => {
-    setActiveDate();
+    calendar = new Calendar();
     setMonthPicker();
-    updateCalendar();
+    selectCurrentDay();
 })
 
-let borderFlag = false;
+let borderFlag = true;
 
 class Calendar {
     #calendarEl = undefined;
 
     constructor() {
+        setActiveDate();
         const calendar = document.getElementById('calendar');
         this.#calendarEl = calendar;
-        const monthBeginning = new Date(`${activeYear}-${activeMonth}-1`);
-        const weekIdxOfFirstMonthDay = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
-        this.createEmptyDays(weekIdxOfFirstMonthDay);
+
         this.createWeekDays();
         this.update();
     }
@@ -115,15 +132,27 @@ class Calendar {
         const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
         const currentMonthBeginning = new Date();
         currentMonthBeginning.setDate(1);
-        const gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
+        let gap = 0;
+        if (currentMonthBeginning.getMonth() != monthBeginning.getMonth()) {
+            gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
+        }
 
-        this.#calendarEl.innerHTML = '';
+        const previousDays = document.querySelectorAll('.calendar__day_month');
+        for (const d of previousDays) {
+            this.#calendarEl.removeChild(d);
+        }
+
+        this.createEmptyDays();
+
         const seq = [];
         const shifts = currSchedule.shifts;
         if (shifts && shifts.length > 1) {
             const date = new Date();
             let remainder = date.getDate() % shifts.length;
             let idx = 0;
+
+            // Мы доводим до того остатка, с которого начнём 
+            // заполнять календарь.
             while (remainder != 1) {
                 ++idx;
                 remainder = (remainder + 1) % shifts.length; 
@@ -132,16 +161,16 @@ class Calendar {
             for (let i = 0; i < shifts.length; i++) {
                 seq.push((idx + i + gap) % shifts.length);
                 if (seq[i] < 0) {
-                    seq[i] = 4 + seq[i];
+                    seq[i] = shifts.length + seq[i];
                 }
             }
         } 
-        
         for (let day = 1; day <= amountOfDays; day += 1) {
-            const day = new Day();
             if (seq[(day-1) % seq.length] == 0) {
                 borderFlag = !borderFlag;
             }
+            const icon = (seq.length ? currSchedule.shifts[seq[(day-1) % seq.length]].iconURL : "");
+            const d = new Day(day, borderFlag, icon);
         }
     }
 
@@ -149,16 +178,19 @@ class Calendar {
         const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
         for (const day of weekDays) {
             const dayEl = document.createElement('div');
+            dayEl.className = 'calendar__day calendar__day_name';
             dayEl.innerText = day;
-            dayEl.className = 'calendar__day week-day-name';
             this.#calendarEl.appendChild(dayEl);
+            console.log();
         }
     }
 
-    createEmptyDays(amountOfEmptyDays) {
+    createEmptyDays() {
+        const monthBeginning = new Date(`${activeYear}-${activeMonth}-1`);
+        const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
         for (let i = 0; i < amountOfEmptyDays-1; ++i) {
             const el = document.createElement('div');
-            el.className = 'calendar__day';
+            el.className = 'calendar__day calendar__day_empty calendar__day_month';
             this.#calendarEl.appendChild(el);
         }
     }
@@ -212,7 +244,7 @@ function setMonthPicker() {
                 const activeYearEl = document.getElementById('calendar-page__year');
                 activeYearEl.textContent = year;
                 picker.style.display = 'none';
-                updateCalendar();
+                calendar.update();
             })
             if (year == activeYear && month == activeMonth) {
                 activeMonth = month;
@@ -222,7 +254,6 @@ function setMonthPicker() {
                 const activeYearEl = document.getElementById('calendar-page__year');
                 activeYearEl.textContent = year;
                 picker.style.display = 'none';
-                updateCalendar();
             }
         }
     }
