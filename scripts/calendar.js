@@ -1,4 +1,3 @@
-
 function offLastWeek() {
     const days = document.querySelectorAll('.calendar__day_week');
     for (let day of days) {
@@ -16,7 +15,6 @@ function onWeek(dayIndex) {
         daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
     }
 }
-
 
 let currentDay = 0;
 
