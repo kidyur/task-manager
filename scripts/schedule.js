@@ -145,13 +145,14 @@ class Schedule {
         deleteBtn.className = 'schedule__delete-btn';
         deleteBtn.addEventListener('click', () => {
             schedules.splice(schedules.indexOf(this), 1);
-            if (schedules.length == 0) {
+            // if (schedules.length == 0) {
                 currSchedule = {shifts: []}; 
                 const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
                 addShiftBtn.style.display = 'none';
-            } else {
-                schedules[0].select();
-            }
+            // } else {
+                // currSchedule = schedules[0];
+                // schedules[0].select();
+            // }
             const groupsLine = document.getElementById('schedule-page__groups-sector');
             updateCreateScheduleBtn();
             groupsLine.removeChild(this.#scheduleEl);

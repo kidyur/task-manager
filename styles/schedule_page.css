@@ -87,7 +87,7 @@
     height: 80px;
     cursor: default;
     /* width: calc(100% - 4 * var(--padding-medium)); */
-    box-shadow: 4px 4px 10px 0px black;
+    box-shadow: 0 0 0 3px white, 4px 4px 10px 0px black;
     border: none;
 }
 
