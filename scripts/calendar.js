@@ -66,6 +66,7 @@ class Day {
     }
 
     select() {
+        activeDay = this.#dayEl.textContent;
         offLastWeek();
         const calendar = document.getElementById('calendar');
         const days = calendar.getElementsByClassName('calendar__day_month');
@@ -102,10 +103,9 @@ window.addEventListener('DOMContentLoaded', () => {
     selectCurrentDay();
 })
 
-let borderFlag = true;
-
 class Calendar {
     #calendarEl = undefined;
+    #borderFlag = true;
 
     constructor() {
         setActiveDate();
@@ -130,6 +130,7 @@ class Calendar {
         const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
         const currentMonthBeginning = new Date();
         currentMonthBeginning.setDate(1);
+        currentMonthBeginning.setHours(0, 0, 0, 0);
         let gap = 0;
         if (currentMonthBeginning.getMonth() != monthBeginning.getMonth()) {
             gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
@@ -145,8 +146,7 @@ class Calendar {
         const seq = [];
         const shifts = currSchedule.shifts;
         if (shifts && shifts.length > 1) {
-            const date = new Date();
-            let remainder = date.getDate() % shifts.length;
+            let remainder = activeDay % shifts.length;
             let idx = 0;
 
             // Мы доводим до того остатка, с которого начнём 
@@ -155,7 +155,6 @@ class Calendar {
                 ++idx;
                 remainder = (remainder + 1) % shifts.length; 
             }
-        
             for (let i = 0; i < shifts.length; i++) {
                 seq.push((idx + i + gap) % shifts.length);
                 if (seq[i] < 0) {
@@ -163,12 +162,19 @@ class Calendar {
                 }
             }
         } 
+        let chosenDay = 0;
         for (let day = 1; day <= amountOfDays; day += 1) {
             if (seq[(day-1) % seq.length] == 0) {
-                borderFlag = !borderFlag;
+                this.#borderFlag = !this.#borderFlag;
             }
             const icon = (seq.length ? currSchedule.shifts[seq[(day-1) % seq.length]].iconURL : "");
-            const d = new Day(day, borderFlag, icon);
+            const d = new Day(day, this.#borderFlag, icon);
+            if (day == activeDay) {
+                chosenDay = d;
+            }
+        }
+        if (chosenDay != 0) {
+            chosenDay.select();
         }
     }
 
@@ -230,8 +236,11 @@ function setMonthPicker() {
             monthsBlock.appendChild(monthEl);
             monthEl.className = 'month-picker__month';
             monthEl.textContent = month;
+            if (year == activeYear) {
+                monthEl.classList.add('month-picker__month_current')
+            }
             if (month == activeMonth && year == activeYear) {
-                monthEl.className = 'month-picker__month month-picker__month--active';
+                monthEl.classList.add('month-picker__month--active');
             }
             monthEl.addEventListener('click', () => {
                 activeMonth = month;
@@ -242,6 +251,15 @@ function setMonthPicker() {
                 const activeYearEl = document.getElementById('calendar-page__year');
                 activeYearEl.textContent = year;
                 picker.style.display = 'none';
+                const prevActiveMonths = document.querySelectorAll('.month-picker__month_current');
+                for (const m of prevActiveMonths) {
+                    m.className = 'month-picker__month';
+                }
+                const currMonths = monthEl.parentNode.getElementsByClassName('month-picker__month');
+                for (const m of currMonths) {
+                    m.classList.add('month-picker__month_current');
+                }
+                monthEl.classList.add('month-picker__month--active');
                 calendar.update();
             })
             if (year == activeYear && month == activeMonth) {

@@ -81,7 +81,7 @@
 }
 
 #calendar-page__year {
-    color: var(--fg-color);
+    color: var(--main-font-color);
     display: inline;
     font-size: 24px;
 }
@@ -89,7 +89,7 @@
 #calendar-page__month {
     margin-left: var(--margin-medium);
     display: inline;
-    color: var(--fg-color);
+    color: var(--main-font-color);
     text-align: left;
     font-size: 24px;
     border-radius: 99px;
@@ -124,10 +124,13 @@
     opacity: 30%;
 }
 
-.month-picker__month--active {
-    border-top: 3px solid white;
+.month-picker__month_current {
     opacity: 100%;
-    box-shadow: 4px 4px 10px 1px black;
+}
+
+.month-picker__month--active {
+    opacity: 100%;
+    box-shadow: 0 0 0px 3px white, 4px 4px 10px 1px black;
 }
 
 .month-picker__separator-line {
