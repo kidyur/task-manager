@@ -207,7 +207,7 @@
       });
     }
   }
-})({"3X5ox":[function(require,module,exports,__globalThis) {
+})({"9C661":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
@@ -215,7 +215,7 @@ var HMR_SERVER_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
-module.bundle.HMR_BUNDLE_ID = "217e7bce4038f570";
+module.bundle.HMR_BUNDLE_ID = "3af420f656766736";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_SERVER_PORT, HMR_ENV_HASH, HMR_SECURE, HMR_USE_SSE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -713,163 +713,10 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     }
 }
 
-},{}],"9XFF7":[function(require,module,exports,__globalThis) {
+},{}],"lAzEL":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _appJs = require("./app.js");
-var _appJsDefault = parcelHelpers.interopDefault(_appJs);
-class Day {
-    #borderFlag = false;
-    #element = HTMLButtonElement;
-    #iconURL = "";
-    #idx = 0;
-    constructor(idx, borderFlag, iconURL){
-        const el = document.createElement('div');
-        this.#element = el;
-        this.#idx = idx;
-        this.#borderFlag = borderFlag;
-        this.#iconURL = iconURL;
-        el.innerText = idx;
-        el.className = 'calendar__day calendar__day_month';
-        el.addEventListener('click', ()=>{
-            this.select();
-        });
-        if ((0, _appJsDefault.default).getSchedulesLength() > 0) {
-            this.#createIcon();
-            this.#upperline();
-        }
-        const calendarEl = document.getElementById('calendar');
-        calendarEl.appendChild(el);
-        if (idx == datePicker.day) this.select();
-    }
-    #createIcon() {
-        const icon = document.createElement('div');
-        icon.style.backgroundImage = this.#iconURL;
-        icon.className = 'calendar__icon';
-        this.#element.appendChild(icon);
-    }
-    #upperline() {
-        if (this.#borderFlag) this.#element.style.borderTop = '3px solid white';
-        else this.#element.style.borderTop = '3px solid red';
-    }
-    select() {
-        datePicker.day = this.#idx;
-        Calendar.offLastWeek();
-        const calendar1 = document.getElementById('calendar');
-        const days = calendar1.getElementsByClassName('calendar__day_month');
-        for(let i = 0; i < days.length; i++)if (days[i] == this.#element) {
-            Calendar.onWeek(i);
-            break;
-        }
-        if (this.#borderFlag) this.#element.classList.add('calendar__day--active1');
-        else this.#element.classList.add('calendar__day--active2');
-    }
-    get iconURL() {
-        return this.#iconURL;
-    }
-}
-class Calendar {
-    #calendarEl = HTMLDivElement;
-    #borderFlag = true;
-    constructor(){
-        const calendar1 = document.getElementById('calendar');
-        this.#calendarEl = calendar1;
-        this.#createWeekDays();
-    }
-    update() {
-        let [year, month] = [
-            DatePicker.year,
-            DatePicker.month
-        ];
-        let nextMonth = month + 1;
-        let nextYear = year;
-        if (nextMonth > 12) {
-            nextMonth = 1;
-            ++nextYear;
-        }
-        nextMonth += '';
-        if (nextMonth.length == 1) nextMonth = '0' + nextMonth;
-        month += '';
-        if (month.length == 1) month = '0' + month;
-        const monthBeginning = new Date(`${year}-${month}-01`);
-        const nextMonthBeginning = new Date(`${nextYear}-${nextMonth}-01`);
-        const msInDay = 86400000;
-        const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
-        const currentMonthBeginning = new Date();
-        currentMonthBeginning.setDate(1);
-        currentMonthBeginning.setHours(0, 0, 0, 0);
-        let gap = 0;
-        if (currentMonthBeginning.getMonth() != monthBeginning.getMonth()) gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
-        const previousDays = document.querySelectorAll('.calendar__day_month');
-        for (const d of previousDays)this.#calendarEl.removeChild(d);
-        this.#createEmptyDays();
-        const seq = [];
-        const shifts = (0, _appJsDefault.default).currentSchedule.getShiftsCopy();
-        if (shifts && shifts.length > 1) {
-            let remainder = datePicker.day % shifts.length;
-            let idx = 0;
-            // Мы доводим до того остатка, с которого начнём 
-            // заполнять календарь.
-            while(remainder != 1){
-                ++idx;
-                remainder = (remainder + 1) % shifts.length;
-            }
-            for(let i = 0; i < shifts.length; i++){
-                seq.push((idx + i + gap) % shifts.length);
-                if (seq[i] < 0) seq[i] = shifts.length + seq[i];
-            }
-        }
-        let chosenDay = 0;
-        for(let day = 1; day <= amountOfDays; day += 1){
-            if (seq[(day - 1) % seq.length] == 0) this.#borderFlag = !this.#borderFlag;
-            const icon = seq.length ? shifts[seq[(day - 1) % seq.length]].iconURL : "";
-            const d = new Day(day, this.#borderFlag, icon);
-            if (day == datePicker.day) chosenDay = d;
-        }
-        if (chosenDay != 0) chosenDay.select();
-    }
-    static offLastWeek() {
-        const days = document.querySelectorAll('.calendar__day_week');
-        for (let day of days)day.className = 'calendar__day calendar__day_month calendar__day_active';
-    }
-    static onWeek(dayIndex) {
-        const daysElements = document.getElementsByClassName('calendar__day_month');
-        const weekBeginningIdx = dayIndex - dayIndex % 7;
-        for(let i = 0; i < 7; i++){
-            if (weekBeginningIdx + i >= daysElements.length) break;
-            daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
-        }
-    }
-    #createWeekDays() {
-        const weekDays = [
-            "\u043F",
-            "\u0432",
-            "\u0441",
-            "\u0447",
-            "\u043F",
-            "\u0441",
-            "\u0432"
-        ];
-        for (const day of weekDays){
-            const dayEl = document.createElement('div');
-            dayEl.className = 'calendar__day calendar__day_name';
-            dayEl.innerText = day;
-            this.#calendarEl.appendChild(dayEl);
-        }
-    }
-    #createEmptyDays() {
-        let m = DatePicker.month + '';
-        if (m < 10) m = '0' + m;
-        const monthBeginning = new Date(`${DatePicker.year}-${m}-01`);
-        const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
-        for(let i = 0; i < amountOfEmptyDays - 1; ++i){
-            const el = document.createElement('div');
-            el.className = 'calendar__day calendar__day_empty calendar__day_month';
-            this.#calendarEl.appendChild(el);
-        }
-    }
-}
-class DatePicker {
+class DateData {
     static #month = 0;
     static #year = 0;
     static #day = 0;
@@ -980,35 +827,8 @@ class DatePicker {
         else alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0434\u043D\u044E");
     }
 }
-class Month {
-    #element;
-    #name;
-    #idx;
-    #year;
-    constructor(listEl, idx, year, datePicker1){
-        this.#idx = idx;
-        this.#year = year;
-        const el = document.createElement('button');
-        this.#element = el;
-        listEl.appendChild(el);
-        el.className = 'month-picker__month';
-        el.textContent = idx;
-        if (year == this.#year) this.#element.classList.add('month-picker__month_current');
-        if (datePicker1.month == this.#idx && datePicker1.year == this.#year) this.#element.classList.add('month-picker__month--active');
-    }
-    select() {
-        datePicker.offLastYear();
-        datePicker.onMonth(this.#element);
-        datePicker.hide();
-        datePicker.setDate(-1, this.#idx, this.#year);
-        calendar.update();
-    }
-    get element() {
-        return this.#element;
-    }
-}
-exports.default = Calendar;
+exports.default = DateData;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./app.js":"5Gnd7"}]},["3X5ox","9XFF7"], "9XFF7", "parcelRequire0af5", {})
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["9C661","lAzEL"], "lAzEL", "parcelRequire0af5", {})
 
-//# sourceMappingURL=calendar.4038f570.js.map
+//# sourceMappingURL=calendar.56766736.js.map

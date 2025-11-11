@@ -1,4 +1,4 @@
-// import { state } from "./app";
+// import { SchedulesData } from "./app";
 class Shift {
     #element = HTMLDivElement;
     #leftBlock = HTMLDivElement;
@@ -37,7 +37,7 @@ class Shift {
         const btn = document.createElement('button');
         btn.className = 'shift__delete-btn';
         btn.addEventListener('click', ()=>{
-            state.currentSchedule.removeShift(this);
+            SchedulesData.currentSchedule.removeShift(this);
             const shiftList = document.getElementById('schedule-page__shift-list');
             shiftList.removeChild(this.#element);
             calendar.update();
@@ -99,7 +99,7 @@ class Schedule {
             this.#element = group;
             group.addEventListener('click', ()=>{
                 this.select();
-                state.currentSchedule = this;
+                SchedulesData.currentSchedule = this;
             });
             this.createDeleteBtn();
             this.createInput();
@@ -115,7 +115,7 @@ class Schedule {
     select() {
         offAllSchedules();
         this.#element.className = 'schedule-page__group schedule-page__group--active';
-        state.currentSchedule = this;
+        SchedulesData.currentSchedule = this;
         this.listShifts();
         this.#input.focus();
     }
@@ -123,8 +123,8 @@ class Schedule {
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'schedule__delete-btn';
         deleteBtn.addEventListener('click', ()=>{
-            state.removeSchedule(this);
-            state.currentSchedule = new Schedule();
+            SchedulesData.removeSchedule(this);
+            SchedulesData.currentSchedule = new Schedule();
             const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
             addShiftBtn.style.display = 'none';
             const groupsLine = document.getElementById('schedule-page__groups-sector');
@@ -136,7 +136,7 @@ class Schedule {
     createInput() {
         const input = document.createElement('input');
         input.className = 'schedule__input';
-        input.value = state.getSchedulesLength();
+        input.value = SchedulesData.getSchedulesLength();
         input.addEventListener('blur', ()=>{
             this.name = input.value;
         });
@@ -162,19 +162,19 @@ class Schedule {
 }
 function updateCreateScheduleBtn() {
     const btn = document.getElementById('schedule-page__add-schedule-btn');
-    if (state.getSchedulesLength() >= 3) btn.classList.add('schedule-page__add-schedule-btn--passive');
+    if (SchedulesData.getSchedulesLength() >= 3) btn.classList.add('schedule-page__add-schedule-btn--passive');
     else btn.className = 'schedule-page__add-schedule-btn';
 }
 function updateCreateShiftBtn() {
     const btn = document.getElementById('schedule-page__add-shift-btn');
-    if (state.getSchedulesLength() >= 1) btn.style.display = 'block';
+    if (SchedulesData.getSchedulesLength() >= 1) btn.style.display = 'block';
     else btn.style.display = 'none';
 }
 function setupAddShiftBtn() {
     const btn = document.getElementById('schedule-page__add-shift-btn');
     btn.addEventListener('click', ()=>{
         const shift = new Shift();
-        state.currentSchedule.addShift(shift);
+        SchedulesData.currentSchedule.addShift(shift);
         offLastActiveShift();
         shift.select();
         calendar.update();
@@ -184,8 +184,8 @@ function setupAddScheduleBtn() {
     const btn = document.getElementById('schedule-page__add-schedule-btn');
     btn.addEventListener('click', ()=>{
         schedule = new Schedule();
-        state.addSchedule(schedule);
-        state.currentSchedule = schedule;
+        SchedulesData.addSchedule(schedule);
+        SchedulesData.currentSchedule = schedule;
         updateCreateShiftBtn();
         updateCreateScheduleBtn();
         schedule.select();

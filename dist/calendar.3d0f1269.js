@@ -1,4 +1,4 @@
-// import { state } from "./app";
+// import { SchedulesData } from "./app";
 class Day {
     #borderFlag = false;
     #element = HTMLButtonElement;
@@ -15,7 +15,7 @@ class Day {
         el.addEventListener('click', ()=>{
             this.select();
         });
-        if (state.getSchedulesLength() > 0) {
+        if (SchedulesData.getSchedulesLength() > 0) {
             this.#createIcon();
             this.#upperline();
         }
@@ -36,8 +36,8 @@ class Day {
     select() {
         datePicker.day = this.#idx;
         Calendar.offLastWeek();
-        const calendar = document.getElementById('calendar');
-        const days = calendar.getElementsByClassName('calendar__day_month');
+        const calendar1 = document.getElementById('calendar');
+        const days = calendar1.getElementsByClassName('calendar__day_month');
         for(let i = 0; i < days.length; i++)if (days[i] == this.#element) {
             Calendar.onWeek(i);
             break;
@@ -53,14 +53,14 @@ class Calendar {
     #calendarEl = HTMLDivElement;
     #borderFlag = true;
     constructor(){
-        const calendar = document.getElementById('calendar');
-        this.#calendarEl = calendar;
+        const calendar1 = document.getElementById('calendar');
+        this.#calendarEl = calendar1;
         this.#createWeekDays();
     }
     update() {
         let [year, month] = [
-            datePicker.year,
-            datePicker.month
+            DatePicker.year,
+            DatePicker.month
         ];
         let nextMonth = month + 1;
         let nextYear = year;
@@ -85,7 +85,7 @@ class Calendar {
         for (const d of previousDays)this.#calendarEl.removeChild(d);
         this.#createEmptyDays();
         const seq = [];
-        const shifts = state.currentSchedule.getShiftsCopy();
+        const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
             let remainder = datePicker.day % shifts.length;
             let idx = 0;
@@ -139,9 +139,9 @@ class Calendar {
         }
     }
     #createEmptyDays() {
-        let m = datePicker.month + '';
-        if (datePicker.month < 10) m = '0' + m;
-        const monthBeginning = new Date(`${datePicker.year}-${m}-01`);
+        let m = DatePicker.month + '';
+        if (m < 10) m = '0' + m;
+        const monthBeginning = new Date(`${DatePicker.year}-${m}-01`);
         const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
         for(let i = 0; i < amountOfEmptyDays - 1; ++i){
             const el = document.createElement('div');
@@ -151,9 +151,9 @@ class Calendar {
     }
 }
 class DatePicker {
-    #month = 0;
-    #year = 0;
-    #day = 0;
+    static #month = 0;
+    static #year = 0;
+    static #day = 0;
     #element = HTMLDivElement;
     #monthsNames = [
         "\u042F\u043D\u0432\u0430\u0440\u044C",
@@ -195,7 +195,7 @@ class DatePicker {
     }
     #updateTitle() {
         const title = document.getElementById("calendar-page__title");
-        title.innerText = this.#year + ' ' + this.#monthsNames[this.#month - 1];
+        title.innerText = DatePicker.#year + ' ' + this.#monthsNames[DatePicker.#month - 1];
     }
     offLastYear() {
         const prevMonths = document.querySelectorAll('.month-picker__month_current');
@@ -203,15 +203,15 @@ class DatePicker {
     }
     setCurrentDate() {
         const currentDate = new Date();
-        this.#day = currentDate.getDate();
-        this.#month = currentDate.getMonth() + 1;
-        this.#year = currentDate.getFullYear();
+        DatePicker.#day = currentDate.getDate();
+        DatePicker.#month = currentDate.getMonth() + 1;
+        DatePicker.#year = currentDate.getFullYear();
         this.#updateTitle();
     }
     setDate(day, month, year) {
-        this.#day = day;
-        this.#month = month;
-        this.#year = year;
+        DatePicker.#day = day;
+        DatePicker.#month = month;
+        DatePicker.#year = year;
         this.#updateTitle();
     }
     onMonth(element) {
@@ -248,16 +248,16 @@ class DatePicker {
         this.#element.appendChild(separatorLine);
     }
     get month() {
-        return this.#month;
+        return DatePicker.#month;
     }
     get year() {
-        return this.#year;
+        return DatePicker.#year;
     }
     get day() {
-        return this.#day;
+        return DatePicker.#day;
     }
     set day(d) {
-        if (d > 0 && d.constructor.name == "Number") this.#day = d;
+        if (d > 0 && d.constructor.name == "Number") DatePicker.#day = d;
         else alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0434\u043D\u044E");
     }
 }
@@ -266,7 +266,7 @@ class Month {
     #name;
     #idx;
     #year;
-    constructor(listEl, idx, year, datePicker){
+    constructor(listEl, idx, year, datePicker1){
         this.#idx = idx;
         this.#year = year;
         const el = document.createElement('button');
@@ -275,7 +275,7 @@ class Month {
         el.className = 'month-picker__month';
         el.textContent = idx;
         if (year == this.#year) this.#element.classList.add('month-picker__month_current');
-        if (datePicker.month == this.#idx && datePicker.year == this.#year) this.#element.classList.add('month-picker__month--active');
+        if (datePicker1.month == this.#idx && datePicker1.year == this.#year) this.#element.classList.add('month-picker__month--active');
     }
     select() {
         datePicker.offLastYear();
@@ -288,48 +288,5 @@ class Month {
         return this.#element;
     }
 }
-class State {
-    #SCHEDULES_LIMIT = 3;
-    #currentSchedule = Object;
-    #schedules = [];
-    #tasks = [];
-    constructor(){}
-    reload() {
-        this.#currentSchedule = new Schedule(true);
-        this.#schedules = [];
-    }
-    get currentSchedule() {
-        return this.#currentSchedule;
-    }
-    set currentSchedule(schedule) {
-        if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u0442\u0435\u043A\u0443\u0449\u0435\u043C\u0443 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u044E \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435");
-        else this.#currentSchedule = schedule;
-    }
-    addSchedule(schedule) {
-        if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432 \u0441\u043F\u0438\u0441\u043E\u043A \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439 \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435");
-        else if (this.getSchedulesLength() <= this.#SCHEDULES_LIMIT) {
-            this.#schedules.push(schedule);
-            calendar.update();
-        } else alert("\u0414\u043E\u0441\u0442\u0438\u0433\u043D\u0443\u0442\u043E \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439");
-    }
-    removeSchedule(schedule) {
-        if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0438\u0437 \u0441\u043F\u0438\u0441\u043A\u0430 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439");
-        else {
-            const idx = this.#schedules.indexOf(schedule);
-            if (idx != -1) this.#schedules.splice(idx, 1);
-            calendar.update();
-        }
-    }
-    getSchedulesLength() {
-        return this.#schedules.length;
-    }
-}
-const state = new State();
-const calendar = new Calendar();
-const datePicker = new DatePicker();
-window.addEventListener('DOMContentLoaded', ()=>{
-    state.reload();
-    calendar.update();
-});
 
 //# sourceMappingURL=calendar.3d0f1269.js.map

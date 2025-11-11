@@ -376,7 +376,7 @@ async function handleMessage(data /*: HMRMessage */ ) {
         });
         // Dispatch a custom event in case a bundle was not found. This might mean
         // an asset on the server changed and we should reload the page. This event
-        // gives the client an opportunity to refresh without losing state
+        // gives the client an opportunity to refresh without losing SchedulesData
         // (e.g. via React Server Components). If e.preventDefault() is not called,
         // we will trigger a full page reload.
         if (handled && bundleNotFound && assets.some((a)=>a.envHash !== HMR_ENV_HASH) && typeof window !== 'undefined' && typeof CustomEvent !== 'undefined') handled = !window.dispatchEvent(new CustomEvent('parcelhmrreload', {

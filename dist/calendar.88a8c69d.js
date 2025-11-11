@@ -714,13 +714,84 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"5Gnd7":[function(require,module,exports,__globalThis) {
-// const state = new State();
-// const calendar = new Calendar();
-// const datePicker = new DatePicker();
-// window.addEventListener('DOMContentLoaded', () => {
-//     state.reload();
-//     calendar.update();
-// })
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _calendarJs = require("./calendar.js");
+var _calendarJsDefault = parcelHelpers.interopDefault(_calendarJs);
+class TasksManager {
+    #tasks = [];
+}
+class SchedulesData {
+    static #SCHEDULES_LIMIT = 3;
+    static #currentSchedule = Object;
+    static #schedules = [];
+    constructor(){}
+    reload() {
+        SchedulesData.#currentSchedule = new Schedule(true);
+        SchedulesData.#schedules = [];
+    }
+    get currentSchedule() {
+        return SchedulesData.#currentSchedule;
+    }
+    set currentSchedule(schedule) {
+        if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u0442\u0435\u043A\u0443\u0449\u0435\u043C\u0443 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u044E \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435");
+        else SchedulesData.#currentSchedule = schedule;
+    }
+    addSchedule(schedule) {
+        if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432 \u0441\u043F\u0438\u0441\u043E\u043A \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439 \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435");
+        else if (this.getSchedulesLength() <= SchedulesData.#SCHEDULES_LIMIT) {
+            SchedulesData.#schedules.push(schedule);
+            (0, _calendarJsDefault.default).update();
+        } else alert("\u0414\u043E\u0441\u0442\u0438\u0433\u043D\u0443\u0442\u043E \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439");
+    }
+    removeSchedule(schedule) {
+        if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0438\u0437 \u0441\u043F\u0438\u0441\u043A\u0430 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439");
+        else {
+            const idx = SchedulesData.#schedules.indexOf(schedule);
+            if (idx != -1) SchedulesData.#schedules.splice(idx, 1);
+            calendar.update();
+        }
+    }
+    getSchedulesLength() {
+        return SchedulesData.#schedules.length;
+    }
+}
+exports.default = SchedulesData;
+const calendar = new (0, _calendarJsDefault.default)();
+const datePicker = new DatePicker();
+window.addEventListener('DOMContentLoaded', ()=>{
+    calendar.update();
+});
+
+},{"./calendar.js":"9XFF7","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"jnFvT":[function(require,module,exports,__globalThis) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["82hyB","5Gnd7"], "5Gnd7", "parcelRequire0af5", {})
 
