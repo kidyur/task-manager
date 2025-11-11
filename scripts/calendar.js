@@ -1,131 +1,101 @@
-function offLastWeek() {
-    const days = document.querySelectorAll('.calendar__day_week');
-    for (let day of days) {
-        day.className = 'calendar__day calendar__day_month calendar__day_active';
-    }
-}
-
-function onWeek(dayIndex) {
-    const daysElements = document.getElementsByClassName('calendar__day_month');
-    const weekBeginningIdx = dayIndex - dayIndex % 7;
-    for (let i = 0; i < 7; i++) {
-        if (weekBeginningIdx + i >= daysElements.length) {
-            break;
-        }
-        daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
-    }
-}
-
-let currentDay = 0;
-
-function selectCurrentDay() {
-    currentDay.select();
-}
+// import { state } from "./app";
 
 class Day {
-    #borderFlag = undefined;
-    #dayEl = undefined;
-    iconURL = undefined;
+    #borderFlag = false;
+    #element    = HTMLButtonElement;
+    #iconURL    = "";
+    #idx        = 0;
     
-    constructor(day, borderFlag, iconURL) {
+    constructor(idx, borderFlag, iconURL) {
         const el = document.createElement('div');
-        this.#dayEl = el;
+        this.#element = el;
+        this.#idx = idx;
         this.#borderFlag = borderFlag;
-        this.iconURL = iconURL;
-        el.innerText = day;
+        this.#iconURL = iconURL;
+        el.innerText = idx;
         el.className = 'calendar__day calendar__day_month';
         el.addEventListener('click', () => {
             this.select();
         })
         
-        if (currSchedule.shifts.length > 0) {
-            this.createIcon();
-            this.upperline();
+        if (state.getSchedulesLength() > 0) {
+            this.#createIcon();
+            this.#upperline();
         } 
 
         const calendarEl = document.getElementById('calendar');
         calendarEl.appendChild(el);
-        if (day == activeDay) {
-            currentDay = this;
+        if (idx == datePicker.day) {
+            this.select();
         }
     }
 
-    createIcon() {
+    #createIcon() {
         const icon = document.createElement('div');
-        icon.style.backgroundImage = this.iconURL;
+        icon.style.backgroundImage = this.#iconURL;
         icon.className = 'calendar__icon';
-        this.#dayEl.appendChild(icon);
+        this.#element.appendChild(icon);
     }
 
-    upperline() {
+    #upperline() {
         if (this.#borderFlag) {
-            this.#dayEl.style.borderTop = '3px solid white';
+            this.#element.style.borderTop = '3px solid white';
         } else {
-            this.#dayEl.style.borderTop = '3px solid red';
+            this.#element.style.borderTop = '3px solid red';
         }
     }
 
     select() {
-        activeDay = this.#dayEl.textContent;
-        offLastWeek();
+        datePicker.day = this.#idx;
+        Calendar.offLastWeek();
         const calendar = document.getElementById('calendar');
         const days = calendar.getElementsByClassName('calendar__day_month');
         for (let i = 0; i < days.length; i++) {
-            if (days[i] == this.#dayEl) {
-                onWeek(i);
+            if (days[i] == this.#element) {
+                Calendar.onWeek(i);
                 break;
             }
         }
         if (this.#borderFlag) {
-            this.#dayEl.classList.add('calendar__day--active1');
+            this.#element.classList.add('calendar__day--active1');
         } else {
-            this.#dayEl.classList.add('calendar__day--active2');
+            this.#element.classList.add('calendar__day--active2');
         }
+    }
+
+    get iconURL() {
+        return this.#iconURL;
     }
 }
 
-let activeMonth = 0;
-let activeYear = 0;
-let activeDay = 0;
-
-function setActiveDate() {
-    const currentDate = new Date();
-    activeMonth = currentDate.getMonth()+1;
-    activeYear = currentDate.getFullYear();
-    activeDay = currentDate.getDate();
-}
-
-let calendar = undefined;
-
-window.addEventListener('DOMContentLoaded', () => {
-    calendar = new Calendar();
-    setMonthPicker();
-    selectCurrentDay();
-})
-
 class Calendar {
-    #calendarEl = undefined;
+    #calendarEl = HTMLDivElement;
     #borderFlag = true;
 
     constructor() {
-        setActiveDate();
         const calendar = document.getElementById('calendar');
         this.#calendarEl = calendar;
-
-        this.createWeekDays();
-        this.update();
+        this.#createWeekDays();
     }
 
     update() {
-        const [year, month] = [activeYear, activeMonth];
+        let [year, month] = [datePicker.year, datePicker.month];
         let nextMonth = month + 1;
         let nextYear = year;
         if (nextMonth > 12) {
             nextMonth = 1;
             ++nextYear;
         }
-        const monthBeginning = new Date(`${year}-${month}-1`);
-        const nextMonthBeginning = new Date(`${nextYear}-${nextMonth}-1`);
+        nextMonth += '';
+        if (nextMonth.length == 1) {
+            nextMonth = '0' + nextMonth;
+        }
+        month += '';
+        if (month.length == 1) {
+            month = '0' + month;
+        }
+        const monthBeginning = new Date(`${year}-${month}-01`);
+        const nextMonthBeginning = new Date(`${nextYear}-${nextMonth}-01`);
         const msInDay = 24 * 60 * 60 * 1000;
         const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
         const currentMonthBeginning = new Date();
@@ -141,14 +111,13 @@ class Calendar {
             this.#calendarEl.removeChild(d);
         }
 
-        this.createEmptyDays();
+        this.#createEmptyDays();
 
         const seq = [];
-        const shifts = currSchedule.shifts;
+        const shifts = state.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
-            let remainder = activeDay % shifts.length;
+            let remainder = datePicker.day % shifts.length;
             let idx = 0;
-
             // Мы доводим до того остатка, с которого начнём 
             // заполнять календарь.
             while (remainder != 1) {
@@ -162,14 +131,15 @@ class Calendar {
                 }
             }
         } 
+
         let chosenDay = 0;
         for (let day = 1; day <= amountOfDays; day += 1) {
             if (seq[(day-1) % seq.length] == 0) {
                 this.#borderFlag = !this.#borderFlag;
             }
-            const icon = (seq.length ? currSchedule.shifts[seq[(day-1) % seq.length]].iconURL : "");
+            const icon = (seq.length ? shifts[seq[(day-1) % seq.length]].iconURL : "");
             const d = new Day(day, this.#borderFlag, icon);
-            if (day == activeDay) {
+            if (day == datePicker.day) {
                 chosenDay = d;
             }
         }
@@ -178,19 +148,40 @@ class Calendar {
         }
     }
 
-    createWeekDays() {
+    static offLastWeek() {
+        const days = document.querySelectorAll('.calendar__day_week');
+        for (let day of days) {
+            day.className = 'calendar__day calendar__day_month calendar__day_active';
+        }
+    }
+
+    static onWeek(dayIndex) {
+        const daysElements = document.getElementsByClassName('calendar__day_month');
+        const weekBeginningIdx = dayIndex - dayIndex % 7;
+        for (let i = 0; i < 7; i++) {
+            if (weekBeginningIdx + i >= daysElements.length) {
+                break;
+            }
+            daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
+        }
+    }
+
+    #createWeekDays() {
         const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
         for (const day of weekDays) {
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar__day calendar__day_name';
             dayEl.innerText = day;
             this.#calendarEl.appendChild(dayEl);
-            console.log();
         }
     }
 
-    createEmptyDays() {
-        const monthBeginning = new Date(`${activeYear}-${activeMonth}-1`);
+    #createEmptyDays() {
+        let m = datePicker.month + '';
+        if (datePicker.month < 10) {
+            m = '0' + m;
+        }
+        const monthBeginning = new Date(`${datePicker.year}-${m}-01`);
         const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
         for (let i = 0; i < amountOfEmptyDays-1; ++i) {
             const el = document.createElement('div');
@@ -200,21 +191,95 @@ class Calendar {
     }
 }
 
-function setMonthPicker() {
-    const months = [
+class DatePicker {
+    #month = 0;
+    #year = 0;
+    #day = 0;
+    #element = HTMLDivElement;
+    #monthsNames = [
         "Январь",   "Февраль", 
         "Март",     "Апрель",  "Май", 
         "Июнь",     "Июль",    "Август", 
         "Сентябрь", "Октябрь", "Ноябрь",
         "Декабрь"
     ];
-    const seasons = [
-        'Зима', "Весна", "Лето", "Осень"
-    ];
-    const picker = document.getElementById('month-picker');
-    const now = new Date();
-    const currYear = now.getFullYear();
-    for (let year = currYear; year <= currYear+4; year++) {
+    
+    constructor() {
+        this.setCurrentDate();
+        this.#setupButton();
+        const picker = document.getElementById('month-picker');
+        this.#element = picker;
+        const now = new Date();
+        const currYear = now.getFullYear();
+        for (let year = currYear; year <= currYear+4; year++) {
+            const yearEl = document.createElement('div');
+            picker.appendChild(yearEl);
+            yearEl.className = 'month-picker__year';
+            yearEl.textContent = year;
+            this.#createSeparator();
+            const monthsBlock = document.createElement('div');
+            picker.appendChild(monthsBlock);
+            monthsBlock.className = 'month-picker__months-block';
+            for (let m = 1; m <= 12; m++) {
+                const month = new Month(monthsBlock, m, year, this);
+                month.element.addEventListener('click', () => {
+                    month.select();
+                })
+            }
+        }
+    }
+
+    #updateTitle() {
+        const title = document.getElementById("calendar-page__title");
+        title.innerText = this.#year + ' ' + this.#monthsNames[this.#month - 1];
+    }
+
+    offLastYear() {
+        const prevMonths = document.querySelectorAll('.month-picker__month_current');
+        for (const m of prevMonths) {
+            m.className = 'month-picker__month';
+        }
+    }
+
+    setCurrentDate() {
+        const currentDate = new Date();
+        this.#day = currentDate.getDate();
+        this.#month = currentDate.getMonth() + 1;
+        this.#year = currentDate.getFullYear();
+        this.#updateTitle();
+    }
+
+    setDate(day, month, year) {
+        this.#day = day;
+        this.#month = month;
+        this.#year = year;
+        this.#updateTitle();
+    }
+
+    onMonth(element) {
+        const currMonths = element.parentNode.getElementsByClassName('month-picker__month');
+        for (const m of currMonths) {
+            m.classList.add('month-picker__month_current');
+        }
+        element.classList.add('month-picker__month--active');
+    }
+
+    hide() {
+        this.#element.style.display = 'none';
+    }
+
+    #setupButton() {
+        const monthPickerBtn = document.getElementById('calendar-page__month-picker-btn');
+        monthPickerBtn.addEventListener('click', () => {
+            const picker = document.getElementById('month-picker');
+            picker.style.display = 'block';
+        })
+    }
+
+    #createSeparator() {
+        const seasons = [
+            'Зима', "Весна", "Лето", "Осень"
+        ];
         const separatorLine = document.createElement('div');
         separatorLine.className = 'month-picker__separator-line';
         for (let i = 0; i < 4; i++) {
@@ -224,59 +289,128 @@ function setMonthPicker() {
             separatorLine.appendChild(season);
         }
         const yearEl = document.createElement('div');
-        picker.appendChild(yearEl);
-        picker.appendChild(separatorLine);
-        yearEl.className = 'month-picker__year';
-        yearEl.textContent = year;
-        const monthsBlock = document.createElement('div');
-        picker.appendChild(monthsBlock);
-        monthsBlock.className = 'month-picker__months-block';
-        for (let month = 1; month <= 12; month++) {
-            const monthEl = document.createElement('button');
-            monthsBlock.appendChild(monthEl);
-            monthEl.className = 'month-picker__month';
-            monthEl.textContent = month;
-            if (year == activeYear) {
-                monthEl.classList.add('month-picker__month_current')
-            }
-            if (month == activeMonth && year == activeYear) {
-                monthEl.classList.add('month-picker__month--active');
-            }
-            monthEl.addEventListener('click', () => {
-                activeMonth = month;
-                activeYear = year;
-                activeDay = -1;
-                const activeMonthEl = document.getElementById('calendar-page__month');
-                activeMonthEl.textContent = months[month-1];
-                const activeYearEl = document.getElementById('calendar-page__year');
-                activeYearEl.textContent = year;
-                picker.style.display = 'none';
-                const prevActiveMonths = document.querySelectorAll('.month-picker__month_current');
-                for (const m of prevActiveMonths) {
-                    m.className = 'month-picker__month';
-                }
-                const currMonths = monthEl.parentNode.getElementsByClassName('month-picker__month');
-                for (const m of currMonths) {
-                    m.classList.add('month-picker__month_current');
-                }
-                monthEl.classList.add('month-picker__month--active');
-                calendar.update();
-            })
-            if (year == activeYear && month == activeMonth) {
-                activeMonth = month;
-                activeYear = year;
-                const activeMonthEl = document.getElementById('calendar-page__month');
-                activeMonthEl.textContent = months[month-1];
-                const activeYearEl = document.getElementById('calendar-page__year');
-                activeYearEl.textContent = year;
-                picker.style.display = 'none';
-            }
+        this.#element.appendChild(separatorLine);
+    }
+
+    get month() {
+        return this.#month;
+    }
+
+    get year() {
+        return this.#year;
+    }
+
+    get day() {
+        return this.#day;
+    }
+
+    set day(d) {
+        if (d > 0 && d.constructor.name == "Number") {
+            this.#day = d;
+        } else {
+            alert("Попытка присвоить некорректное значение дню")
         }
     }
 }
 
-const monthPickerBtn = document.getElementById('calendar-page__month-picker-btn');
-monthPickerBtn.addEventListener('click', () => {
-    const picker = document.getElementById('month-picker');
-    picker.style.display = 'block';
+class Month {
+    #element;
+    #name;
+    #idx;
+    #year;
+
+    constructor(listEl, idx, year, datePicker) {
+        this.#idx = idx;
+        this.#year = year;
+
+        const el = document.createElement('button');
+        this.#element = el;
+        listEl.appendChild(el);
+        el.className = 'month-picker__month';
+        el.textContent = idx;
+        if (year == this.#year) {
+            this.#element.classList.add('month-picker__month_current')
+        }
+        if (datePicker.month == this.#idx && 
+            datePicker.year  == this.#year) {
+            this.#element.classList.add('month-picker__month--active');
+        }
+    }
+
+    select() {
+        datePicker.offLastYear();
+        datePicker.onMonth(this.#element);
+        datePicker.hide();
+        datePicker.setDate(-1, this.#idx, this.#year);
+        calendar.update();
+    }
+
+    get element() {
+        return this.#element;
+    }
+}
+
+
+class State {
+    #SCHEDULES_LIMIT = 3;
+    #currentSchedule = Object;
+    #schedules       = [];
+    #tasks           = []; // TODO: move all tasks here
+
+    constructor() { }
+    
+    reload() {
+        this.#currentSchedule = new Schedule(true);
+        this.#schedules = [];
+    }
+
+    get currentSchedule() {
+        return this.#currentSchedule;
+    }
+
+    set currentSchedule(schedule) {
+        if (schedule.constructor.name != "Schedule") {
+            alert("Попытка присвоить текущему расписанию некорректное значение");
+        } else {
+            this.#currentSchedule = schedule;
+        }
+    }
+
+    addSchedule(schedule) {
+        if (schedule.constructor.name != "Schedule") {
+            alert("Попытка добавить в список расписаний некорректное значение");
+        } else {
+            if (this.getSchedulesLength() <= this.#SCHEDULES_LIMIT) {
+                this.#schedules.push(schedule);
+                calendar.update();
+            } else {
+                alert("Достигнуто максимальное количество расписаний");
+            }
+        }
+    }
+
+    removeSchedule(schedule) {
+        if (schedule.constructor.name != "Schedule") {
+            alert("Попытка удалить некорректное значение из списка расписаний");
+        } else {
+            const idx = this.#schedules.indexOf(schedule);
+            if (idx != -1) {
+                this.#schedules.splice(idx, 1);
+            }
+            calendar.update();
+        }
+    }
+
+    getSchedulesLength() {
+        return this.#schedules.length;
+    }
+}
+
+const state = new State();
+const calendar = new Calendar();
+const datePicker = new DatePicker();
+
+window.addEventListener('DOMContentLoaded', () => {
+    state.reload();
+    calendar.update();
 })
