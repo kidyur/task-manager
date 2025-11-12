@@ -65,11 +65,12 @@ class Schedule {
         deleteBtn.className = 'schedule__delete-btn';
         deleteBtn.addEventListener('click', () => {
             SchedulesData.removeSchedule(this);
-            SchedulesData.currentSchedule = new Schedule(); 
+            SchedulesData.currentSchedule = new Schedule(true); 
             const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
             addShiftBtn.style.display = 'none';
             const groupsLine = document.getElementById('schedule-page__groups-sector');
-            updateCreateScheduleBtn();
+            Schedule.updateCreateScheduleBtn();
+            console.log(SchedulesData.getSchedulesLength())
             groupsLine.removeChild(this.#element);
         })
         this.#element.appendChild(deleteBtn);
@@ -77,8 +78,9 @@ class Schedule {
     
     #createInput() {
         const input = document.createElement('input');
-        input.placeholder = "Расписание";
+        input.placeholder = "Ваше расписание";
         input.className = 'schedule__input';
+        input.maxLength = 24;
         input.value = '';
         input.addEventListener('blur', () => {
             this.name = input.value;

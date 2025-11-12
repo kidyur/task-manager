@@ -62,7 +62,7 @@ class Shift {
         const input = document.createElement('input');
         input.className = 'shift__input';
         input.maxLength = 24;
-        input.placeholder = "Введите название смены";
+        input.placeholder = "День";
         input.addEventListener('blur', () => {
             this.#name = input.value;
         })

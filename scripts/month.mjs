@@ -2,9 +2,9 @@ import DateData from "./dateData.mjs";
 import Calendar from "./calendar.mjs";
 
 class Month {
-    #element;
-    #idx;
-    #year;
+    #element = HTMLButtonElement;
+    #idx     = 0;
+    #year    = 0;
 
     constructor(listEl, idx, year, DateData) {
         this.#idx = idx;
