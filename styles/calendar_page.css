@@ -117,11 +117,25 @@
 }
 
 .month-picker__month {
-    width: calc(100% / 12);
+    height: 50px;
     aspect-ratio: 1;
     box-shadow: none;
     color: var(--font-main-color);
     opacity: 30%;
+}
+
+.season {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#month-picker__header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .month-picker__month_current {

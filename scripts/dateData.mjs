@@ -33,19 +33,23 @@ class DateData {
         DateData.#setupButton();
         const picker = document.getElementById('month-picker');
         DateData.#element = picker;
+        const prevYearBtn = document.getElementsByClassName('month-picker__btn')[0];
+        prevYearBtn.addEventListener('click', () => DateData.setPrevYear());
+        const nextYearBtn = document.getElementsByClassName('month-picker__btn')[1];
+        nextYearBtn.addEventListener('click', () => DateData.setNextYear());
         const now = new Date();
-        const currYear = now.getFullYear();
-        for (let year = currYear; year <= currYear+4; year++) {
-            const yearEl = document.createElement('div');
-            picker.appendChild(yearEl);
-            yearEl.className = 'month-picker__year';
-            yearEl.textContent = year;
-            DateData.#createSeparator();
-            const monthsBlock = document.createElement('div');
-            picker.appendChild(monthsBlock);
-            monthsBlock.className = 'month-picker__months-block';
-            for (let m = 1; m <= 12; m++) {
-                const month = new Month(monthsBlock, m, year, this);
+        let monthIdx = 1;
+        for (let i = 0; i < 5; i++) {
+            const seasonBlock = document.createElement('div');
+            DateData.#element.appendChild(seasonBlock);
+            seasonBlock.className = 'season';
+            for (let m = 0; m < 3; m++) {
+                if (i == 0 && m == 0 || monthIdx > 12) {
+                    const month = new Month(seasonBlock, 0);
+                } else {
+                    const month = new Month(seasonBlock, monthIdx);
+                    monthIdx++;
+                } 
             }
         }
     }
@@ -62,18 +66,34 @@ class DateData {
         }
     }
 
+    static getMonthName(idx) {
+        return this.#monthsNames[idx];
+    }
+
     static setCurrentDate() {
         const currentDate = new Date();
         DateData.#day = currentDate.getDate();
         DateData.#month = currentDate.getMonth() + 1;
         DateData.#year = currentDate.getFullYear();
+        const monthPickerYear = document.getElementById('month-picker__year');
+        monthPickerYear.textContent = DateData.#year;
         DateData.#updateTitle();
+    }
+
+    static setNextYear() {
+        DateData.setDate(DateData.day, DateData.month, DateData.year + 1);
+    }
+
+    static setPrevYear() {
+        DateData.setDate(DateData.day, DateData.month, DateData.year - 1);
     }
 
     static setDate(day, month, year) {
         DateData.#day = day;
         DateData.#month = month;
         DateData.#year = year;
+        const monthPickerYear = document.getElementById('month-picker__year');
+        monthPickerYear.textContent = DateData.#year;
         DateData.#updateTitle();
     }
 
@@ -95,22 +115,6 @@ class DateData {
             const picker = document.getElementById('month-picker');
             picker.style.display = 'block';
         })
-    }
-
-    static #createSeparator() {
-        const seasons = [
-            'Зима', "Весна", "Лето", "Осень"
-        ];
-        const separatorLine = document.createElement('div');
-        separatorLine.className = 'month-picker__separator-line';
-        for (let i = 0; i < 4; i++) {
-            const season = document.createElement('div');
-            season.className = 'month-picker__season';
-            season.textContent = seasons[i];
-            separatorLine.appendChild(season);
-        }
-        const yearEl = document.createElement('div');
-        DateData.#element.appendChild(separatorLine);
     }
 }
 

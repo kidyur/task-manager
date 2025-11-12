@@ -4,33 +4,32 @@ import Calendar from "./calendar.mjs";
 class Month {
     #element = HTMLButtonElement;
     #idx     = 0;
-    #year    = 0;
 
-    constructor(listEl, idx, year, DateData) {
+    constructor(listEl, idx) {
         this.#idx = idx;
-        this.#year = year;
         
         const el = document.createElement('button');
-        el.addEventListener('click', () => {
-            this.select();
-        })
+        if (idx != 0) {
+            el.addEventListener('click', () => {
+                this.select();
+            })
+            el.textContent = idx;
+            const name = document.createElement('div');
+            name.textContent = DateData.getMonthName(idx-1);
+            el.appendChild(name);
+            if (DateData.month == this.#idx) {
+                el.classList.add('month-picker__month--active');
+            }
+        }
         this.#element = el;
         listEl.appendChild(el);
         el.className = 'month-picker__month';
-        el.textContent = idx;
-        if (year == this.#year) {
-            this.#element.classList.add('month-picker__month_current')
-        }
-        if (DateData.month == this.#idx && 
-            DateData.year  == this.#year) {
-            this.#element.classList.add('month-picker__month--active');
-        }
     }
 
     select() {
         DateData.offLastYear();
         DateData.onMonth(this.#element);
-        DateData.setDate(-1, this.#idx, this.#year);
+        DateData.setDate(-1, this.#idx, DateData.year);
         Calendar.update();
         DateData.hide();
     }
