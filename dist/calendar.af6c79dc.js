@@ -718,6 +718,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _schedulesDataMjs = require("./schedulesData.mjs");
 var _schedulesDataMjsDefault = parcelHelpers.interopDefault(_schedulesDataMjs);
+var _calendarMjs = require("./calendar.mjs");
+var _calendarMjsDefault = parcelHelpers.interopDefault(_calendarMjs);
+var _shiftMjs = require("./shift.mjs");
+var _shiftMjsDefault = parcelHelpers.interopDefault(_shiftMjs);
 class Schedule {
     #element = HTMLDivElement;
     #shifts = [];
@@ -766,7 +770,7 @@ class Schedule {
     createInput() {
         const input = document.createElement('input');
         input.className = 'schedule__input';
-        input.value = (0, _schedulesDataMjsDefault.default).getSchedulesLength();
+        input.value = '';
         input.addEventListener('blur', ()=>{
             this.name = input.value;
         });
@@ -800,26 +804,30 @@ function updateCreateShiftBtn() {
     if ((0, _schedulesDataMjsDefault.default).getSchedulesLength() >= 1) btn.style.display = 'block';
     else btn.style.display = 'none';
 }
+function offLastActiveShift() {
+    const shift = document.getElementsByClassName('shift_editing')[0];
+    if (shift) shift.className = 'shift';
+}
 function setupAddShiftBtn() {
     const btn = document.getElementById('schedule-page__add-shift-btn');
     btn.addEventListener('click', ()=>{
-        const shift = new Shift();
+        const shift = new (0, _shiftMjsDefault.default)();
         (0, _schedulesDataMjsDefault.default).currentSchedule.addShift(shift);
         offLastActiveShift();
         shift.select();
-        calendar.update();
+        (0, _calendarMjsDefault.default).update();
     });
 }
 function setupAddScheduleBtn() {
     const btn = document.getElementById('schedule-page__add-schedule-btn');
     btn.addEventListener('click', ()=>{
-        schedule = new Schedule();
+        const schedule = new Schedule();
         (0, _schedulesDataMjsDefault.default).addSchedule(schedule);
         (0, _schedulesDataMjsDefault.default).currentSchedule = schedule;
         updateCreateShiftBtn();
         updateCreateScheduleBtn();
         schedule.select();
-        calendar.update();
+        (0, _calendarMjsDefault.default).update();
     });
 }
 function offAllSchedules() {
@@ -832,6 +840,6 @@ window.addEventListener('DOMContentLoaded', ()=>{
 });
 exports.default = Schedule;
 
-},{"./schedulesData.mjs":"aCnz1","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["7ky0e","jRUWL"], "jRUWL", "parcelRequire0af5", {})
+},{"./schedulesData.mjs":"aCnz1","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./calendar.mjs":"kUlLO","./shift.mjs":"7Xjy6"}]},["7ky0e","jRUWL"], "jRUWL", "parcelRequire0af5", {})
 
 //# sourceMappingURL=calendar.af6c79dc.js.map

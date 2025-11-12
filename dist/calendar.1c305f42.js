@@ -716,30 +716,34 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"aCnz1":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _scheduleMjs = require("./schedule.mjs");
+var _scheduleMjsDefault = parcelHelpers.interopDefault(_scheduleMjs);
+var _calendarMjs = require("./calendar.mjs");
+var _calendarMjsDefault = parcelHelpers.interopDefault(_calendarMjs);
 class SchedulesData {
     static #SCHEDULES_LIMIT = 3;
-    static #currentSchedule = Object;
+    static #currentSchedule = new (0, _scheduleMjsDefault.default)();
     static #schedules = [];
     constructor(){}
-    reload() {
-        SchedulesData.#currentSchedule = new Schedule(true);
+    static reload() {
+        SchedulesData.#currentSchedule = new (0, _scheduleMjsDefault.default)(true);
         SchedulesData.#schedules = [];
     }
-    get currentSchedule() {
+    static get currentSchedule() {
         return SchedulesData.#currentSchedule;
     }
-    set currentSchedule(schedule) {
+    static set currentSchedule(schedule) {
         if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u0442\u0435\u043A\u0443\u0449\u0435\u043C\u0443 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u044E \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435");
         else SchedulesData.#currentSchedule = schedule;
     }
-    addSchedule(schedule) {
+    static addSchedule(schedule) {
         if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u0432 \u0441\u043F\u0438\u0441\u043E\u043A \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439 \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435");
         else if (this.getSchedulesLength() <= SchedulesData.#SCHEDULES_LIMIT) {
             SchedulesData.#schedules.push(schedule);
-            Calendar.update();
+            (0, _calendarMjsDefault.default).update();
         } else alert("\u0414\u043E\u0441\u0442\u0438\u0433\u043D\u0443\u0442\u043E \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439");
     }
-    removeSchedule(schedule) {
+    static removeSchedule(schedule) {
         if (schedule.constructor.name != "Schedule") alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0438\u0437 \u0441\u043F\u0438\u0441\u043A\u0430 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0439");
         else {
             const idx = SchedulesData.#schedules.indexOf(schedule);
@@ -747,12 +751,12 @@ class SchedulesData {
             calendar.update();
         }
     }
-    getSchedulesLength() {
+    static getSchedulesLength() {
         return SchedulesData.#schedules.length;
     }
 }
 exports.default = SchedulesData;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["lKWgr","aCnz1"], "aCnz1", "parcelRequire0af5", {})
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./schedule.mjs":"jRUWL","./calendar.mjs":"kUlLO"}]},["lKWgr","aCnz1"], "aCnz1", "parcelRequire0af5", {})
 
 //# sourceMappingURL=calendar.1c305f42.js.map

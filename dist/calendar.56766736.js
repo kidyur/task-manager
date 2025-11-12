@@ -716,12 +716,14 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"lAzEL":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+var _monthMjs = require("./month.mjs");
+var _monthMjsDefault = parcelHelpers.interopDefault(_monthMjs);
 class DateData {
     static #month = 0;
     static #year = 0;
     static #day = 0;
-    #element = HTMLDivElement;
-    #monthsNames = [
+    static #element = HTMLDivElement;
+    static #monthsNames = [
         "\u042F\u043D\u0432\u0430\u0440\u044C",
         "\u0424\u0435\u0432\u0440\u0430\u043B\u044C",
         "\u041C\u0430\u0440\u0442",
@@ -735,11 +737,12 @@ class DateData {
         "\u041D\u043E\u044F\u0431\u0440\u044C",
         "\u0414\u0435\u043A\u0430\u0431\u0440\u044C"
     ];
-    constructor(){
-        this.setCurrentDate();
-        this.#setupButton();
+    constructor(){}
+    static initDatePicker() {
+        DateData.setCurrentDate();
+        DateData.#setupButton();
         const picker = document.getElementById('month-picker');
-        this.#element = picker;
+        DateData.#element = picker;
         const now = new Date();
         const currYear = now.getFullYear();
         for(let year = currYear; year <= currYear + 4; year++){
@@ -747,55 +750,56 @@ class DateData {
             picker.appendChild(yearEl);
             yearEl.className = 'month-picker__year';
             yearEl.textContent = year;
-            this.#createSeparator();
+            DateData.#createSeparator();
             const monthsBlock = document.createElement('div');
             picker.appendChild(monthsBlock);
             monthsBlock.className = 'month-picker__months-block';
             for(let m = 1; m <= 12; m++){
-                const month = new Month(monthsBlock, m, year, this);
+                const month = new (0, _monthMjsDefault.default)(monthsBlock, m, year, this);
                 month.element.addEventListener('click', ()=>{
                     month.select();
                 });
             }
         }
+        console.log(DateData.#month);
     }
-    #updateTitle() {
+    static #updateTitle() {
         const title = document.getElementById("calendar-page__title");
-        title.innerText = DatePicker.#year + ' ' + this.#monthsNames[DatePicker.#month - 1];
+        title.innerText = DateData.#year + ' ' + this.#monthsNames[DateData.#month - 1];
     }
-    offLastYear() {
+    static offLastYear() {
         const prevMonths = document.querySelectorAll('.month-picker__month_current');
         for (const m of prevMonths)m.className = 'month-picker__month';
     }
-    setCurrentDate() {
+    static setCurrentDate() {
         const currentDate = new Date();
-        DatePicker.#day = currentDate.getDate();
-        DatePicker.#month = currentDate.getMonth() + 1;
-        DatePicker.#year = currentDate.getFullYear();
-        this.#updateTitle();
+        DateData.#day = currentDate.getDate();
+        DateData.#month = currentDate.getMonth() + 1;
+        DateData.#year = currentDate.getFullYear();
+        DateData.#updateTitle();
     }
-    setDate(day, month, year) {
-        DatePicker.#day = day;
-        DatePicker.#month = month;
-        DatePicker.#year = year;
-        this.#updateTitle();
+    static setDate(day, month, year) {
+        DateData.#day = day;
+        DateData.#month = month;
+        DateData.#year = year;
+        DateData.#updateTitle();
     }
-    onMonth(element) {
+    static onMonth(element) {
         const currMonths = element.parentNode.getElementsByClassName('month-picker__month');
         for (const m of currMonths)m.classList.add('month-picker__month_current');
         element.classList.add('month-picker__month--active');
     }
-    hide() {
-        this.#element.style.display = 'none';
+    static hide() {
+        DateData.#element.style.display = 'none';
     }
-    #setupButton() {
+    static #setupButton() {
         const monthPickerBtn = document.getElementById('calendar-page__month-picker-btn');
         monthPickerBtn.addEventListener('click', ()=>{
             const picker = document.getElementById('month-picker');
             picker.style.display = 'block';
         });
     }
-    #createSeparator() {
+    static #createSeparator() {
         const seasons = [
             "\u0417\u0438\u043C\u0430",
             "\u0412\u0435\u0441\u043D\u0430",
@@ -811,24 +815,24 @@ class DateData {
             separatorLine.appendChild(season);
         }
         const yearEl = document.createElement('div');
-        this.#element.appendChild(separatorLine);
+        DateData.#element.appendChild(separatorLine);
     }
-    get month() {
-        return DatePicker.#month;
+    static get month() {
+        return DateData.#month;
     }
-    get year() {
-        return DatePicker.#year;
+    static get year() {
+        return DateData.#year;
     }
-    get day() {
-        return DatePicker.#day;
+    static get day() {
+        return DateData.#day;
     }
-    set day(d) {
-        if (d > 0 && d.constructor.name == "Number") DatePicker.#day = d;
+    static set day(d) {
+        if (d > 0 && d.constructor.name == "Number") DateData.#day = d;
         else alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0434\u043D\u044E");
     }
 }
 exports.default = DateData;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["9C661","lAzEL"], "lAzEL", "parcelRequire0af5", {})
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./month.mjs":"8C8Eu"}]},["9C661","lAzEL"], "lAzEL", "parcelRequire0af5", {})
 
 //# sourceMappingURL=calendar.56766736.js.map

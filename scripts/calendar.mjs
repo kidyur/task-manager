@@ -1,19 +1,21 @@
 import SchedulesData from "./schedulesData.mjs";
-import DatePicker from "./dateData.mjs";
+import DateData from "./dateData.mjs";
 import Day from './day.mjs';
 
 class Calendar {
     static #calendarEl = HTMLDivElement;
     static #borderFlag = true;
 
+    constructor() { };
+
     static init() {
         const calendar = document.getElementById('calendar');
-        this.#calendarEl = calendar;
-        this.#createWeekDays();
+        Calendar.#calendarEl = calendar;
+        Calendar.#createWeekDays();
     }
 
     static update() {
-        let [year, month] = [DatePicker.year, DatePicker.month];
+        let [year, month] = [DateData.year, DateData.month];
         let nextMonth = month + 1;
         let nextYear = year;
         if (nextMonth > 12) {
@@ -42,15 +44,15 @@ class Calendar {
 
         const previousDays = document.querySelectorAll('.calendar__day_month');
         for (const d of previousDays) {
-            this.#calendarEl.removeChild(d);
+            Calendar.#calendarEl.removeChild(d);
         }
 
-        this.#createEmptyDays();
+        Calendar.#createEmptyDays();
 
         const seq = [];
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
-            let remainder = datePicker.day % shifts.length;
+            let remainder = DateData.day % shifts.length;
             let idx = 0;
             // Мы доводим до того остатка, с которого начнём 
             // заполнять календарь.
@@ -73,7 +75,7 @@ class Calendar {
             }
             const icon = (seq.length ? shifts[seq[(day-1) % seq.length]].iconURL : "");
             const d = new Day(day, this.#borderFlag, icon);
-            if (day == datePicker.day) {
+            if (day == DateData.day) {
                 chosenDay = d;
             }
         }
@@ -111,11 +113,11 @@ class Calendar {
     }
 
     static #createEmptyDays() {
-        let m = DatePicker.month + '';
+        let m = DateData.month + '';
         if (m < 10) {
             m = '0' + m;
         }
-        const monthBeginning = new Date(`${DatePicker.year}-${m}-01`);
+        const monthBeginning = new Date(`${DateData.year}-${m}-01`);
         const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
         for (let i = 0; i < amountOfEmptyDays-1; ++i) {
             const el = document.createElement('div');
@@ -127,7 +129,3 @@ class Calendar {
 
 export default Calendar;
 
-window.onload = () => {
-    Calendar.init();
-    Calendar.update();
-}

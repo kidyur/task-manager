@@ -1,14 +1,19 @@
+import DateData from "./dateData.mjs";
+import Calendar from "./calendar.mjs";
+
 class Month {
     #element;
-    #name;
     #idx;
     #year;
 
-    constructor(listEl, idx, year, datePicker) {
+    constructor(listEl, idx, year, DateData) {
         this.#idx = idx;
         this.#year = year;
-
+        
         const el = document.createElement('button');
+        el.addEventListener('click', () => {
+            this.select();
+        })
         this.#element = el;
         listEl.appendChild(el);
         el.className = 'month-picker__month';
@@ -16,22 +21,18 @@ class Month {
         if (year == this.#year) {
             this.#element.classList.add('month-picker__month_current')
         }
-        if (datePicker.month == this.#idx && 
-            datePicker.year  == this.#year) {
+        if (DateData.month == this.#idx && 
+            DateData.year  == this.#year) {
             this.#element.classList.add('month-picker__month--active');
         }
     }
 
     select() {
-        datePicker.offLastYear();
-        datePicker.onMonth(this.#element);
-        datePicker.hide();
-        datePicker.setDate(-1, this.#idx, this.#year);
-        calendar.update();
-    }
-
-    get element() {
-        return this.#element;
+        DateData.offLastYear();
+        DateData.onMonth(this.#element);
+        DateData.setDate(-1, this.#idx, this.#year);
+        Calendar.update();
+        DateData.hide();
     }
 }
 

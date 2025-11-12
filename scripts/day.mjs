@@ -1,3 +1,7 @@
+import SchedulesData from "./schedulesData.mjs";
+import DateData from "./dateData.mjs";
+import Calendar from "./calendar.mjs";
+
 class Day {
     #borderFlag = false;
     #element    = HTMLButtonElement;
@@ -16,14 +20,14 @@ class Day {
             this.select();
         })
         
-        if (SchedulesData.getSchedulesLength() > 0) {
+        if (SchedulesData.currentSchedule.getShiftsLength() > 0) {
             this.#createIcon();
             this.#upperline();
         } 
 
         const calendarEl = document.getElementById('calendar');
         calendarEl.appendChild(el);
-        if (idx == datePicker.day) {
+        if (idx == DateData.day) {
             this.select();
         }
     }
@@ -44,7 +48,7 @@ class Day {
     }
 
     select() {
-        datePicker.day = this.#idx;
+        DateData.day = this.#idx;
         Calendar.offLastWeek();
         const calendar = document.getElementById('calendar');
         const days = calendar.getElementsByClassName('calendar__day_month');
@@ -59,10 +63,6 @@ class Day {
         } else {
             this.#element.classList.add('calendar__day--active2');
         }
-    }
-
-    get iconURL() {
-        return this.#iconURL;
     }
 }
 

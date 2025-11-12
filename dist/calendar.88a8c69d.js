@@ -758,7 +758,7 @@ class SchedulesData {
 }
 exports.default = SchedulesData;
 const calendar = new (0, _calendarJsDefault.default)();
-const datePicker = new DatePicker();
+const DateData = new DateData();
 window.addEventListener('DOMContentLoaded', ()=>{
     calendar.update();
 });

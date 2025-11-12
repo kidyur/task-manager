@@ -21,7 +21,7 @@ class Day {
         }
         const calendarEl = document.getElementById('calendar');
         calendarEl.appendChild(el);
-        if (idx == datePicker.day) this.select();
+        if (idx == DateData.day) this.select();
     }
     #createIcon() {
         const icon = document.createElement('div');
@@ -34,7 +34,7 @@ class Day {
         else this.#element.style.borderTop = '3px solid red';
     }
     select() {
-        datePicker.day = this.#idx;
+        DateData.day = this.#idx;
         Calendar.offLastWeek();
         const calendar1 = document.getElementById('calendar');
         const days = calendar1.getElementsByClassName('calendar__day_month');
@@ -59,8 +59,8 @@ class Calendar {
     }
     update() {
         let [year, month] = [
-            DatePicker.year,
-            DatePicker.month
+            DateData.year,
+            DateData.month
         ];
         let nextMonth = month + 1;
         let nextYear = year;
@@ -87,7 +87,7 @@ class Calendar {
         const seq = [];
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
-            let remainder = datePicker.day % shifts.length;
+            let remainder = DateData.day % shifts.length;
             let idx = 0;
             // Мы доводим до того остатка, с которого начнём 
             // заполнять календарь.
@@ -105,7 +105,7 @@ class Calendar {
             if (seq[(day - 1) % seq.length] == 0) this.#borderFlag = !this.#borderFlag;
             const icon = seq.length ? shifts[seq[(day - 1) % seq.length]].iconURL : "";
             const d = new Day(day, this.#borderFlag, icon);
-            if (day == datePicker.day) chosenDay = d;
+            if (day == DateData.day) chosenDay = d;
         }
         if (chosenDay != 0) chosenDay.select();
     }
@@ -139,9 +139,9 @@ class Calendar {
         }
     }
     #createEmptyDays() {
-        let m = DatePicker.month + '';
+        let m = DateData.month + '';
         if (m < 10) m = '0' + m;
-        const monthBeginning = new Date(`${DatePicker.year}-${m}-01`);
+        const monthBeginning = new Date(`${DateData.year}-${m}-01`);
         const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
         for(let i = 0; i < amountOfEmptyDays - 1; ++i){
             const el = document.createElement('div');
@@ -150,7 +150,7 @@ class Calendar {
         }
     }
 }
-class DatePicker {
+class DateData {
     static #month = 0;
     static #year = 0;
     static #day = 0;
@@ -195,7 +195,7 @@ class DatePicker {
     }
     #updateTitle() {
         const title = document.getElementById("calendar-page__title");
-        title.innerText = DatePicker.#year + ' ' + this.#monthsNames[DatePicker.#month - 1];
+        title.innerText = DateData.#year + ' ' + this.#monthsNames[DateData.#month - 1];
     }
     offLastYear() {
         const prevMonths = document.querySelectorAll('.month-picker__month_current');
@@ -203,15 +203,15 @@ class DatePicker {
     }
     setCurrentDate() {
         const currentDate = new Date();
-        DatePicker.#day = currentDate.getDate();
-        DatePicker.#month = currentDate.getMonth() + 1;
-        DatePicker.#year = currentDate.getFullYear();
+        DateData.#day = currentDate.getDate();
+        DateData.#month = currentDate.getMonth() + 1;
+        DateData.#year = currentDate.getFullYear();
         this.#updateTitle();
     }
     setDate(day, month, year) {
-        DatePicker.#day = day;
-        DatePicker.#month = month;
-        DatePicker.#year = year;
+        DateData.#day = day;
+        DateData.#month = month;
+        DateData.#year = year;
         this.#updateTitle();
     }
     onMonth(element) {
@@ -248,16 +248,16 @@ class DatePicker {
         this.#element.appendChild(separatorLine);
     }
     get month() {
-        return DatePicker.#month;
+        return DateData.#month;
     }
     get year() {
-        return DatePicker.#year;
+        return DateData.#year;
     }
     get day() {
-        return DatePicker.#day;
+        return DateData.#day;
     }
     set day(d) {
-        if (d > 0 && d.constructor.name == "Number") DatePicker.#day = d;
+        if (d > 0 && d.constructor.name == "Number") DateData.#day = d;
         else alert("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u043F\u0440\u0438\u0441\u0432\u043E\u0438\u0442\u044C \u043D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u043E\u0435 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u0434\u043D\u044E");
     }
 }
@@ -266,7 +266,7 @@ class Month {
     #name;
     #idx;
     #year;
-    constructor(listEl, idx, year, datePicker1){
+    constructor(listEl, idx, year, DateData1){
         this.#idx = idx;
         this.#year = year;
         const el = document.createElement('button');
@@ -275,13 +275,13 @@ class Month {
         el.className = 'month-picker__month';
         el.textContent = idx;
         if (year == this.#year) this.#element.classList.add('month-picker__month_current');
-        if (datePicker1.month == this.#idx && datePicker1.year == this.#year) this.#element.classList.add('month-picker__month--active');
+        if (DateData1.month == this.#idx && DateData1.year == this.#year) this.#element.classList.add('month-picker__month--active');
     }
     select() {
-        datePicker.offLastYear();
-        datePicker.onMonth(this.#element);
-        datePicker.hide();
-        datePicker.setDate(-1, this.#idx, this.#year);
+        DateData.offLastYear();
+        DateData.onMonth(this.#element);
+        DateData.hide();
+        DateData.setDate(-1, this.#idx, this.#year);
         calendar.update();
     }
     get element() {

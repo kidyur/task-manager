@@ -718,20 +718,22 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _schedulesDataMjs = require("./schedulesData.mjs");
 var _schedulesDataMjsDefault = parcelHelpers.interopDefault(_schedulesDataMjs);
+var _dateDataMjs = require("./dateData.mjs");
+var _dateDataMjsDefault = parcelHelpers.interopDefault(_dateDataMjs);
 var _dayMjs = require("./day.mjs");
 var _dayMjsDefault = parcelHelpers.interopDefault(_dayMjs);
 class Calendar {
-    #calendarEl = HTMLDivElement;
-    #borderFlag = true;
-    constructor(){
+    static #calendarEl = HTMLDivElement;
+    static #borderFlag = true;
+    static init() {
         const calendar = document.getElementById('calendar');
-        this.#calendarEl = calendar;
-        this.#createWeekDays();
+        Calendar.#calendarEl = calendar;
+        Calendar.#createWeekDays();
     }
-    update() {
+    static update() {
         let [year, month] = [
-            DatePicker.year,
-            DatePicker.month
+            (0, _dateDataMjsDefault.default).year,
+            (0, _dateDataMjsDefault.default).month
         ];
         let nextMonth = month + 1;
         let nextYear = year;
@@ -753,12 +755,12 @@ class Calendar {
         let gap = 0;
         if (currentMonthBeginning.getMonth() != monthBeginning.getMonth()) gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
         const previousDays = document.querySelectorAll('.calendar__day_month');
-        for (const d of previousDays)this.#calendarEl.removeChild(d);
-        this.#createEmptyDays();
+        for (const d of previousDays)Calendar.#calendarEl.removeChild(d);
+        Calendar.#createEmptyDays();
         const seq = [];
         const shifts = (0, _schedulesDataMjsDefault.default).currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
-            let remainder = datePicker.day % shifts.length;
+            let remainder = (0, _dateDataMjsDefault.default).day % shifts.length;
             let idx = 0;
             // Мы доводим до того остатка, с которого начнём 
             // заполнять календарь.
@@ -773,10 +775,10 @@ class Calendar {
         }
         let chosenDay = 0;
         for(let day = 1; day <= amountOfDays; day += 1){
-            if (seq[(day - 1) % seq.length] == 0) this.#borderFlag = !this.#borderFlag;
+            if (seq[(day - 1) % seq.length] == 0) Calendar.#borderFlag = !Calendar.#borderFlag;
             const icon = seq.length ? shifts[seq[(day - 1) % seq.length]].iconURL : "";
             const d = new (0, _dayMjsDefault.default)(day, this.#borderFlag, icon);
-            if (day == datePicker.day) chosenDay = d;
+            if (day == (0, _dateDataMjsDefault.default).day) chosenDay = d;
         }
         if (chosenDay != 0) chosenDay.select();
     }
@@ -792,7 +794,7 @@ class Calendar {
             daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
         }
     }
-    #createWeekDays() {
+    static #createWeekDays() {
         const weekDays = [
             "\u043F",
             "\u0432",
@@ -806,24 +808,30 @@ class Calendar {
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar__day calendar__day_name';
             dayEl.innerText = day;
-            this.#calendarEl.appendChild(dayEl);
+            Calendar.#calendarEl.appendChild(dayEl);
         }
     }
-    #createEmptyDays() {
-        let m = DatePicker.month + '';
+    static #createEmptyDays() {
+        let m = (0, _dateDataMjsDefault.default).month + '';
         if (m < 10) m = '0' + m;
-        const monthBeginning = new Date(`${DatePicker.year}-${m}-01`);
+        const monthBeginning = new Date(`${(0, _dateDataMjsDefault.default).year}-${m}-01`);
         const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
         for(let i = 0; i < amountOfEmptyDays - 1; ++i){
             const el = document.createElement('div');
             el.className = 'calendar__day calendar__day_empty calendar__day_month';
-            this.#calendarEl.appendChild(el);
+            Calendar.#calendarEl.appendChild(el);
         }
     }
 }
 exports.default = Calendar;
+window.onload = ()=>{
+    (0, _dateDataMjsDefault.default).initDatePicker();
+    Calendar.init();
+    Calendar.update();
+    console.log((0, _dateDataMjsDefault.default));
+};
 
-},{"./schedulesData.mjs":"aCnz1","./day.mjs":"3uuoM","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"jnFvT":[function(require,module,exports,__globalThis) {
+},{"./schedulesData.mjs":"aCnz1","./day.mjs":"3uuoM","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./dateData.mjs":"lAzEL"}],"jnFvT":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -853,6 +861,135 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["5VSMT","kUlLO"], "kUlLO", "parcelRequire0af5", {})
+},{}],"7Xjy6":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class Shift {
+    #element = HTMLDivElement;
+    #leftBlock = HTMLDivElement;
+    #name = "";
+    #input = HTMLInputElement;
+    #iconURL = "";
+    constructor(){
+        const shiftEl = document.createElement('div');
+        shiftEl.className = 'shift shift--editing';
+        this.#element = shiftEl;
+        const leftBlock = document.createElement('div');
+        leftBlock.className = 'shift__left-block';
+        this.#leftBlock = leftBlock;
+        shiftEl.appendChild(leftBlock);
+        shiftEl.addEventListener('click', ()=>{
+            this.select();
+        });
+        this.createIconsField();
+        this.createInput();
+        this.createDeleteBtn();
+        this.appendToShiftsList();
+    }
+    createInput() {
+        const input = document.createElement('input');
+        input.className = 'shift__input';
+        input.maxLength = 24;
+        input.placeholder = "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0441\u043C\u0435\u043D\u044B";
+        input.addEventListener('blur', ()=>{
+            this.#name = input.value;
+        });
+        input.focus();
+        this.#input = input;
+        this.#leftBlock.appendChild(input);
+    }
+    createDeleteBtn() {
+        const btn = document.createElement('button');
+        btn.className = 'shift__delete-btn';
+        btn.addEventListener('click', ()=>{
+            SchedulesData.currentSchedule.removeShift(this);
+            const shiftList = document.getElementById('schedule-page__shift-list');
+            shiftList.removeChild(this.#element);
+            calendar.update();
+        });
+        this.#leftBlock.appendChild(btn);
+    }
+    createIconsField() {
+        const iconPaths = [
+            'books.svg',
+            'moon_and_sun.svg',
+            'moon.svg',
+            'notebook.svg',
+            'plant.svg',
+            'sleep.svg',
+            'student.svg',
+            'sun_and_moon.svg',
+            'sun.svg',
+            'sunset.svg'
+        ];
+        const field = document.createElement('div');
+        field.className = 'shift__right-block';
+        for (const path of iconPaths){
+            const btn = document.createElement('button');
+            btn.className = 'shift__icon';
+            btn.style.backgroundImage = 'url(../icons/' + path + ')';
+            btn.addEventListener('click', ()=>{
+                this.iconURL = 'url(../icons/' + path + ')';
+                const prevIcon = field.getElementsByClassName('shift__icon--first')[0];
+                if (prevIcon) prevIcon.className = 'shift__icon';
+                btn.className = 'shift__icon shift__icon--first';
+                calendar.update();
+            });
+            field.appendChild(btn);
+        }
+        this.#element.appendChild(field);
+    }
+    appendToShiftsList() {
+        const shiftList = document.getElementById('schedule-page__shift-list');
+        shiftList.appendChild(this.#element);
+    }
+    select() {
+        offLastActiveShift();
+        this.#element.className = 'shift shift--editing';
+        this.#input.focus();
+    }
+}
+function offLastActiveShift() {
+    const shift = document.getElementsByClassName('shift--editing')[0];
+    if (shift) shift.className = 'shift';
+}
+exports.default = Shift;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"8C8Eu":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _dateDataMjs = require("./dateData.mjs");
+var _dateDataMjsDefault = parcelHelpers.interopDefault(_dateDataMjs);
+var _calendarMjs = require("./calendar.mjs");
+var _calendarMjsDefault = parcelHelpers.interopDefault(_calendarMjs);
+class Month {
+    #element;
+    #idx;
+    #year;
+    constructor(listEl, idx, year, DateData){
+        this.#idx = idx;
+        this.#year = year;
+        const el = document.createElement('button');
+        this.#element = el;
+        listEl.appendChild(el);
+        el.className = 'month-picker__month';
+        el.textContent = idx;
+        if (year == this.#year) this.#element.classList.add('month-picker__month_current');
+        if (DateData.month == this.#idx && DateData.year == this.#year) this.#element.classList.add('month-picker__month--active');
+    }
+    select() {
+        (0, _dateDataMjsDefault.default).offLastYear();
+        (0, _dateDataMjsDefault.default).onMonth(this.#element);
+        (0, _dateDataMjsDefault.default).hide();
+        (0, _dateDataMjsDefault.default).setDate(-1, this.#idx, this.#year);
+        (0, _calendarMjsDefault.default).update();
+    }
+    get element() {
+        return this.#element;
+    }
+}
+exports.default = Month;
+
+},{"./dateData.mjs":"lAzEL","./calendar.mjs":"kUlLO","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["5VSMT","kUlLO"], "kUlLO", "parcelRequire0af5", {})
 
 //# sourceMappingURL=calendar.8ae23306.js.map

@@ -3,26 +3,25 @@ import Calendar from "./calendar.mjs";
 
 class SchedulesData {
     static #SCHEDULES_LIMIT = 3;
-    static #currentSchedule = new Schedule();
-    static #schedules       = [];
-
-    constructor() { }
     
-    static reload() {
-        SchedulesData.#currentSchedule = new Schedule(true);
-        SchedulesData.#schedules = [];
-    }
-
-    static get currentSchedule() {
-        return SchedulesData.#currentSchedule;
-    }
-
+    static #currentSchedule = new Schedule(true);
+    static get currentSchedule() { return SchedulesData.#currentSchedule };
     static set currentSchedule(schedule) {
         if (schedule.constructor.name != "Schedule") {
             alert("Попытка присвоить текущему расписанию некорректное значение");
         } else {
             SchedulesData.#currentSchedule = schedule;
+            Calendar.update();
         }
+    }
+
+    static #schedules = [];
+
+    constructor() { }
+    
+    static reload() {
+        SchedulesData.#schedules = [];
+        Calendar.update();
     }
 
     static addSchedule(schedule) {
@@ -46,7 +45,7 @@ class SchedulesData {
             if (idx != -1) {
                 SchedulesData.#schedules.splice(idx, 1);
             }
-            calendar.update();
+            Calendar.update();
         }
     }
 
