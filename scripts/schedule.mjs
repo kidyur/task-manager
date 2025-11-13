@@ -17,7 +17,7 @@ class Schedule {
                 SchedulesData.currentSchedule = this;
             })
             this.#createDeleteBtn();
-            this.#createInput();
+            this.#createInput();    
             this.#appendToSchedulesList();
             this.#input.focus();
         }
