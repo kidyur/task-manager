@@ -206,6 +206,7 @@ function setupAddShiftBtn() {
     })
 }
 
+<<<<<<< HEAD
 function setupAddScheduleBtn() {
     const btn = document.getElementById('schedule-page__add-schedule-btn');
     btn.addEventListener('click', () => {
@@ -216,6 +217,12 @@ function setupAddScheduleBtn() {
         updateCreateScheduleBtn();
         schedule.select();
     })
+=======
+
+function showAddShiftBtn() {
+    const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
+    addShiftBtn.style.display = 'block';
+>>>>>>> 65ea39c424339275e37c4827d8fb1d00c93fd41e
 }
 
 function offAllSchedules() {

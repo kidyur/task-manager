@@ -194,6 +194,7 @@ function deselectAllTags() {
     }
 }
 
-function filter() {    
-    
+function filter() {
+
 }
+    

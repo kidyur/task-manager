@@ -1,7 +1,23 @@
+<<<<<<< HEAD
 function offLastWeek() {
     const days = document.querySelectorAll('.calendar__day_week');
     for (let day of days) {
         day.className = 'calendar__day calendar__day_month calendar__day_active';
+=======
+function fillCalendar(amountOfDays, gap=0, WeekIdxOfFirstMonthDay=0) {
+    const shifts = currSchedule.shifts;
+    const calendar = document.getElementById('calendar');
+    calendar.innerHTML = '';
+    const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+    let allDaysElementsCnt = 0;
+
+    for (const day of weekDays) {
+        const el = document.createElement('div');
+        el.innerText = day;
+        el.className = 'calendar__day week-day-name';
+        calendar.appendChild(el);
+>>>>>>> 65ea39c424339275e37c4827d8fb1d00c93fd41e
     }
 }
 
@@ -16,7 +32,27 @@ function onWeek(dayIndex) {
     }
 }
 
+<<<<<<< HEAD
 let currentDay = 0;
+=======
+    const seq = [];
+    if (shifts && shifts.length > 1) {
+        const date = new Date();
+        let remainder = date.getDate() % shifts.length;
+        let idx = 0;
+        while (remainder != 1) {
+            ++idx;
+            remainder = (remainder + 1) % shifts.length; 
+        }
+    
+        for (let i = 0; i < shifts.length; i++) {
+            seq.push((idx + i + gap) % shifts.length);
+            if (seq[i] < 0) {
+                seq[i] = 4 + seq[i];
+            }
+        }
+    }     
+>>>>>>> 65ea39c424339275e37c4827d8fb1d00c93fd41e
 
 function selectCurrentDay() {
     currentDay.select();
