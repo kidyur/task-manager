@@ -54,8 +54,7 @@ class Shift {
                 lastChoice.className = 'shift__input';
             }
             input.classList.add('shift_current');
-            // TODO: :(((
-            SchedulesData.currentSchedule.setBeginning();
+            SchedulesData.currentSchedule.setBeginning(this);
         })
         input.focus();
         this.#input = input;

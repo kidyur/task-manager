@@ -9,6 +9,9 @@ class Schedule {
     #input          = HTMLInputElement;
     #beginningDay   = "";
     #beginningShift = Shift;
+    get beginningShift() {
+        return this.#beginningShift;
+    }
 
     constructor(empty_flag=false) {
         if (!empty_flag) {
@@ -76,6 +79,8 @@ class Schedule {
         this.#beginningDay = new Date();
         this.#beginningDay.setHours(0, 0, 0, 0);
         this.#beginningShift = shift;
+        console.log(this.#beginningShift);
+        Calendar.update();
     }
 
     #listShifts() {

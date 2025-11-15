@@ -52,12 +52,12 @@ class Calendar {
         const seq = [];
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
-            let remainder = DateData.day % shifts.length;
-            let idx = 0;
+            let remainder = (DateData.day) % shifts.length;
+            let idx = shifts.indexOf(SchedulesData.currentSchedule.beginningShift);
             // Мы доводим до того остатка, с которого начнём 
             // заполнять календарь.
             while (remainder != 1) {
-                ++idx;
+                idx = (idx + 1) % shifts.length;
                 remainder = (remainder + 1) % shifts.length; 
             }
             for (let i = 0; i < shifts.length; i++) {
@@ -72,7 +72,7 @@ class Calendar {
 
         let chosenDay = 0;
         for (let day = 1; day <= amountOfDays; day += 1) {
-            if (seq[(day-1) % seq.length] == 0) {
+            if (seq[(day-1) % seq.length] == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
                 Calendar.#borderFlag = !Calendar.#borderFlag;
             }
             const icon = (seq.length ? shifts[seq[(day-1) % seq.length]].iconURL : "");
