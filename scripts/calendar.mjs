@@ -66,7 +66,9 @@ class Calendar {
                     seq[i] = shifts.length + seq[i];
                 }
             }
-        } 
+        } else if (shifts && shifts.length == 1) {
+            seq.push(0);
+        }
 
         let chosenDay = 0;
         for (let day = 1; day <= amountOfDays; day += 1) {

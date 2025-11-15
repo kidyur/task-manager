@@ -4,7 +4,6 @@ import Calendar from "./calendar.mjs";
 
 class Shift {
     #element   = HTMLDivElement;
-    #leftBlock = HTMLDivElement;
     #name      = "";
     #input     = HTMLInputElement;
     
@@ -16,11 +15,14 @@ class Shift {
         shiftEl.className = 'shift shift--editing';
         this.#element = shiftEl;
 
-        const leftBlock = document.createElement('div');
-        leftBlock.className = 'shift__left-block';
-        this.#leftBlock = leftBlock;
-        shiftEl.appendChild(leftBlock);
-        
+        shiftEl.innerHTML = `
+            <div class="shift__main">
+                <div class="shift__left-block"></div>
+                <div class="shift__right-block"></div>
+            </div>
+            <button class="set-current-day-btn">Дважды кликните на название, чтобы выбрать день текущим</button>
+        `
+
         shiftEl.addEventListener('click', () => {
             this.select();
         })
@@ -29,26 +31,6 @@ class Shift {
         this.createInput();
         this.createDeleteBtn();
         this.appendToShiftsList();
-    }
-
-    static setupAddShiftBtn() {
-        const btn = document.getElementById('schedule-page__add-shift-btn');
-        btn.addEventListener('click', () => {
-            const shift = new Shift();
-            SchedulesData.currentSchedule.addShift(shift);
-            Shift.offLastActiveShift();
-            shift.select();
-            Calendar.update();
-        })
-    }
-
-    static updateCreateShiftBtn() {
-        const btn = document.getElementById('schedule-page__add-shift-btn');
-        if (SchedulesData.getSchedulesLength() >= 1) {
-            btn.style.display = 'block';
-        } else {
-            btn.style.display = 'none';
-        }
     }
 
     static offLastActiveShift() {
@@ -66,9 +48,18 @@ class Shift {
         input.addEventListener('blur', () => {
             this.#name = input.value;
         })
+        input.addEventListener('dblclick', () => {
+            const lastChoice = document.getElementsByClassName('shift_current')[0];
+            if (lastChoice) {
+                lastChoice.className = 'shift__input';
+            }
+            input.classList.add('shift_current');
+            // TODO: :(((
+            SchedulesData.currentSchedule.setBeginning();
+        })
         input.focus();
         this.#input = input;
-        this.#leftBlock.appendChild(input);
+        this.#element.getElementsByClassName('shift__left-block')[0].appendChild(input);
     }
 
     createDeleteBtn() {
@@ -79,7 +70,7 @@ class Shift {
             const shiftList = document.getElementById('schedule-page__shift-list');
             shiftList.removeChild(this.#element);
         })
-        this.#leftBlock.appendChild(btn);
+        this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);
     }
 
     createIconsField() {
@@ -112,7 +103,7 @@ class Shift {
             })
             field.appendChild(btn);
         }
-        this.#element.appendChild(field);
+        this.#element.getElementsByClassName('shift__right-block')[0].appendChild(field);
     }
 
     appendToShiftsList() {

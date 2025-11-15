@@ -3,10 +3,12 @@ import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
 
 class Schedule {
-    #element    = HTMLDivElement;
-    #shifts     = [];
-    #name       = "";   
-    #input      = HTMLInputElement;
+    #element        = HTMLDivElement;
+    #shifts         = [];
+    #name           = "";   
+    #input          = HTMLInputElement;
+    #beginningDay   = "";
+    #beginningShift = Shift;
 
     constructor(empty_flag=false) {
         if (!empty_flag) {
@@ -16,32 +18,50 @@ class Schedule {
                 this.select();
                 SchedulesData.currentSchedule = this;
             })
-            this.#createDeleteBtn();
             this.#createInput();
             this.#appendToSchedulesList();
             this.#input.focus();
+        } else {
+            // Cleaning of shifts list view
+            const shiftList = document.getElementById('schedule-page__shift-list');
+            shiftList.innerHTML = '';
         }
     }  
 
-    static setupAddScheduleBtn() {
-        const btn = document.getElementById('schedule-page__add-schedule-btn');
+    static #setupAddShiftBtn() {
+        const btn = document.getElementById('schedule-page__add-shift-btn');
         btn.addEventListener('click', () => {
-            const schedule = new Schedule();
-            SchedulesData.addSchedule(schedule);
-            SchedulesData.currentSchedule = schedule;
-            Shift.updateCreateShiftBtn();
-            Schedule.updateCreateScheduleBtn();
-            schedule.select();
+            const shift = new Shift();
+            SchedulesData.currentSchedule.addShift(shift);
+            Shift.offLastActiveShift();
+            shift.select();
             Calendar.update();
         })
     }
 
-    static updateCreateScheduleBtn() {
+
+    static #setupCreateScheduleBtn() {
         const btn = document.getElementById('schedule-page__add-schedule-btn');
-        if (SchedulesData.getSchedulesLength() >= 3) {
-            btn.classList.add('schedule-page__add-schedule-btn--passive');
+        btn.addEventListener('click', () => {
+            const schedule = new Schedule();
+            SchedulesData.addSchedule(schedule);
+            schedule.select();
+            Schedule.updateScheduleManager();
+        })
+    }
+
+    static setupScheduleManager() {
+        Schedule.#setupDeleteBtn();
+        Schedule.#setupAddShiftBtn();
+        Schedule.#setupCreateScheduleBtn();
+    }
+
+    static updateScheduleManager() {
+        const manager = document.getElementById('schedule-page__manager');
+        if (SchedulesData.getSchedulesLength() == 0) {
+            manager.style.display = 'none';
         } else {
-            btn.className = 'schedule-page__add-schedule-btn';
+            manager.style.display = 'flex';
         }
     }
 
@@ -52,6 +72,12 @@ class Schedule {
         }
     }
 
+    setBeginning(shift) {
+        this.#beginningDay = new Date();
+        this.#beginningDay.setHours(0, 0, 0, 0);
+        this.#beginningShift = shift;
+    }
+
     #listShifts() {
         const shiftList = document.getElementById('schedule-page__shift-list');
         shiftList.innerHTML = '';
@@ -60,20 +86,15 @@ class Schedule {
         }
     }
     
-    #createDeleteBtn() {
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'schedule__delete-btn';
+    static #setupDeleteBtn() {
+        const deleteBtn = document.getElementById('schedule-page__delete-schedule-btn');
         deleteBtn.addEventListener('click', () => {
-            SchedulesData.removeSchedule(this);
+            const activeScheduleElement = document.getElementsByClassName('schedule-page__group--active')[0];  
+            activeScheduleElement.remove();
+            SchedulesData.removeSchedule(SchedulesData.currentSchedule);
             SchedulesData.currentSchedule = new Schedule(true); 
-            const addShiftBtn = document.getElementById('schedule-page__add-shift-btn');
-            addShiftBtn.style.display = 'none';
-            const groupsLine = document.getElementById('schedule-page__groups-sector');
-            Schedule.updateCreateScheduleBtn();
-            console.log(SchedulesData.getSchedulesLength())
-            groupsLine.removeChild(this.#element);
+            Schedule.updateScheduleManager();
         })
-        this.#element.appendChild(deleteBtn);
     }
     
     #createInput() {

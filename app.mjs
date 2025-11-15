@@ -7,6 +7,6 @@ window.onload = () => {
     DateData.initDatePicker();
     Calendar.init();
     Calendar.update();
-    Schedule.setupAddScheduleBtn();
-    Shift.setupAddShiftBtn();
+    Schedule.setupScheduleManager();
 }
+
