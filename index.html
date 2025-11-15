@@ -12,18 +12,23 @@
 
 <body>    
     <div id="tasks-page" class="page">
-        <div id="tasks-page__tag-line">
-            <button class="tasks-page__tag">#без_тега</button>
-            <button class="tasks-page__tag">#повтор</button>
-            <button class="tasks-page__tag">#события</button>
+        <div id="tasks-page__tag-line"></div>        
+        <div id="tasks-page__filter-button" class="button">
+            Фильтр
         </div>
+        <div style="height: 20px"></div>     
         <div id="tasks-page__add-task-button" class="button">
             Добавить задачу
         </div>
         <div>
             <input type="date" id="tasks-page__date-input"></input>
         </div>
-        <input id="tasks-page__task-name-input"></input>
+        <input id="tasks-page__task-name-input"></input>                
+        <div style="height: 20px"></div>        
+        <div id="tasks-page__add-tag-button" class="button">
+            Добавить тэг
+        </div>
+        <input id="tasks-page__tag-input"></input>
         <div id="tasks-page__task-list">
         </div>
     </div>

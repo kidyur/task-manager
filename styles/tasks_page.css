@@ -20,6 +20,14 @@
     margin-left: var(--margin-small);
 }
 
+.tasks-page__tag--enabled {
+    padding: var(--padding-small) var(--padding-medium);
+    border: 2px solid var(--fg-color);
+    color: var(--fg-color-active);    
+    border-radius: 15px;
+    margin-left: var(--margin-small);
+}
+
 .tasks-page__separator {
     width: 100%;
     display: flex;
