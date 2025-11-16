@@ -2,10 +2,12 @@
   "name": "calendar",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "parcel ./*.html",
-    "build": "parcel build ./*.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview --port 4173"
   },
   "repository": {
     "type": "git",
@@ -14,12 +16,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/kidyur/task-manager/issues"
   },
   "homepage": "https://github.com/kidyur/task-manager#readme",
   "devDependencies": {
-    "parcel": "^2.16.1"
+    "vite": "^7.2.2"
   }
 }

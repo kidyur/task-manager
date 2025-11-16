@@ -1,12 +1,11 @@
 import Calendar from "./scripts/calendar.mjs";
 import DateData from "./scripts/dateData.mjs";
 import Schedule from "./scripts/schedule.mjs";
-import Shift from "./scripts/shift.mjs";
 
 window.onload = () => {
-    DateData.initDatePicker();
     Calendar.init();
+    DateData.initDatePicker();
     Calendar.update();
-    Schedule.setupAddScheduleBtn();
-    Shift.setupAddShiftBtn();
+    Schedule.setupScheduleManager();
 }
+

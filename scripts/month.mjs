@@ -26,9 +26,16 @@ class Month {
         el.className = 'month-picker__month';
     }
 
+    makeAsSeason(text) {
+        this.#element.textContent = text;
+    }
+
     select() {
-        DateData.offLastYear();
+        DateData.offLastSeason();
         DateData.onMonth(this.#element);
+        DateData.chosenMonth = this.#idx;
+        DateData.chosenYear = DateData.year;
+        DateData.monthEl = this.#element;
         DateData.setDate(-1, this.#idx, DateData.year);
         Calendar.update();
         DateData.hide();

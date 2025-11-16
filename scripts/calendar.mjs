@@ -34,13 +34,6 @@ class Calendar {
         const nextMonthBeginning = new Date(`${nextYear}-${nextMonth}-01`);
         const msInDay = 24 * 60 * 60 * 1000;
         const amountOfDays = Math.floor((nextMonthBeginning - monthBeginning) / msInDay);
-        const currentMonthBeginning = new Date();
-        currentMonthBeginning.setDate(1);
-        currentMonthBeginning.setHours(0, 0, 0, 0);
-        let gap = 0;
-        if (currentMonthBeginning.getMonth() != monthBeginning.getMonth()) {
-            gap = Math.floor((monthBeginning - currentMonthBeginning) / msInDay);
-        }
 
         const previousDays = document.querySelectorAll('.calendar__day_month');
         for (const d of previousDays) {
@@ -49,15 +42,22 @@ class Calendar {
 
         Calendar.#createEmptyDays();
 
+        let gap = 0;
         const seq = [];
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
-            let remainder = DateData.day % shifts.length;
-            let idx = 0;
+            const beginningDate = SchedulesData.currentSchedule.beginningDate;
+            const scheduleMonthBeginningDate = SchedulesData.currentSchedule.beginningDate;
+            scheduleMonthBeginningDate.setDate(1);
+            scheduleMonthBeginningDate.setHours(0, 0, 0, 0);
+
+            gap = Math.floor((monthBeginning - scheduleMonthBeginningDate) / msInDay);
+            let remainder = (beginningDate.getDate()) % shifts.length;
+            let idx = shifts.indexOf(SchedulesData.currentSchedule.beginningShift);
             // Мы доводим до того остатка, с которого начнём 
             // заполнять календарь.
             while (remainder != 1) {
-                ++idx;
+                idx = (idx + 1) % shifts.length;
                 remainder = (remainder + 1) % shifts.length; 
             }
             for (let i = 0; i < shifts.length; i++) {
@@ -66,22 +66,18 @@ class Calendar {
                     seq[i] = shifts.length + seq[i];
                 }
             }
-        } 
+        } else if (shifts && shifts.length == 1) {
+            seq.push(0);
+        }
 
-        let chosenDay = 0;
         for (let day = 1; day <= amountOfDays; day += 1) {
-            if (seq[(day-1) % seq.length] == 0) {
+            if (seq[(day-1) % seq.length] == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
                 Calendar.#borderFlag = !Calendar.#borderFlag;
             }
             const icon = (seq.length ? shifts[seq[(day-1) % seq.length]].iconURL : "");
             const d = new Day(day, this.#borderFlag, icon);
-            if (day == DateData.day) {
-                chosenDay = d;
-            }
         }
-        if (chosenDay != 0) {
-            chosenDay.select();
-        }
+        Calendar.#borderFlag = true;
     }
 
     static offLastWeek() {
