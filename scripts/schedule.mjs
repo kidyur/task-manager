@@ -3,14 +3,23 @@ import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
 
 class Schedule {
-    #element        = HTMLDivElement;
-    #shifts         = [];
-    #name           = "";   
-    #input          = HTMLInputElement;
-    #beginningDay   = "";
-    #beginningShift = Shift;
+    #element         = HTMLDivElement;
+    #shifts          = [];
+    #name            = "";   
+    #input           = HTMLInputElement;
+    #beginningDate   = Date;
+    get beginningDate() {
+        const date = new Date(this.#beginningDate);
+        return date;
+    }
+    #beginningShift  = Shift;
     get beginningShift() {
         return this.#beginningShift;
+    }
+    set beginningShift(shift) {
+        this.#beginningShift = shift;
+        this.setBeginning(shift);
+        shift.tagAsCurrent();
     }
 
     constructor(empty_flag=false) {
@@ -42,14 +51,15 @@ class Schedule {
         })
     }
 
-
     static #setupCreateScheduleBtn() {
         const btn = document.getElementById('schedule-page__add-schedule-btn');
         btn.addEventListener('click', () => {
-            const schedule = new Schedule();
-            SchedulesData.addSchedule(schedule);
-            schedule.select();
-            Schedule.updateScheduleManager();
+            if (SchedulesData.getSchedulesLength() < 3) {
+                const schedule = new Schedule();
+                SchedulesData.addSchedule(schedule);
+                schedule.select();
+                Schedule.updateScheduleManager();
+            }
         })
     }
 
@@ -76,10 +86,9 @@ class Schedule {
     }
 
     setBeginning(shift) {
-        this.#beginningDay = new Date();
-        this.#beginningDay.setHours(0, 0, 0, 0);
+        this.#beginningDate = new Date();
+        this.#beginningDate.setHours(0, 0, 0, 0);
         this.#beginningShift = shift;
-        console.log(this.#beginningShift);
         Calendar.update();
     }
 

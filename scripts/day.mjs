@@ -27,9 +27,6 @@ class Day {
 
         const calendarEl = document.getElementById('calendar');
         calendarEl.appendChild(el);
-        if (idx == DateData.day) {
-            this.select();
-        }
     }
 
     #createIcon() {
@@ -48,7 +45,11 @@ class Day {
     }
 
     select() {
-        DateData.day = this.#idx;
+        DateData.chosenDay = this.#idx;
+        const m = DateData.month;
+        DateData.chosenMonth = m;
+        const y = DateData.year;
+        DateData.chosenYear = y;
         Calendar.offLastWeek();
         const calendar = document.getElementById('calendar');
         const days = calendar.getElementsByClassName('calendar__day_month');

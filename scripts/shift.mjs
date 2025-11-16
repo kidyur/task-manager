@@ -31,6 +31,10 @@ class Shift {
         this.createInput();
         this.createDeleteBtn();
         this.appendToShiftsList();
+
+        if (SchedulesData.currentSchedule.beginningShift == Shift) {
+            this.tagAsCurrent();
+        }
     }
 
     static offLastActiveShift() {
@@ -38,6 +42,15 @@ class Shift {
         if (shift) {
             shift.className = 'shift';
         }
+    }
+
+    tagAsCurrent() {
+        const lastChoice = document.getElementsByClassName('shift_current')[0];
+        if (lastChoice) {
+            lastChoice.className = 'shift__input';
+        }
+        this.#input.classList.add('shift_current');
+        SchedulesData.currentSchedule.setBeginning(this);
     }
 
     createInput() {
@@ -49,12 +62,9 @@ class Shift {
             this.#name = input.value;
         })
         input.addEventListener('dblclick', () => {
-            const lastChoice = document.getElementsByClassName('shift_current')[0];
-            if (lastChoice) {
-                lastChoice.className = 'shift__input';
+            if (SchedulesData.currentSchedule.beginningShift != this) {
+                this.tagAsCurrent();
             }
-            input.classList.add('shift_current');
-            SchedulesData.currentSchedule.setBeginning(this);
         })
         input.focus();
         this.#input = input;
@@ -67,6 +77,13 @@ class Shift {
         btn.addEventListener('click', () => {
             SchedulesData.currentSchedule.removeShift(this);
             const shiftList = document.getElementById('schedule-page__shift-list');
+            if (SchedulesData.currentSchedule.beginningShift == this) {
+                if (SchedulesData.currentSchedule.getShiftsLength() > 0) {
+                    SchedulesData.currentSchedule.beginningShift = SchedulesData.currentSchedule.getShiftsCopy()[0];
+                } else {
+                    SchedulesData.currentSchedule.beginningShift = Shift;
+                }
+            }
             shiftList.removeChild(this.#element);
         })
         this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);

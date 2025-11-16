@@ -7,14 +7,20 @@ class DateData {
     static #year = 0;
     static get year() { return DateData.#year };
 
-    static #day = 0;
-    static get day() { return DateData.#day };
-    static set day(d) {
-        if (d > 0 && d.constructor.name == "Number") {
-            DateData.#day = d;
-        } else {
-            alert("Попытка присвоить некорректное значение дню")
-        }
+    static #chosenYear = 0;
+    static get chosenYear() {
+        return this.#chosenYear;
+    }
+    static set chosenYear(year) {
+        this.#chosenYear = year;
+    }
+
+    static #chosenMonth = 0;
+    static get chosenMonth() {
+        return this.#chosenMonth;
+    }
+    static set chosenMonth(month) {
+        this.#chosenMonth = month;
     }
 
     static #element = HTMLDivElement;
@@ -25,6 +31,8 @@ class DateData {
         "Сентябрь", "Октябрь", "Ноябрь",
         "Декабрь"
     ];
+
+    static monthEl = Month;
     
     constructor() { }
     
@@ -39,19 +47,28 @@ class DateData {
         nextYearBtn.addEventListener('click', () => DateData.setNextYear());
         const now = new Date();
         let monthIdx = 1;
+        const seasons = ['Зима', "Весна", "Лето", "Осень", "Зима"];
+        let activeMonth = 0;
         for (let i = 0; i < 5; i++) {
             const seasonBlock = document.createElement('div');
             DateData.#element.appendChild(seasonBlock);
             seasonBlock.className = 'season';
-            for (let m = 0; m < 3; m++) {
-                if (i == 0 && m == 0 || monthIdx > 12) {
+            for (let m = 0; m < 4; m++) {
+                if (m == 0 || i == 0 && m == 1 || monthIdx > 12) {
                     const month = new Month(seasonBlock, 0);
+                    if (m == 0) {
+                        month.makeAsSeason(seasons[i]);
+                    }
                 } else {
                     const month = new Month(seasonBlock, monthIdx);
+                    if (DateData.month-1 == monthIdx-1) {
+                        activeMonth = month;
+                    }
                     monthIdx++;
                 } 
             }
         }
+        activeMonth.select();
     }
 
     static #updateTitle() {
@@ -59,7 +76,7 @@ class DateData {
         title.innerText = DateData.#year + ' ' + this.#monthsNames[DateData.#month - 1];
     }
 
-    static offLastYear() {
+    static offLastSeason() {
         const prevMonths = document.querySelectorAll('.month-picker__month_current');
         for (const m of prevMonths) {
             m.className = 'month-picker__month';
@@ -72,24 +89,36 @@ class DateData {
 
     static setCurrentDate() {
         const currentDate = new Date();
-        DateData.#day = currentDate.getDate();
         DateData.#month = currentDate.getMonth() + 1;
         DateData.#year = currentDate.getFullYear();
+        DateData.#chosenMonth = currentDate.getMonth() + 1;
+        DateData.#chosenYear = currentDate.getFullYear();
         const monthPickerYear = document.getElementById('month-picker__year');
         monthPickerYear.textContent = DateData.#year;
         DateData.#updateTitle();
     }
 
     static setNextYear() {
-        DateData.setDate(DateData.day, DateData.month, DateData.year + 1);
+        if (DateData.year < 2040) {
+            DateData.offLastSeason();
+            DateData.setDate(DateData.day, DateData.month, DateData.year + 1);
+            if (DateData.month == DateData.chosenMonth && DateData.year == DateData.chosenYear) {
+                DateData.onMonth(DateData.monthEl);
+            }
+        }
     }
 
     static setPrevYear() {
-        DateData.setDate(DateData.day, DateData.month, DateData.year - 1);
+        if (DateData.year > 2000) {
+            DateData.offLastSeason();
+            DateData.setDate(DateData.day, DateData.month, DateData.year - 1);
+            if (DateData.month == DateData.chosenMonth && DateData.year == DateData.chosenYear) {
+                DateData.onMonth(DateData.monthEl);
+            }
+        }
     }
 
     static setDate(day, month, year) {
-        DateData.#day = day;
         DateData.#month = month;
         DateData.#year = year;
         const monthPickerYear = document.getElementById('month-picker__year');
@@ -107,6 +136,12 @@ class DateData {
 
     static hide() {
         DateData.#element.style.display = 'none';
+        const picker = document.getElementById('month-picker');
+        picker.style.display = 'none';
+        const title = document.getElementById('calendar-page__title');
+        title.style.display = 'block';
+        const header = document.getElementById('month-picker__header');
+        header.style.display = 'none';
     }
 
     static #setupButton() {
@@ -114,6 +149,10 @@ class DateData {
         monthPickerBtn.addEventListener('click', () => {
             const picker = document.getElementById('month-picker');
             picker.style.display = 'block';
+            const title = document.getElementById('calendar-page__title');
+            title.style.display = 'none';
+            const header = document.getElementById('month-picker__header');
+            header.style.display = 'flex';
         })
     }
 }
