@@ -122,13 +122,32 @@
     aspect-ratio: 1;
     box-shadow: none;
     color: var(--font-main-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
     opacity: 30%;
 }
 
 .month-picker__btn {
-    border-radius: 100%;
-    background-color: white;
+    height: 20px;
     aspect-ratio: 1;
+    background-image: url('../icons/arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.month__icon {
+    height: 70%;
+    aspect-ratio: 1;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size:60%;
+}
+
+.month-picker__btn:last-child {
+    transform: rotate(180deg)
 }
 
 .season {

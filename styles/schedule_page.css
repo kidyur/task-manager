@@ -84,6 +84,41 @@
     transition: 0.4s;
 }
 
+#schedule-page__hint {
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex-direction: column; */
+    position: relative;
+    font-size: 24px;
+    width: calc(100% - 2 * var(--margin-medium));
+    margin-left: var(--margin-medium);
+}
+
+#lightbulb {
+    height: 70px;
+    width: 35px;
+    margin-right: var(--margin-medium);
+    background-image: url('../icons/lightbulb.svg');
+    background-repeat: no-repeat;
+    background-size:100%;
+    background-position: center;
+}
+
+#long-arrow {
+    background-image: url('../icons/long-arrow.svg');
+    height: 140px;
+    width: 70px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-repeat: no-repeat;
+    opacity: 30%;
+    background-size:100%;
+    background-position: center;
+}
+
 .shift--editing {
     padding-bottom: var(--padding-medium);
     height: 100px;

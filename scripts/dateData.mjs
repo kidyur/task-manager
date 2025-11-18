@@ -49,6 +49,13 @@ class DateData {
         let monthIdx = 1;
         const seasons = ['Зима', "Весна", "Лето", "Осень", "Зима"];
         let activeMonth = 0;
+        const seasonsIconsURLs = [
+            'snowflake.svg',
+            'flower.svg',
+            'sun.svg',
+            'leaf.svg',
+            'snowflake.svg'
+        ]
         for (let i = 0; i < 5; i++) {
             const seasonBlock = document.createElement('div');
             DateData.#element.appendChild(seasonBlock);
@@ -58,6 +65,7 @@ class DateData {
                     const month = new Month(seasonBlock, 0);
                     if (m == 0) {
                         month.makeAsSeason(seasons[i]);
+                        month.setIcon(seasonsIconsURLs[i]);
                     }
                 } else {
                     const month = new Month(seasonBlock, monthIdx);

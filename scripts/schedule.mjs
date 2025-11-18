@@ -71,10 +71,13 @@ class Schedule {
 
     static updateScheduleManager() {
         const manager = document.getElementById('schedule-page__manager');
+        const hint = document.getElementById('schedule-page__hint');
         if (SchedulesData.getSchedulesLength() == 0) {
             manager.style.display = 'none';
+            hint.style.display = 'flex';
         } else {
             manager.style.display = 'flex';
+            hint.style.display = 'none';
         }
     }
 
