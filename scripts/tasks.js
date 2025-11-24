@@ -7,52 +7,86 @@ const tagInput = document.getElementById("tasks-page__tag-input")
 const addTagButton = document.getElementById("tasks-page__add-tag-button")
 const filterButton = document.getElementById("tasks-page__filter-button")
 
-let dates = {};
-
 let tags = [];
+let tasks = [];
+let dates = [];
 
+//Перенести CreateTask в конструктор
 
 class Task {
-    constructor(name, date, element, tags) {
-        this.name = name;
-        this.date = date;     
-        this.element = element;          
-        this.tags = tags;
-    }    
+    name = '';
+    date;
+    el;
+    tags = [];
 
-    remove() {
-        this.date.changeTasksCount(-1);
-        this.element.remove();
-    }
-}
+    hidden = false;
 
-class TaskDate {    
-    tasksCount = 1;
-
-    constructor(element, dateStr) {
-        this.element = element;
-        this.dateStr = dateStr;
+    hide() {
+        if (!this.hidden) {
+            this.el.style.display = 'none';        
+            this.hidden = true;
+        }
     }
 
-    changeTasksCount(value) {
-        this.tasksCount += value;
-        if (this.tasksCount <= 0) {
-            this.remove();
+    show() {
+        if (this.hidden) {
+            this.el.style.display = 'flex';
+            this.hidden = false;
         }
     }
 
     remove() {
-        delete dates[this.dateStr];
-        this.element.remove();
+        this.el.remove();
+        this.date.tasks.pop(this);        
+        this.date.update();
+        tasks.splice(tasks.indexOf(this), 1);        
+    }
+}
+
+class TaskDate {   
+    el;
+    dateStr;
+    tasks = [];
+
+    constructor() {
+        dates.push(this);
+    }
+
+    update() {             
+        if (this.tasks.length == 0) {  
+            this.remove();
+            return;
+        }
+
+        for (let t of this.tasks) {
+            if (!t.hidden) {
+                this.show();
+                return;
+            }
+        }
+        this.hide()        
+    }
+    
+    hide() {
+        this.el.style.display = 'none';
+    }
+
+    show() {
+        this.el.style.display = 'block';
+    }
+
+    remove() {
+        this.el.remove(); 
+        dates.splice(dates.indexOf(this), 1);
     }
 }
 
 class Tag {
-    constructor(name, el) {
-        this.selected = false;
-        this.name = name;     
-        this.el = el;   
-    }
+    name;
+    el;
+
+    selected = false;
+
 
     setSelected(val) {
         if (val != this.selected) {            
@@ -71,7 +105,20 @@ class Tag {
 start();
 
 function start() {      
+    let zeroTask = new Task();
+    let zeroTaskEl = document.createElement('div');
+    taskContainer.appendChild(zeroTaskEl);
+    let zeroDate = new TaskDate();
+    zeroDate.tasks.push(zeroTask);
+    zeroDate.el = document.createElement('div');
+    zeroDate.dateStr = new Date(1971, 0, 1).toISOString();
+    zeroTask.date = zeroDate;
+    zeroTask.el = zeroTaskEl;            
+
+    tasks.push(zeroTask);
+
     createTag('вычмаш');
+    createTag('ангем');
 
     dateInput.value = new Date().toISOString().split('T')[0];
     
@@ -84,100 +131,93 @@ function start() {
         createTask(taskNameInput.value, dateInput.value);    
         taskNameInput.value = '';
     });
-
-    const today = new Date().toISOString().split('T')[0];
+    filterButton.addEventListener('click', () => {
+        filter(); 
+    });
 }
                  
 
-function createTask(name, dateStr) {        
-    let date = null;
-    if (dates[dateStr]) {
-        date = dates[dateStr];
-        date.changeTasksCount(1);
-    }
-    else {
-        dateElement = createSeparator(dateStr);
-        date = new TaskDate(dateElement, dateStr);
-        dates[dateStr] = date;
-    }    
+function createTask(name, dateStr) {
+    cancelFilter();
+
+    let task = new Task();
+    task.name = name;
+
+    let pos = null;
+
+         
+    for (let i = tasks.length - 1; i >= 0; i--) {                
+        if (dateStr >= tasks[i].date.dateStr) {                
+            pos = tasks[i];
+            tasks.splice(i + 1, 0, task);
+            break;
+        }
+    }  
 
     let element = document.createElement('div');       
-    let newTask = new Task(name, date, element);
+    task.el = element; 
+        
+    if (pos) {
+        if (pos.date.dateStr != dateStr) {
+            let dateElement = createDateSeparatorElement(dateStr);
+            
+            pos.el.insertAdjacentElement('afterend', dateElement);
+            dateElement.insertAdjacentElement('afterend', element);
+
+            let date = new TaskDate();
+            date.dateStr = dateStr;
+            date.el = dateElement;
+            task.date = date;
+        }
+        else {
+            pos.el.insertAdjacentElement('afterend', element);
+            task.date = pos.date;                       
+        }
+    }
+
 
     element.className = 'tasks-page__task';
     element.innerHTML = `
         <div class="tasks-page__task-name"></div>
         <div class="tasks-page__task-tags"></div>
         <button class="tasks-page__complete-task-btn"></button>
-    `; 
+    `;
     
-    element.getElementsByClassName('tasks-page__complete-task-btn')[0].addEventListener('click', () => newTask.remove());
+    element.getElementsByClassName('tasks-page__complete-task-btn')[0].addEventListener('click', () => task.remove());
     element.getElementsByClassName('tasks-page__task-name')[0].textContent = name;
-
+        
     taskTagsEl = element.getElementsByClassName('tasks-page__task-tags')[0];
     for (let t of tags) {
         if (t.selected) {
             taskTagsEl.innerHTML += `#${t.name}\n`;
-        }
-    }
-    
-    let nextElement = null;    
-    for (let i of Array.from(taskContainer.children)) {
-        if (i.id.startsWith('tasks-page__task-date--')) {
-            let curDate = i.id.replace('tasks-page__task-date--', '');
-            if (date.dateStr < curDate) {
-                nextElement = i;
-                break;
-            }
+            task.tags.push(t.name);
         }
     }
 
-    if (nextElement) {
-        taskContainer.insertBefore(element, nextElement);
-    }
-    else {
-        taskContainer.appendChild(element);    
-    }    
+    task.date.tasks.push(task);
 
     deselectAllTags();
 }
 
-function createSeparator(dateStr) {
-    let nextElement;
-    for (let i of Array.from(taskContainer.children)) {
-        if (i.id.startsWith('tasks-page__task-date--')) {
-            let curDate = i.id.replace('tasks-page__task-date--', '');
-            if (dateStr < curDate) {
-                nextElement = i;
-                break;
-            }
-        }
-    }
-
-    dateElement = document.createElement(`div`);        
-    dateElement.id = `tasks-page__task-date--${dateStr}`;
+function createDateSeparatorElement(dateStr) {
+    let dateElement = document.createElement(`div`);        
+    dateElement.className = "tasks-page__separator-date";
     dateElement.innerHTML = 
-    `<div class="tasks-page__separator">
+    `
         <div class="tasks-page__separator-date">${dateStr}</div>
         <div class="tasks-page__separator-line"></div>
     `;
-
-    if (nextElement) {
-        taskContainer.insertBefore(dateElement, nextElement);
-    }
-    else {
-        taskContainer.appendChild(dateElement);
-    }
     return dateElement;
 }
-
 
 function createTag(name) {   
     let tagEl = document.createElement('button');
     tagEl.className = 'tasks-page__tag';
     tagEl.innerHTML = '#' + name;    
 
-    let tag = new Tag(name, tagEl);
+    let tag = new Tag();
+    tag.name = name;
+    tag.el = tagEl;
     
     tagEl.addEventListener('click', () => {
         tag.setSelected(!tag.selected);
@@ -195,6 +235,53 @@ function deselectAllTags() {
 }
 
 function filter() {
+    let isCancelFilter = true;
+    for (let tag of tags) {
+        if (tag.selected) {
+            isCancelFilter = false;
+        }
+    }
 
+    if (isCancelFilter) {
+        cancelFilter();
+        return;
+    }
+
+
+    for (let task of tasks) {
+        hide = true;
+        for (let tag of tags) {
+            if (tag.selected) {
+                if (task.tags.includes(tag.name)) {
+                    hide = false;
+                    break;
+                }
+            }
+        }
+        if (hide) {
+            task.hide();
+        }
+        else {
+            task.show();
+        }
+    }
+    
+
+    for (let d of dates) {
+        d.update();
+    }
+
+    deselectAllTags();
 }
+
+function cancelFilter() {
+    for (let task of tasks) {
+        task.show(); 
+    }
+
+    for (let d of dates) {
+        d.update();
+    }
+}
+
     
