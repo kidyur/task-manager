@@ -101,16 +101,6 @@ input {
     outline: none
 }
 
-#add-task-btn {
-    position: fixed;
-    bottom: 100px;
-    right: 0;
-    width: 60px;
-    border-radius: 100%;
-    right: var(--margin-big);
-    aspect-ratio: 1;
-}
-
 footer {
     width: 100%;
     height: 100px;

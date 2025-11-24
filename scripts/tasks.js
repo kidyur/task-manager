@@ -1,11 +1,11 @@
 const taskContainer = document.getElementById("tasks-page__task-list");
-const addTaskButton = document.getElementById("tasks-page__add-task-button");
+const addTaskButton = document.getElementById("tasks-page__add-task-btn");
 const taskNameInput = document.getElementById("tasks-page__task-name-input");
 const dateInput = document.getElementById("tasks-page__date-input")
 const tagLine = document.getElementById("tasks-page__tag-line")
 const tagInput = document.getElementById("tasks-page__tag-input")
 const addTagButton = document.getElementById("tasks-page__add-tag-button")
-const filterButton = document.getElementById("tasks-page__filter-button")
+const filterButton = document.getElementById("tasks-page__filter-btn")
 
 let tags = [];
 let tasks = [];
@@ -72,7 +72,7 @@ class TaskDate {
     }
 
     show() {
-        this.el.style.display = 'block';
+        this.el.style.display = 'flex';
     }
 
     remove() {
@@ -113,7 +113,9 @@ function start() {
     zeroDate.el = document.createElement('div');
     zeroDate.dateStr = new Date(1971, 0, 1).toISOString();
     zeroTask.date = zeroDate;
-    zeroTask.el = zeroTaskEl;            
+    zeroTask.el = zeroTaskEl;    
+    
+    console.log(new Date().getTime());
 
     tasks.push(zeroTask);
 
@@ -139,6 +141,8 @@ function start() {
 
 function createTask(name, dateStr) {
     cancelFilter();
+
+    console.log(typeof(dateStr))
 
     let task = new Task();
     task.name = name;
@@ -189,7 +193,7 @@ function createTask(name, dateStr) {
     taskTagsEl = element.getElementsByClassName('tasks-page__task-tags')[0];
     for (let t of tags) {
         if (t.selected) {
-            taskTagsEl.innerHTML += `#${t.name}\n`;
+            taskTagsEl.innerHTML += `<div class="tasks-page__tag-in-task">#${t.name}\n</div>`;
             task.tags.push(t.name);
         }
     }
@@ -201,9 +205,10 @@ function createTask(name, dateStr) {
 
 function createDateSeparatorElement(dateStr) {
     let dateElement = document.createElement(`div`);        
-    dateElement.className = "tasks-page__separator-date";
-    dateElement.innerHTML = 
-    `
+    dateElement.className = "tasks-page__separator";
+    let elDateStr = dateStr;
+    dateElement.innerHTML = `        
+        <div class="tasks-page__separator-line"></div>
         <div class="tasks-page__separator-date">${dateStr}</div>
         <div class="tasks-page__separator-line"></div>
     `;
@@ -284,4 +289,7 @@ function cancelFilter() {
     }
 }
 
+function toUserDateStr(date) {
+    
+}
     
