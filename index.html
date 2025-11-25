@@ -36,10 +36,15 @@
     
     <div id="calendar-page" class="page">
         <div id="calendar-page__month-picker-btn">
-            <p id="calendar-page__year"></p>
-            <button id="calendar-page__month"></button>
+            <div id="calendar-page__title"></div>
         </div>
-        <div id="month-picker"></div>
+        <div id="month-picker">
+            <div id="month-picker__header">
+                <button class="month-picker__btn"></button>
+                <div id="month-picker__year"></div>
+                <button class="month-picker__btn"></button>
+            </div>
+        </div>
         <div id="calendar"></div>
     </div>
     <div id="schedule-page" class="page">
@@ -68,9 +73,18 @@
         </button>
     </footer>
 
-    <script src="scripts/footer_buttons.js"></script>
-    <script src="scripts/calendar.js"></script>
-    <script src="scripts/schedule.js"></script>
-    <script src="scripts/tasks.js"></script>
+    <script src="scripts/footerButtons.js"></script>
+
+    <script type="module" src="scripts/tasks/taskList.mjs"></script>
+    <script type="module" src="scripts/tasks/tag.mjs"></script>
+    <script type="module" src="scripts/tasks/task.mjs"></script>
+    <script type="module" src="scripts/tasks/taskDate.mjs"></script>
+    
+    <script type="module" src="app.mjs"></script>
+    <script type="module" src="scripts/calendar.mjs"></script>
+    <script type="module" src="scripts/schedule.mjs"></script>
+    <script type="module" src="scripts/schedulesData.mjs"></script>
+    <script type="module" src="scripts/dateData.mjs"></script>
+    <script type="module" src="scripts/day.mjs"></script>
 </body>
 </html>

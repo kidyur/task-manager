@@ -1,0 +1,25 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel ./*.html",
+    "build": "parcel build ./*.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kidyur/task-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kidyur/task-manager/issues"
+  },
+  "homepage": "https://github.com/kidyur/task-manager#readme",
+  "devDependencies": {
+    "parcel": "^2.16.1"
+  }
+}
