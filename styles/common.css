@@ -26,7 +26,8 @@
     /* Colors */
     --bg-color: #202020;
     --fg-color: #535353;
-    --font-main-color: #EFF1F3;
+    --fg-color-active: #A22C29; 
+    --font-main-color: #EFF1F3; 
     --font-warning-color: #A22C29; 
     --text-color-500: black;
     --text-color-300: #434343;
@@ -98,16 +99,6 @@ button {
 input {
     outline: none;
     color: rgb(145, 145, 145);
-}
-
-#add-task-btn {
-    position: fixed;
-    bottom: 100px;
-    right: 0;
-    width: 60px;
-    border-radius: 100%;
-    right: var(--margin-big);
-    aspect-ratio: 1;
 }
 
 footer {

@@ -10,6 +10,28 @@
     align-items: center;
     padding-left: var(--padding-medium);
     justify-content: flex-start;
+    align-items: center;
+}
+
+
+#tasks-page__add-task-btn {    
+    display: flex;
+    padding: 10px;
+    border-radius: 10%;
+    /*right: var(--margin-big);*/
+    color: var(--fg-color-active);
+}
+
+
+#tasks-page__filter-btn {
+    /*position: fixed;*/
+    display: flex;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 100%;
+    right: var(--margin-big);
+    aspect-ratio: 1;
+    color: var(--fg-color-active);
 }
 
 .tasks-page__tag {
@@ -20,11 +42,28 @@
     margin-left: var(--margin-small);
 }
 
+.tasks-page__tag--enabled {
+    padding: var(--padding-small) var(--padding-medium);
+    border: 2px solid var(--fg-color);
+    color: var(--fg-color-active);    
+    border-radius: 15px;
+    margin-left: var(--margin-small);
+}
+
+.tasks-page__tag-in-task {
+    padding: calc(var(--padding-small)/2) calc(var(--padding-medium)/2);
+    border: 2px solid var(--fg-color);
+    color: var(--fg-color);
+    border-radius: 15px;
+    font-size: 10px;
+    margin: 5px;
+}
+
 .tasks-page__separator {
     width: 100%;
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     margin: 10px 0;
 }
 
@@ -39,16 +78,21 @@
     background-color: var(--fg-color);
     margin-top: -10px;
     height: 2px;
-    width: calc(100% - 2 * var(--padding-big));
+    flex: 1;
+    /*width: calc(100% - 2 * var(--padding-big));*/
 }
 
 .tasks-page__task {
     height: 30px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    border: 2px solid var(--fg-color);
+    justify-content: space-between;    
     padding: 0 var(--padding-big);
-    width: calc(100% - 2 * var(--padding-big));
+    width: calc(100% - 3 * var(--padding-big));
+}
+
+.tasks-page__task-name {
+    margin-right: auto;
 }
 
 .tasks-page__complete-task-btn {
@@ -57,4 +101,12 @@
     background-color: unset; 
     height: 50%;
     aspect-ratio: 1;
+}
+
+.tasks-page__input {
+    border-radius: 5%;
+    border: 2px var(--fg-color) solid;
+    background-color: unset; 
+    height: 20px;        
+    color: var(--font-main-color);
 }

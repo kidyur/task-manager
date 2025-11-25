@@ -12,18 +12,24 @@
 
 <body>    
     <div id="tasks-page" class="page">
-        <div id="tasks-page__tag-line">
-            <button class="tasks-page__tag">#без_тега</button>
-            <button class="tasks-page__tag">#повтор</button>
-            <button class="tasks-page__tag">#события</button>
-        </div>
-        <div id="tasks-page__add-task-button" class="button">
-            Добавить задачу
-        </div>
+        <button id="tasks-page__filter-btn">
+            Ф
+        </button>
+        <div id="tasks-page__tag-line">            
+        </div>        
+        <div style="height: 20px"></div>     
+        <button id="tasks-page__add-task-btn">
+            Добавить задачу 
+        </button>
         <div>
             <input type="date" id="tasks-page__date-input"></input>
         </div>
-        <input id="tasks-page__task-name-input"></input>
+        <input id="tasks-page__task-name-input" class="tasks-page__input"></input>                
+        <div style="height: 20px"></div>        
+        <div id="tasks-page__add-tag-button" class="button">
+            Добавить тэг
+        </div>
+        <input id="tasks-page__tag-input" class="tasks-page__input"></input>
         <div id="tasks-page__task-list">
         </div>
     </div>
@@ -72,7 +78,11 @@
     </footer>
 
     <script src="scripts/footerButtons.js"></script>
-    <script src="scripts/tasks.js"></script>
+
+    <script type="module" src="scripts/tasks/taskList.mjs"></script>
+    <script type="module" src="scripts/tasks/tag.mjs"></script>
+    <script type="module" src="scripts/tasks/task.mjs"></script>
+    <script type="module" src="scripts/tasks/taskDate.mjs"></script>
     
     <script type="module" src="/app.mjs"></script>
     <script type="module" src="/scripts/calendar.mjs"></script>
