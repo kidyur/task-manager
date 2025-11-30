@@ -26,6 +26,7 @@ class Tag {
     setSelected(val) {
         if (val != this.selected) {            
             if (val) {            
+                TaskList.deselectAllTags();
                 this.el.className = 'tasks-page__tag--enabled';
             }
             else {

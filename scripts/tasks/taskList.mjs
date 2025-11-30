@@ -1,6 +1,7 @@
 import TaskDate from "./taskDate.mjs";
 import Task from "./task.mjs";
 import Tag from "./tag.mjs"
+import DateData from "../dateData.mjs"
 
 
 
@@ -14,7 +15,6 @@ class TaskList {
 
     static taskNameInput = document.getElementById("tasks-page__task-name-input");
     static tagInput = document.getElementById("tasks-page__tag-input");
-    static dateInput = document.getElementById("tasks-page__date-input");
 
     static addTaskButton = document.getElementById("tasks-page__add-task-btn");
     static addTagButton = document.getElementById("tasks-page__add-tag-button");
@@ -37,16 +37,14 @@ class TaskList {
         
         new Tag(this).init('вычмаш');
         new Tag(this).init('ангем');
-
-        this.dateInput.value = new Date().toISOString().split('T')[0];
         
 
         this.addTagButton.addEventListener('click', () => {
             new Tag().init(this.tagInput.value);
-            tagInput.value = '';    
+            TaskList.tagInput.value = '';    
         });    
         this.addTaskButton.addEventListener('click', () => {
-            new Task().init(this.taskNameInput.value, new Date(this.dateInput.value));
+            new Task().init(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
             this.taskNameInput.value = '';
         });
         this.filterButton.addEventListener('click', () => {

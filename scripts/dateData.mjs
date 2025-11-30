@@ -23,6 +23,14 @@ class DateData {
         this.#chosenMonth = month;
     }
 
+    static #chosenDay = 0;
+    static get chosenDay() {
+        return this.#chosenDay;
+    }
+    static set chosenDay(day) {
+        this.#chosenDay = day;
+    }
+
     static #element = HTMLDivElement;
     static #monthsNames = [
         "Январь",   "Февраль", 
