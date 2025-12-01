@@ -41,13 +41,19 @@ class TaskList {
         this.dateInput.value = new Date().toISOString().split('T')[0];
         
 
-        this.addTagButton.addEventListener('click', () => {
+        this.addTagButton.addEventListener('click', async () => {
             new Tag().init(this.tagInput.value);
-            tagInput.value = '';    
+            tagInput.value = '';
+            // Сохраняем данные
+            const { saveAppData } = await import('../utils/saveData.mjs');
+            saveAppData();
         });    
-        this.addTaskButton.addEventListener('click', () => {
+        this.addTaskButton.addEventListener('click', async () => {
             new Task().init(this.taskNameInput.value, new Date(this.dateInput.value));
             this.taskNameInput.value = '';
+            // Сохраняем данные
+            const { saveAppData } = await import('../utils/saveData.mjs');
+            saveAppData();
         });
         this.filterButton.addEventListener('click', () => {
             this.filter(); 
