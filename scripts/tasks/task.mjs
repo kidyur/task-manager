@@ -34,13 +34,16 @@ class Task {
         element.getElementsByClassName('tasks-page__complete-task-btn')[0].addEventListener('click', () => this.remove());
         element.getElementsByClassName('tasks-page__task-name')[0].textContent = name;  
         let taskTagsEl = element.getElementsByClassName('tasks-page__task-tags')[0];
+        this.el = element; 
         for (let t of TaskList.tags) {
             if (t.selected) {
-                taskTagsEl.innerHTML += `#${t.name}\n`;
+                let newTagEl = document.createElement('div');
+                newTagEl.className = 'tasks-page__tag-in-task';
+                newTagEl.innerHTML = "#" + t.name;
+                taskTagsEl.appendChild(newTagEl);
                 this.tags.push(t.name);
             }
         }
-        this.el = element; 
 
         if (pos) {
             if (pos.taskDate.date.valueOf() != date.valueOf()) {              

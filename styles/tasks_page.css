@@ -13,16 +13,6 @@
     align-items: center;
 }
 
-
-#tasks-page__add-task-btn {    
-    display: flex;
-    padding: 10px;
-    border-radius: 10%;
-    /*right: var(--margin-big);*/
-    color: var(--fg-color-active);
-}
-
-
 #tasks-page__filter-btn {
     /*position: fixed;*/
     display: flex;
@@ -56,7 +46,7 @@
     color: var(--fg-color);
     border-radius: 15px;
     font-size: 10px;
-    margin: 5px;
+    margin: 10px;
 }
 
 .tasks-page__separator {
@@ -86,9 +76,11 @@
     height: 30px;
     display: flex;
     border: 2px solid var(--fg-color);
+    align-items: center;
     justify-content: space-between;    
     padding: 0 var(--padding-big);
-    width: calc(100% - 3 * var(--padding-big));
+    width: calc(100% - 2.6*var(--padding-big));
+    margin: 5px;
 }
 
 .tasks-page__task-name {
@@ -110,3 +102,4 @@
     height: 20px;        
     color: var(--font-main-color);
 }
+
