@@ -61,7 +61,7 @@
     background-color: var(--bg-color);
     z-index: 2;
     padding: 0 var(--padding-medium);
-    color: #93b39d;
+    color: white;
 }
 
 .tasks-page__separator-line {
@@ -75,6 +75,7 @@
 .tasks-page__task {
     height: 30px;
     display: flex;
+    align-items: center;
     border: 2px solid var(--fg-color);
     align-items: center;
     justify-content: space-between;    

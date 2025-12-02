@@ -107,9 +107,9 @@ class Shift {
         for (const path of iconPaths) {
             const btn = document.createElement('button');
             btn.className = 'shift__icon';
-            btn.style.backgroundImage = 'url(../icons/' + path + ')';
+            btn.style.backgroundImage = 'url(./src/icons/' + path + ')';
             btn.addEventListener('click', () => {
-                this.#iconURL = 'url(../icons/' + path + ')';
+                this.#iconURL = 'url(./src/icons/' + path + ')';
                 const prevIcon = field.getElementsByClassName('shift__icon--first')[0];
                 if (prevIcon) {
                     prevIcon.className = 'shift__icon';

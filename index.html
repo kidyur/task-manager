@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/calendar_page.css">
-    <link rel="stylesheet" href="styles/tasks_page.css">
-    <link rel="stylesheet" href="styles/schedule_page.css">
-    <link rel="stylesheet" href="styles/common.css">
     <title>2Календарь | Календарь смен, управление задачами</title>
 </head>
 
@@ -63,30 +59,16 @@
         </div>
     </div>
 
-    <footer>
-        <button id="open-schedule-page-btn" class="footer__btn">
-            <div>Расписание</div>
-        </button>
-        <button id="open-calendar-page-btn" class="footer__btn">
-            <div>Календарь</div>
-        </button>
-        <button id="open-tasks-page-btn" class="footer__btn">
-            <div>Задачи</div>
-        </button>
-    </footer>
-
-    <script src="scripts/footerButtons.js"></script>
-
-    <script type="module" src="scripts/tasks/taskList.mjs"></script>
-    <script type="module" src="scripts/tasks/tag.mjs"></script>
-    <script type="module" src="scripts/tasks/task.mjs"></script>
-    <script type="module" src="scripts/tasks/taskDate.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/taskList.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/tag.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/task.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/taskDate.mjs"></script>
     
-    <script type="module" src="/app.mjs"></script>
-    <script type="module" src="/scripts/calendar.mjs"></script>
-    <script type="module" src="/scripts/schedule.mjs"></script>
-    <script type="module" src="/scripts/schedulesData.mjs"></script>
-    <script type="module" src="/scripts/dateData.mjs"></script>
-    <script type="module" src="/scripts/day.mjs"></script>
+    <script type="module" src="/src/scripts/calendar.mjs"></script>
+    <script type="module" src="/src/scripts/schedule.mjs"></script>
+    <script type="module" src="/src/scripts/schedulesData.mjs"></script>
+    <script type="module" src="/src/scripts/dateData.mjs"></script>
+    <script type="module" src="/src/scripts/day.mjs"></script>
+    <script type="module" src="/src/renderer.js"></script>
 </body>
 </html>
