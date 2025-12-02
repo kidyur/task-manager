@@ -100,13 +100,12 @@
 
 #month-picker {
     display: none;
-    width: 350px;
+    width: 300px;
     top: 65px;
     height: 100%;
     background-color: var(--bg-color);
     z-index: 2;;
     position: absolute;
-    padding: 0 var(--padding-medium);
 }
 
 .month-picker__year {

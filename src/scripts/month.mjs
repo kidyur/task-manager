@@ -33,7 +33,7 @@ class Month {
     setIcon(imageURL) {
         const icon = document.createElement('div');
         icon.className = 'month__icon';
-        icon.style.backgroundImage = 'url("../icons/' + imageURL + '")';
+        icon.style.backgroundImage = 'url("./src/icons/' + imageURL + '")';
         this.#element.appendChild(icon);
     }
 
