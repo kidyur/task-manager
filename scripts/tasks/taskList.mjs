@@ -40,8 +40,7 @@ class TaskList {
         
 
         this.addTagButton.addEventListener('click', () => {
-            new Tag().init(this.tagInput.value);
-            TaskList.tagInput.value = '';    
+            this.addTag();
         });    
         this.addTaskButton.addEventListener('click', () => {
             new Task().init(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
@@ -105,6 +104,18 @@ class TaskList {
 
         for (let d of this.dates) {
             d.update();
+        }
+    }
+
+    static addTag() {        
+        if (this.tagInput.value != '') {                
+            for (let t of this.tags) {                
+                if (t.name == this.tagInput.value) {
+                    return;
+                }
+            }            
+            new Tag().init(this.tagInput.value);
+            TaskList.tagInput.value = '';                    
         }
     }
 }
