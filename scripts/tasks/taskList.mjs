@@ -64,15 +64,23 @@ class TaskList {
             }
         }
 
-        if (isCancelFilter) {
+        if (!isCancelFilter) {
             this.cancelFilter();
             return;
         }
 
+        let chosedDate = Date(DateData.chosenYear, DateData.chosenMonth, DateData.chosenDay);
 
         for (let task of this.tasks) {
             let hide = true;
-            for (let tag of this.tags) {
+                        
+            if (task.taskDate.date.valueOf() < chosedDate.valueOf()) {
+                hide = false;
+            }
+
+            for (let tag of this.tags) {              
+                if (!hide) break;
+
                 if (tag.selected) {
                     if (task.tags.includes(tag.name)) {
                         hide = false;
