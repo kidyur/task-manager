@@ -5,7 +5,9 @@ import Shift from "./shift.mjs";
 class Schedule {
     #element         = HTMLDivElement;
     #shifts          = [];
-    #name            = "";   
+    #name            = "";  
+    get name() { return this.#name; }
+    set name(value) { this.#name = value; } 
     #input           = HTMLInputElement;
     #beginningDate   = Date;
     get beginningDate() {
@@ -42,23 +44,30 @@ class Schedule {
 
     static #setupAddShiftBtn() {
         const btn = document.getElementById('schedule-page__add-shift-btn');
-        btn.addEventListener('click', () => {
-            const shift = new Shift();
-            SchedulesData.currentSchedule.addShift(shift);
-            Shift.offLastActiveShift();
-            shift.select();
-            Calendar.update();
-        })
+        btn.addEventListener('click', async () => {
+                const shift = new Shift();
+                SchedulesData.currentSchedule.addShift(shift);
+                Shift.offLastActiveShift();
+                shift.select();
+                Calendar.update();
+                // Сохраняем данные
+                const { saveAppData } = await import('./utils/saveData.mjs');
+                saveAppData();
+            })
     }
+    
 
     static #setupCreateScheduleBtn() {
         const btn = document.getElementById('schedule-page__add-schedule-btn');
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             if (SchedulesData.getSchedulesLength() < 3) {
                 const schedule = new Schedule();
                 SchedulesData.addSchedule(schedule);
                 schedule.select();
                 Schedule.updateScheduleManager();
+                // Сохраняем данные
+                const { saveAppData } = await import('./utils/saveData.mjs');
+                saveAppData();
             }
         })
     }
@@ -105,12 +114,15 @@ class Schedule {
     
     static #setupDeleteBtn() {
         const deleteBtn = document.getElementById('schedule-page__delete-schedule-btn');
-        deleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', async () => {
             const activeScheduleElement = document.getElementsByClassName('schedule-page__group--active')[0];  
             activeScheduleElement.remove();
             SchedulesData.removeSchedule(SchedulesData.currentSchedule);
             SchedulesData.currentSchedule = new Schedule(true); 
             Schedule.updateScheduleManager();
+            // Сохраняем данные
+            const { saveAppData } = await import('./utils/saveData.mjs');
+            saveAppData();
         })
     }
     
@@ -120,8 +132,11 @@ class Schedule {
         input.className = 'schedule__input';
         input.maxLength = 24;
         input.value = '';
-        input.addEventListener('blur', () => {
+        input.addEventListener('blur', async () => {
             this.name = input.value;
+            // Сохраняем данные
+            const { saveAppData } = await import('./utils/saveData.mjs');
+            saveAppData();
         })
         this.#input = input;
         this.#element.appendChild(input);

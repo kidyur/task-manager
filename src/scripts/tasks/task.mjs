@@ -79,11 +79,14 @@ class Task {
         }
     }
 
-    remove() {
+    async remove() {
         this.el.remove();
         this.taskDate.tasks.splice(this.taskDate.tasks.indexOf(this), 1);       
         this.taskDate.update();
-        TaskList.tasks.splice(TaskList.tasks.indexOf(this), 1);        
+        TaskList.tasks.splice(TaskList.tasks.indexOf(this), 1);
+        // Сохраняем данные
+        const { saveAppData } = await import('../utils/saveData.mjs');
+        saveAppData();
     }
 }
 

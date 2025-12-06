@@ -35,6 +35,7 @@ import Calendar from "/src/scripts/calendar.mjs";
 import DateData from "/src/scripts/dateData.mjs";
 import Schedule from "/src/scripts/schedule.mjs";
 import TaskList from "/src/scripts/tasks/taskList.mjs";
+import { loadAllData } from "./src/scripts/utils/loadData.mjs";
 
 window.onload = () => {
     Calendar.init();
@@ -42,6 +43,7 @@ window.onload = () => {
     Calendar.update();
     Schedule.setupScheduleManager();
     TaskList.start();
+    await loadAllData();
 }
 
 console.log(

@@ -4,13 +4,14 @@
 }
 
 #tasks-page__tag-line {
-    height: 30px;
     display: flex;
     margin-top: var(--margin-medium);
     align-items: center;
     padding-left: var(--padding-medium);
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
+
 }
 
 #tasks-page__filter-btn {

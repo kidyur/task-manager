@@ -5,10 +5,18 @@ import Calendar from "./calendar.mjs";
 class Shift {
     #element   = HTMLDivElement;
     #name      = "";
+    get name() { return this.#name; }
+    set name(value) { 
+        this.#name = value;
+        if (this.#input) {
+            this.#input.value = value;
+        }
+    }
     #input     = HTMLInputElement;
     
     #iconURL   = "";
-    get iconURL() { return this.#iconURL };
+    get iconURL() { return this.#iconURL; }
+    set iconURL(value) { this.#iconURL = value; }
     
     constructor() {
         const shiftEl = document.createElement('div');
@@ -58,8 +66,11 @@ class Shift {
         input.className = 'shift__input';
         input.maxLength = 24;
         input.placeholder = "День";
-        input.addEventListener('blur', () => {
+        input.addEventListener('blur', async () => {
             this.#name = input.value;
+            // Сохраняем данные
+            const { saveAppData } = await import('./utils/saveData.mjs');
+            saveAppData();
         })
         input.addEventListener('dblclick', () => {
             if (SchedulesData.currentSchedule.beginningShift != this) {
@@ -74,7 +85,7 @@ class Shift {
     createDeleteBtn() {
         const btn = document.createElement('button');
         btn.className = 'shift__delete-btn';
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             SchedulesData.currentSchedule.removeShift(this);
             const shiftList = document.getElementById('schedule-page__shift-list');
             if (SchedulesData.currentSchedule.beginningShift == this) {
@@ -85,7 +96,11 @@ class Shift {
                 }
             }
             shiftList.removeChild(this.#element);
+            // Сохраняем данные
+            const { saveAppData } = await import('./utils/saveData.mjs');
+            saveAppData();
         })
+        
         this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);
     }
 
@@ -108,13 +123,16 @@ class Shift {
             const btn = document.createElement('button');
             btn.className = 'shift__icon';
             btn.style.backgroundImage = 'url(./src/icons/' + path + ')';
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', async () => {
                 this.#iconURL = 'url(./src/icons/' + path + ')';
                 const prevIcon = field.getElementsByClassName('shift__icon--first')[0];
                 if (prevIcon) {
                     prevIcon.className = 'shift__icon';
                 }
                 btn.className = 'shift__icon shift__icon--first';
+                // Сохраняем данные
+                const { saveAppData } = await import('./utils/saveData.mjs');
+                saveAppData();
                 Calendar.update();
             })
             field.appendChild(btn);

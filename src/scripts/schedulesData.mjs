@@ -52,6 +52,10 @@ class SchedulesData {
     static getSchedulesLength() {
         return SchedulesData.#schedules.length;
     }
+
+    static getSchedules() {
+        return SchedulesData.#schedules;
+    }
 }
 
 export default SchedulesData;

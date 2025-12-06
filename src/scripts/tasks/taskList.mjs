@@ -114,7 +114,7 @@ class TaskList {
     }
 
     static addTag() {        
-        if (this.tagInput.value != '') {                
+        if (this.tagInput.value != '' && this.tags.length < 7) {                
             for (let t of this.tags) {                
                 if (t.name == this.tagInput.value) {
                     return;
