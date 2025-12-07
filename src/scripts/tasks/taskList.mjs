@@ -4,7 +4,6 @@ import Tag from "./tag.mjs"
 import DateData from "../dateData.mjs"
 
 
-
 class TaskList {
     static tasks = [];
     static dates = [];
@@ -37,6 +36,7 @@ class TaskList {
         this.filterButton.addEventListener('click', () => {
             this.filterByTag(); 
         });
+        
 
     }
 
@@ -80,16 +80,16 @@ class TaskList {
         this.update();   
     }
 
-    static filterByDate() {         
-        let chosedDate = Date(DateData.chosenYear, DateData.chosenMonth, DateData.chosenDay);
+    static filterByDate(chosenDate) {         
+        console.log(chosenDate);
         for (let task of this.tasks) {
             let hide = true;
                         
-            if (task.taskDate.date.valueOf() < chosedDate.valueOf()) {
+            if (task.taskDate.date.valueOf() >= chosenDate.valueOf()) {
                 hide = false;
             }            
 
-            task.tagHidden = hide;
+            task.dateHidden = hide;
         }         
 
         this.update();

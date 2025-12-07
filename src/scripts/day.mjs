@@ -1,6 +1,7 @@
 import SchedulesData from "./schedulesData.mjs";
 import DateData from "./dateData.mjs";
 import Calendar from "./calendar.mjs";
+import TaskList from "./tasks/taskList.mjs"
 
 class Day {
     #borderFlag = false;
@@ -25,7 +26,7 @@ class Day {
         } 
 
         const calendarEl = document.getElementById('calendar');
-        calendarEl.appendChild(el);
+        calendarEl.appendChild(el);        
     }
 
     #createIcon(iconTag) {
@@ -63,6 +64,7 @@ class Day {
         } else {
             this.#element.classList.add('calendar__day--active2');
         }
+        TaskList.filterByDate(new Date(DateData.chosenYear, DateData.chosenMonth - 1, DateData.chosenDay));
     }
 }
 

@@ -51,7 +51,7 @@ class Task {
                 taskDate.init(date);
                 this.taskDate = taskDate;
                 
-                pos.el.insertAdjacentElement('afterend', this.taskDate.el);
+                pos.el.insertAdjacentElement('afterend', this.taskDate.el); 
                 taskDate.el.insertAdjacentElement('afterend', element);
             }
             else {
@@ -59,15 +59,27 @@ class Task {
                 this.taskDate = pos.taskDate;                       
             }
         }    
-        else {            
-            let taskDate = new TaskDate();
-            taskDate.init(date);
-            this.taskDate = taskDate;
-                
-            TaskList.taskContainer.appendChild(taskDate.el);
-            taskDate.el.insertAdjacentElement('afterend', element);
+        else {   
+            if (TaskList.tasks.length == 0) {
+                let taskDate = new TaskDate();
+                taskDate.init(date);
+                this.taskDate = taskDate;
+                    
+                TaskList.taskContainer.appendChild(taskDate.el);
+                taskDate.el.insertAdjacentElement('afterend', element);
 
-            TaskList.tasks.push(this);
+                TaskList.tasks.push(this);
+            }
+            else {
+                let taskDate = new TaskDate();
+                taskDate.init(date);
+                this.taskDate = taskDate;
+                    
+                TaskList.tasks[0].el.insertAdjacentElement('beforebegin', taskDate.el); 
+                taskDate.el.insertAdjacentElement('afterend', element);
+
+                TaskList.tasks.push(this);                
+            }
         }       
 
         this.taskDate.tasks.push(this);
