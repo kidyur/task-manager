@@ -21,13 +21,14 @@ class TaskDate {
         `;
     }
 
-    update() {             
+    update() {      
+        console.log("Date Update");
         if (this.tasks.length == 0) {  
+            console.log("Date remove");
             this.remove();
             return;
         }
 
-        console.log(this.tasks);
         for (let t of this.tasks) {
             if (!t.isHidden()) {
                 this.show();

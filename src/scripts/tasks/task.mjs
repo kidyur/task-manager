@@ -5,15 +5,12 @@ class Task {
     name = '';
     taskDate;
     el;
-    tags = [];
+    tag = '';
 
     dateHidden = false;
     tagHidden = false;
 
-    init(name, date) {     
-        TaskList.cancelFilter();
-
-
+    init(name, date, tag) {     
         this.name = name;
         this.date = date;
 
@@ -29,22 +26,22 @@ class Task {
         let element = document.createElement('div');             
         element.className = 'tasks-page__task';
         element.innerHTML = `
-            <div class="tasks-page__task-name"></div>
+            <div class="tasks-page__task-name"></div> 
             <div class="tasks-page__task-tags"></div>
-            <button class="tasks-page__complete-task-btn"></button>
+            <button class="tasks-page__complete-task-btn">+</button>
         `;    
         element.getElementsByClassName('tasks-page__complete-task-btn')[0].addEventListener('click', () => this.remove());
         element.getElementsByClassName('tasks-page__task-name')[0].textContent = name;  
         let taskTagsEl = element.getElementsByClassName('tasks-page__task-tags')[0];
         this.el = element; 
-        for (let t of TaskList.tags) {
-            if (t.selected) {
-                let newTagEl = document.createElement('div');
-                newTagEl.className = 'tasks-page__tag-in-task';
-                newTagEl.innerHTML = "#" + t.name;
-                taskTagsEl.appendChild(newTagEl);
-                this.tags.push(t.name);
-            }
+
+        if (tag != '') {
+            let newTagEl = document.createElement('div');
+            newTagEl.className = 'tasks-page__tag-in-task';
+            newTagEl.innerHTML = "#" + tag;
+            taskTagsEl.appendChild(newTagEl);
+            this.tag = tag;
+                    
         }
 
 
@@ -71,21 +68,28 @@ class Task {
             taskDate.el.insertAdjacentElement('afterend', element);
 
             TaskList.tasks.push(this);
-        }   
+        }       
+
+        this.taskDate.tasks.push(this);
         
         TaskList.deselectAllTags();
     }
 
-    hide() {
-        if (!this.isHidden()) {
-            this.el.style.display = 'none';        
+    update() {
+        if (this.isHidden()) {
+            this.hide(); 
+        }
+        else {
+            this.show(); 
         }
     }
 
+    hide() {
+        this.el.style.display = 'none';        
+    }
+
     show() {
-        if (this.isHidden()) {
-            this.el.style.display = 'flex';
-        }
+        this.el.style.display = 'flex';
     }
 
     isHidden() {
@@ -102,12 +106,7 @@ class Task {
     toJSON() {
         let obj = {};
         obj.name = this.name;
-        if (this.tags.length == 0) {
-            obj.tag = "";
-        }
-        else {
-            obj.tag = this.tags[0].name;
-        }
+        obj.tag = this.tag;
         obj.date = [this.taskDate.date.getYear() + 1900, this.taskDate.date.getMonth(), this.taskDate.date.getDate()];
         return obj;
     }

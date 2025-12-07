@@ -41,7 +41,7 @@ import SchedulesData from "/src/scripts/SchedulesData.mjs";
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({
-        tasksData: TaskList.toJSON2(),
+        tasksData: TaskList.toJSON(),
         schedules: SchedulesData.toJSON()
     });
 })
@@ -59,7 +59,8 @@ TaskList.parseJSON(data.tasksData);
 
 document.addEventListener('keydown', (ev) => {
     if (ev.code == 'KeyZ') {
-        console.log(TaskList.toJSON2());
         console.log(TaskList.tasks);
+        console.log(TaskList.dates);
+        TaskList.toJSON();
     }
 });

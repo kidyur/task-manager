@@ -6,9 +6,10 @@ import DateData from "../dateData.mjs"
 
 
 class TaskList {
-    static tags = [];
     static tasks = [];
     static dates = [];
+    static tags = [];
+    static selectedTag = null;
     
     static taskContainer = document.getElementById("tasks-page__task-list");
     static tagLine = document.getElementById("tasks-page__tag-line");
@@ -26,7 +27,12 @@ class TaskList {
             this.addTag(this.tagInput.value);
         });    
         this.addTaskButton.addEventListener('click', () => {
-            this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
+            if (this.selectedTag) {
+                this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay), this.selectedTag.name);
+            }
+            else {
+                this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay), '');
+            }
         });
         this.filterButton.addEventListener('click', () => {
             this.filterByTag(); 
@@ -35,6 +41,7 @@ class TaskList {
     }
 
     static deselectAllTags() {
+        this.selectedTag = null;
         for (let t of this.tags) {
             t.setSelected(false);   
         }
@@ -42,12 +49,7 @@ class TaskList {
 
     static update() {        
         for (const task of this.tasks) {
-            if (task.isHidden()) {
-                task.hide();
-            }
-            else {
-                task.show();
-            }
+            task.update();
         }
 
         for (let d of this.dates) {
@@ -58,15 +60,7 @@ class TaskList {
     }
 
     static filterByTag() {
-        let cancelFilter = true;
-        for (let tag of this.tags)  {
-            if (tag.selected) {
-                cancelFilter = false;
-                break;
-            }
-        }
-
-        if (cancelFilter) {
+        if (this.selectedTag == null) {
             for (let task of this.tasks) {
                 task.tagHidden = false;
             }
@@ -75,14 +69,9 @@ class TaskList {
             for (let task of this.tasks) {
                 let hide = true;            
 
-                for (let tag of this.tags) {              
-                    if (tag.selected) {
-                        if (task.tags.includes(tag.name)) {
-                            hide = false;
-                            break;
-                        }   
-                    }
-                }
+                if (task.tag == this.selectedTag.name) {
+                    hide = false;
+                }   
 
                 task.tagHidden = hide;
             }   
@@ -107,22 +96,21 @@ class TaskList {
     }
 
     static parseJSON(list) {  
-        console.log(list.tasks);
-
         for (const task of list.tasks) {   
-            this.addTask(task.name, new Date(task.date[0], task.date[1], task.date[2]));
+            this.addTask(task.name, new Date(task.date[0], task.date[1], task.date[2]), task.tag);
         }        
         for (const tag of list.tags) {
-            this.addTag(tag.name);
+            this.addTag(tag);
         }
 
     }
 
-    static toJSON2() {
+    static toJSON() {
         let res = {};
         let res_tasks = [];
         let res_tags = [];
         for (const task of this.tasks) {
+            console.log("COCK");
             res_tasks.push(task.toJSON());
         }                
         for (const tag of this.tags) {
@@ -135,20 +123,9 @@ class TaskList {
         return res;
     }
 
-    static cancelFilter() {
-        for (let task of this.tasks) {
-            task.show(); 
-        }
-
-        for (let d of this.dates) {
-            d.update();
-        }
-    }
-
-    static addTask(name, date) {
+    static addTask(name, date, tag) {
         if (name != '') {
-            console.log('COCKISHE');
-            new Task().init(name, date);
+            new Task().init(name, date, tag);
             this.taskNameInput.value = '';
         }
     }
