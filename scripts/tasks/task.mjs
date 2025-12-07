@@ -7,7 +7,8 @@ class Task {
     el;
     tags = [];
 
-    hidden = false;
+    dateHidden = false;
+    tagHidden = false;
 
     init(name, date) {     
         TaskList.cancelFilter();
@@ -66,17 +67,19 @@ class Task {
     }
 
     hide() {
-        if (!this.hidden) {
+        if (!this.isHidden()) {
             this.el.style.display = 'none';        
-            this.hidden = true;
         }
     }
 
     show() {
-        if (this.hidden) {
+        if (this.isHidden()) {
             this.el.style.display = 'flex';
-            this.hidden = false;
         }
+    }
+
+    isHidden() {
+        return this.dateHidden || this.tagHidden;
     }
 
     remove() {

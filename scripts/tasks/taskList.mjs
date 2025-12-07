@@ -43,8 +43,9 @@ class TaskList {
             this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
         });
         this.filterButton.addEventListener('click', () => {
-            this.filter(); 
+            this.filterByTag(); 
         });
+
     }
 
     static deselectAllTags() {
@@ -53,53 +54,71 @@ class TaskList {
         }
     }
 
-    static filter() {
-        let isCancelFilter = true;
-        for (let tag of this.tags) {
-            if (tag.selected) {
-                isCancelFilter = false;
-            }
-        }
-
-        if (!isCancelFilter) {
-            this.cancelFilter();
-            return;
-        }
-
-        let chosedDate = Date(DateData.chosenYear, DateData.chosenMonth, DateData.chosenDay);
-
-        for (let task of this.tasks) {
-            let hide = true;
-                        
-            if (task.taskDate.date.valueOf() < chosedDate.valueOf()) {
-                hide = false;
-            }
-
-            for (let tag of this.tags) {              
-                if (!hide) break;
-
-                if (tag.selected) {
-                    if (task.tags.includes(tag.name)) {
-                        hide = false;
-                        break;
-                    }   
-                }
-            }
-            if (hide) {
+    static update() {        
+        for (const task of this.tasks) {
+            if (task.isHidden()) {
                 task.hide();
             }
             else {
                 task.show();
             }
         }
-        
 
         for (let d of this.dates) {
             d.update();
         }
 
         this.deselectAllTags();
-        this.toJSON();
+    }
+
+    static filterByTag() {
+        let cancelFilter = true;
+        for (let tag of this.tags)  {
+            if (tag.selected) {
+                cancelFilter = false;
+                break;
+            }
+        }
+
+        if (cancelFilter) {
+            for (let task of this.tasks) {
+                task.tagHidden = false;
+            }
+        }
+
+        else {
+            for (let task of this.tasks) {
+                let hide = true;            
+
+                for (let tag of this.tags) {              
+                    if (tag.selected) {
+                        if (task.tags.includes(tag.name)) {
+                            hide = false;
+                            break;
+                        }   
+                    }
+                }
+
+                task.tagHidden = hide;
+            }   
+        }
+
+        this.update();   
+    }
+
+    static filterByDate() {         
+        let chosedDate = Date(DateData.chosenYear, DateData.chosenMonth, DateData.chosenDay);
+        for (let task of this.tasks) {
+            let hide = true;
+                        
+            if (task.taskDate.date.valueOf() < chosedDate.valueOf()) {
+                hide = false;
+            }            
+
+            task.tagHidden = hide;
+        }         
+
+        this.update();
     }
 
     static parseJSON(list) {        
@@ -113,11 +132,19 @@ class TaskList {
     }
 
     static toJSON() {
-        let res = []
+        let res = [];
+        let tasks = [];
+        let tags = [];
         for (const task of this.tasks) {
-            res.push(task.toJSON());
-        }        
+            tasks.push(task.toJSON());
+        }                
+        for (const tag of this.tags) {
+            tags.push(tag.name);
+        }
         console.log(res);
+
+        res.push(tasks);
+        res.push(tags);
         return res;
     }
 
