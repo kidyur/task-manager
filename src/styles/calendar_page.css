@@ -76,10 +76,11 @@
     margin-top: var(--margin-medium);
     width: calc(100% - 2 * var(--padding-medium) - 6px);
     cursor: pointer;
-    /* border: 3px solid white; */
+    border: 3px solid var(--fg-color);
+    box-shadow: 0 0 20px 0 black;
     padding: var(--padding-medium); 
     font-size: 24px;
-    z-index: 2;
+    z-index: 666;
 }
 
 #calendar-page__year {
@@ -102,10 +103,10 @@
 #month-picker {
     display: none;
     width: 300px;
-    top: 65px;
+    top: 120px;
     height: 100%;
     background-color: var(--bg-color);
-    z-index: 2;;
+    z-index: 2;
     position: absolute;
 }
 
@@ -130,12 +131,13 @@
 }
 
 .month-picker__btn {
-    height: 20px;
+    height: 30px;
+    border-radius: 100%;
     aspect-ratio: 1;
     background-image: url('../icons/arrow.svg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: 80%;
 }
 
 .month__icon {
@@ -163,6 +165,7 @@
     align-items: center;
     flex-direction: row;
     width: 100%;
+    z-index: 666;
     height: 100%;
     justify-content: space-between;
 }

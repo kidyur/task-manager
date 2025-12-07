@@ -99,7 +99,7 @@ class Calendar {
     }
 
     static #createWeekDays() {
-        const weekDays = ['п', 'в', 'с', 'ч', 'п', 'с', 'в'];
+        const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
         for (const day of weekDays) {
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar__day calendar__day_name';

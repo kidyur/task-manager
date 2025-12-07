@@ -45,14 +45,17 @@
 }
 
 .schedule-page__add-schedule-btn {
-    height: 26px;
     aspect-ratio: 1;
     /* box-shadow: 4px 4px 10px 0px black; */
     box-shadow: 0px 0px 0px 0px black;
     color: white;
-    font-size: 22px;
+    font-size: 20px;
+    padding: 0;
+    height: 30px;
+    border-radius: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .schedule-page__group-input {
@@ -138,6 +141,7 @@
 
 #schedule-page__delete-schedule-btn {
     color: var(--font-warning-color);
+    border: 2px var(--font-warning-color) solid;
     font-size: 14px;
 }
 
@@ -152,6 +156,8 @@
 
 .set-current-day-btn {
     display: none;
+    border: none;
+    box-shadow: none;
     color: var(--font-main-color)
 }
 
@@ -178,6 +184,7 @@
 
 .shift--editing .shift__icon {
     display: inline;
+    border: var(--font-main-color) 2px solid;
 }
 
 .shift__input {
@@ -212,13 +219,15 @@
 }
 
 .shift--editing .shift__right-block {
-    height: 80px;
+    height: 60px;
 }
 
 .shift__delete-btn {
     display: none;
     border-radius: 100%;
+    border: none;
     height: 16px;
+    padding: 0;
     background-color: var(--font-warning-color);
     width: 16px;
     margin-top: var(--margin-big);
@@ -272,7 +281,10 @@
 .shift__icon {
     width: 30px;
     height: 30px;
+    padding: 0;
+    margin: 0;
     display: none;
+    border: none;
     opacity: 40%;
     background-size: 70%;
     background-repeat: no-repeat;
@@ -380,10 +392,9 @@
 }
 
 #schedule-page__add-shift-btn {
-    width: 100%;
     color: var(--font-main-color);
+    border: var(--font-main-color) 2px solid;
     background: unset;
-    border: none;
     height: 30px;
     margin-top: var(--margin-medium);
     font-size: 14px;

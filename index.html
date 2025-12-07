@@ -8,21 +8,23 @@
 
 <body>    
     <div id="tasks-page" class="page">
-    <button id="tasks-page__filter-btn">
-        Ф
-    </button>
     <div id="tasks-page__tag-line">            
     </div>        
+    <div id="tag-manager">
+        <button id="tasks-page__add-tag-button" class="default-btn">
+            Добавить тег
+        </button>
+        <button id="tasks-page__filter-btn">
+            Фильтр
+        </button>
+    </div>     
+    <input placeholder="Введите название тега" id="tasks-page__tag-input" class="tasks-page__input" autocomplete="off" maxlength="15"></input>
     <div style="height: 20px"></div>     
     <button id="tasks-page__add-task-btn" class="default-btn">
         Добавить задачу 
     </button> 
-    <input id="tasks-page__task-name-input" class="tasks-page__input" autocomplete="off" maxlength=60></input>                
-    <div style="height: 20px"></div>        
-    <button id="tasks-page__add-tag-button" class="default-btn">
-        Добавить тэг
-    </button>
-    <input id="tasks-page__tag-input" class="tasks-page__input" autocomplete="off" maxlength="15"></input>
+    <input placeholder="Введите название задачи" id="tasks-page__task-name-input" class="tasks-page__input" autocomplete="off" maxlength=60></input>                
+    <div style="height: 20px"></div>   
     <div id="tasks-page__task-list">
     </div>
     </div>
