@@ -66,11 +66,18 @@ class SchedulesData {
 
     static parseJSON(list) {
         console.log("PARSE_JSON_SCHEDULES :: BEGIN")
-        for (const schedule in list) {
+        console.log(list);
+        for (const schedule of list) {
             console.log("schedule passed")
             const schedule_item = new Schedule();
-            for (const shift_item in schedule.shifts) {
-                const shift = new Shift(shift_item.name);
+            console.log(schedule)
+            console.log(schedule.name)
+            schedule_item.name = schedule.name;
+            for (const shift_item of schedule.shifts) {
+                console.log('ADD: shift');
+                console.log(shift_item)
+                console.log(shift_item.name)
+                const shift = new Shift(shift_item.name, shift_item.iconTag);
             }
         }
         console.log("PARSE_JSON_SCHEDULES :: END")

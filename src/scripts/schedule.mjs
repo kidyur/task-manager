@@ -9,7 +9,10 @@ class Schedule {
 
     #name            = "";   
     get name() { return this.#name }
-    set name(n) { this.#name = n }
+    set name(n) { 
+        this.#name = n;
+        this.#input.value = n;
+    }
     #input           = undefined;
     #beginningDate   = undefined;
     get beginningDate() {
@@ -37,6 +40,9 @@ class Schedule {
             this.#createInput();
             this.#appendToSchedulesList();
             this.#input.focus();
+            this.select();
+            SchedulesData.addSchedule(this);
+            Schedule.updateScheduleManager();
         } else {
             // Cleaning of shifts list view
             const shiftList = document.getElementById('schedule-page__shift-list');
@@ -47,12 +53,11 @@ class Schedule {
     static #setupAddShiftBtn() {
         const btn = document.getElementById('schedule-page__add-shift-btn');
         btn.addEventListener('click', async () => {
-                const shift = new Shift();
-                SchedulesData.currentSchedule.addShift(shift);
-                Shift.offLastActiveShift();
-                shift.select();
-                Calendar.update();
-            })
+            const shift = new Shift();
+            Shift.offLastActiveShift();
+            shift.select();
+            Calendar.update();
+        })
     }
     
 
@@ -61,9 +66,6 @@ class Schedule {
         btn.addEventListener('click', async () => {
             if (SchedulesData.getSchedulesLength() < 3) {
                 const schedule = new Schedule();
-                SchedulesData.addSchedule(schedule);
-                schedule.select();
-                Schedule.updateScheduleManager();
             }
         })
     }
@@ -124,7 +126,6 @@ class Schedule {
         input.placeholder = "Ваше расписание";
         input.className = 'schedule__input';
         input.maxLength = 24;
-        input.value = '';
         input.addEventListener('blur', async () => {
             this.name = input.value;
         })
