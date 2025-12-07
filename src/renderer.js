@@ -41,7 +41,7 @@ import SchedulesData from "/src/scripts/SchedulesData.mjs";
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({
-        tasksData: TaskList.toJSON(),
+        tasksData: TaskList.toJSON2(),
         schedules: SchedulesData.toJSON()
     });
 })
@@ -53,6 +53,13 @@ Schedule.setupScheduleManager();
 TaskList.start();
 
 const data = await window.electronAPI.getSharedData();
-console.log('Получено из main:', data);
 SchedulesData.parseJSON(data.schedules);
 TaskList.parseJSON(data.tasksData);
+
+
+document.addEventListener('keydown', (ev) => {
+    if (ev.code == 'KeyZ') {
+        console.log(TaskList.toJSON2());
+        console.log(TaskList.tasks);
+    }
+});

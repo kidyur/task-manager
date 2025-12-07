@@ -13,13 +13,14 @@ class Task {
     init(name, date) {     
         TaskList.cancelFilter();
 
+
         this.name = name;
         this.date = date;
 
         let pos = null;        
-        for (let i = TaskList.tasks.length - 1; i >= 0; i--) {  
+        for (let i = TaskList.tasks.length - 1; i >= 0; i--) {   
             if (date >= TaskList.tasks[i].taskDate.date) {                
-                pos = TaskList.tasks[i];
+                pos = TaskList.tasks[i];                
                 TaskList.tasks.splice(i + 1, 0, this);
                 break;
             }
@@ -46,6 +47,7 @@ class Task {
             }
         }
 
+
         if (pos) {
             if (pos.taskDate.date.valueOf() != date.valueOf()) {              
                 let taskDate = new TaskDate();
@@ -59,10 +61,18 @@ class Task {
                 pos.el.insertAdjacentElement('afterend', element);
                 this.taskDate = pos.taskDate;                       
             }
-        }       
-        
-        TaskList.tasks.push(this);
+        }    
+        else {            
+            let taskDate = new TaskDate();
+            taskDate.init(date);
+            this.taskDate = taskDate;
+                
+            TaskList.taskContainer.appendChild(taskDate.el);
+            taskDate.el.insertAdjacentElement('afterend', element);
 
+            TaskList.tasks.push(this);
+        }   
+        
         TaskList.deselectAllTags();
     }
 
@@ -98,20 +108,7 @@ class Task {
         else {
             obj.tag = this.tags[0].name;
         }
-        obj.date = [this.taskDate.date.getDate(), this.taskDate.date.getMonth(), this.taskDate.date.getYear()];
-        return obj;
-    }
-
-    toJSON() {
-        let obj = {};
-        obj.name = this.name;
-        if (this.tags.length == 0) {
-            obj.tag = "";
-        }
-        else {
-            obj.tag = this.tags[0].name;
-        }
-        obj.date = [this.taskDate.date.getDate(), this.taskDate.date.getMonth(), this.taskDate.date.getYear()];
+        obj.date = [this.taskDate.date.getYear() + 1900, this.taskDate.date.getMonth(), this.taskDate.date.getDate()];
         return obj;
     }
 }

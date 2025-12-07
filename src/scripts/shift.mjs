@@ -61,9 +61,6 @@ class Shift {
         input.placeholder = "День";
         input.addEventListener('blur', async () => {
             this.#name = input.value;
-            // Сохраняем данные
-            const { saveAppData } = await import('./utils/saveData.mjs');
-            saveAppData();
         })
         input.addEventListener('dblclick', () => {
             if (SchedulesData.currentSchedule.beginningShift != this) {

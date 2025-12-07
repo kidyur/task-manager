@@ -7,7 +7,7 @@ class DateData {
     static #year = 0;
     static get year() { return DateData.#year };
 
-    static #chosenYear = 0;
+    static #chosenYear = 1975;
     static get chosenYear() {
         return this.#chosenYear;
     }
@@ -15,7 +15,7 @@ class DateData {
         this.#chosenYear = year;
     }
 
-    static #chosenMonth = 0;
+    static #chosenMonth = 1;
     static get chosenMonth() {
         return this.#chosenMonth;
     }

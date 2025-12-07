@@ -21,21 +21,7 @@ class TaskList {
     static filterButton = document.getElementById("tasks-page__filter-btn");
         
 
-    static start() {      
-        let zeroTask = new Task();
-        let zeroTaskEl = document.createElement('div');
-        this.taskContainer.appendChild(zeroTaskEl);
-        let zeroDate = new TaskDate();
-        zeroDate.tasks.push(zeroTask);
-        zeroDate.el = document.createElement('div');
-        zeroDate.date = new Date(1971, 0, 1);
-        zeroTask.taskDate = zeroDate;
-        zeroTask.el = zeroTaskEl;    
-        
-        this.tasks.push(zeroTask);
-        this.dates.push(zeroDate);
-        
-
+    static start() {        
         this.addTagButton.addEventListener('click', () => {
             this.addTag(this.tagInput.value);
         });    
@@ -120,8 +106,10 @@ class TaskList {
         this.update();
     }
 
-    static parseJSON(list) {        
-        for (const task of list.tasks) {            
+    static parseJSON(list) {  
+        console.log(list.tasks);
+
+        for (const task of list.tasks) {   
             this.addTask(task.name, new Date(task.date[0], task.date[1], task.date[2]));
         }        
         for (const tag of list.tags) {
@@ -130,20 +118,20 @@ class TaskList {
 
     }
 
-    static toJSON() {
-        let res = [];
-        let tasks = [];
-        let tags = [];
+    static toJSON2() {
+        let res = {};
+        let res_tasks = [];
+        let res_tags = [];
         for (const task of this.tasks) {
-            tasks.push(task.toJSON());
+            res_tasks.push(task.toJSON());
         }                
         for (const tag of this.tags) {
-            tags.push(tag.name);
+            res_tags.push(tag.name);
         }
-        console.log(res);
 
-        res.push(tasks);
-        res.push(tags);
+        res.tasks = res_tasks;
+        res.tags = res_tags;
+        
         return res;
     }
 
@@ -159,6 +147,7 @@ class TaskList {
 
     static addTask(name, date) {
         if (name != '') {
+            console.log('COCKISHE');
             new Task().init(name, date);
             this.taskNameInput.value = '';
         }
