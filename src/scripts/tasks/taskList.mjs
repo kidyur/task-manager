@@ -1,4 +1,3 @@
-// Роман Рузманов, [07.12.2025 13:49]
 import TaskDate from "./taskDate.mjs";
 import Task from "./task.mjs";
 import Tag from "./tag.mjs"
@@ -57,11 +56,7 @@ class TaskList {
 
     static update() {        
         for (const task of this.tasks) {
-<<<<<<< HEAD:src/scripts/tasks/taskList.mjs
-            if (hide) {
-=======
             if (task.isHidden()) {
->>>>>>> roman:scripts/tasks/taskList.mjs
                 task.hide();
             }
             else {
@@ -90,20 +85,11 @@ class TaskList {
                 task.tagHidden = false;
             }
         }
-<<<<<<< HEAD:src/scripts/tasks/taskList.mjs
-=======
-
->>>>>>> roman:scripts/tasks/taskList.mjs
         else {
             for (let task of this.tasks) {
                 let hide = true;            
 
                 for (let tag of this.tags) {              
-<<<<<<< HEAD:src/scripts/tasks/taskList.mjs
-                    if (!hide) break;
-
-=======
->>>>>>> roman:scripts/tasks/taskList.mjs
                     if (tag.selected) {
                         if (task.tags.includes(tag.name)) {
                             hide = false;
@@ -145,11 +131,7 @@ class TaskList {
     }
 
     static toJSON() {
-<<<<<<< HEAD:src/scripts/tasks/taskList.mjs
-        let res = {};
-=======
         let res = [];
->>>>>>> roman:scripts/tasks/taskList.mjs
         let tasks = [];
         let tags = [];
         for (const task of this.tasks) {
@@ -160,13 +142,8 @@ class TaskList {
         }
         console.log(res);
 
-<<<<<<< HEAD:src/scripts/tasks/taskList.mjs
-        res.tasks = tasks;
-        res.tags = tags;
-=======
         res.push(tasks);
         res.push(tags);
->>>>>>> roman:scripts/tasks/taskList.mjs
         return res;
     }
 
@@ -181,15 +158,10 @@ class TaskList {
     }
 
     static addTask(name, date) {
-<<<<<<< HEAD:src/scripts/tasks/taskList.mjs
-        new Task().init(name, date);
-        this.taskNameInput.value = '';
-=======
         if (name != '') {
             new Task().init(name, date);
             this.taskNameInput.value = '';
         }
->>>>>>> roman:scripts/tasks/taskList.mjs
     }
 
     static addTag(name) {        

@@ -52,6 +52,8 @@ ipcMain.on('set-shared-data', (event, value) => {
 app.whenReady().then(() => {
   createWindow();
 
+  const dataPath = path.join(app.getPath('userData'), 'DATA.json');
+  console.log(dataPath);
   loadData();
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.

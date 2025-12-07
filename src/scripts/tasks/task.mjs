@@ -79,11 +79,7 @@ class Task {
     }
 
     isHidden() {
-<<<<<<< HEAD:src/scripts/tasks/task.mjs
-        return this.dateHidden && this.tagHidden;
-=======
         return this.dateHidden || this.tagHidden;
->>>>>>> roman:scripts/tasks/task.mjs
     }
 
     remove() {
