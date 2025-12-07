@@ -52,9 +52,6 @@ class Schedule {
                 Shift.offLastActiveShift();
                 shift.select();
                 Calendar.update();
-                // Сохраняем данные
-                const { saveAppData } = await import('./utils/saveData.mjs');
-                saveAppData();
             })
     }
     
@@ -67,9 +64,6 @@ class Schedule {
                 SchedulesData.addSchedule(schedule);
                 schedule.select();
                 Schedule.updateScheduleManager();
-                // Сохраняем данные
-                const { saveAppData } = await import('./utils/saveData.mjs');
-                saveAppData();
             }
         })
     }
@@ -122,9 +116,6 @@ class Schedule {
             SchedulesData.removeSchedule(SchedulesData.currentSchedule);
             SchedulesData.currentSchedule = new Schedule(true); 
             Schedule.updateScheduleManager();
-            // Сохраняем данные
-            const { saveAppData } = await import('./utils/saveData.mjs');
-            saveAppData();
         })
     }
     
@@ -136,9 +127,6 @@ class Schedule {
         input.value = '';
         input.addEventListener('blur', async () => {
             this.name = input.value;
-            // Сохраняем данные
-            const { saveAppData } = await import('./utils/saveData.mjs');
-            saveAppData();
         })
         this.#input = input;
         this.#element.appendChild(input);

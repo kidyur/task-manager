@@ -89,9 +89,6 @@ class Shift {
                 }
             }
             shiftList.removeChild(this.#element);
-            // Сохраняем данные
-            const { saveAppData } = await import('./utils/saveData.mjs');
-            saveAppData();
         })
         
         this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);
@@ -123,9 +120,6 @@ class Shift {
                     prevIcon.className = 'shift__icon';
                 }
                 btn.className = 'shift__icon shift__icon--first';
-                // Сохраняем данные
-                const { saveAppData } = await import('./utils/saveData.mjs');
-                saveAppData();
                 Calendar.update();
             })
             field.appendChild(btn);

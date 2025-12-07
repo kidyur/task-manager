@@ -87,8 +87,6 @@ class Task {
         this.taskDate.tasks.splice(this.taskDate.tasks.indexOf(this), 1);       
         this.taskDate.update();
         TaskList.tasks.splice(TaskList.tasks.indexOf(this), 1);
-        // Сохраняем данные
-        saveAppData();
     }
 
     toJSON() {
