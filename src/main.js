@@ -22,10 +22,13 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    maximizable: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
+
+  mainWindow.maximize();
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -35,7 +38,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 ipcMain.handle('get-shared-data', () => {

@@ -10,10 +10,10 @@ class Shift {
     #input     = undefined;
     #iconTag   = "";
     get iconTag() { return this.#iconTag };
-    
+
     constructor(name="", tag="") {
         const shiftEl = document.createElement('div');
-        shiftEl.className = 'shift shift--editing';
+        shiftEl.className = 'shift';
         this.#element = shiftEl;
 
         shiftEl.innerHTML = `
@@ -27,7 +27,6 @@ class Shift {
         shiftEl.addEventListener('click', () => {
             this.select();
         })
-        console.log(tag)
         this.createIconsField(tag);
         this.createInput();
         this.createDeleteBtn();
@@ -38,6 +37,8 @@ class Shift {
         if (SchedulesData.currentSchedule.beginningShift == Shift) {
             this.tagAsCurrent();
         }
+
+        this.select();
     }
 
     static offLastActiveShift() {
@@ -63,7 +64,6 @@ class Shift {
         input.placeholder = "День";
         input.addEventListener('blur', async () => {
             this.#name = input.value;
-            console.log(this.#name);
         })
         input.addEventListener('dblclick', () => {
             if (SchedulesData.currentSchedule.beginningShift != this) {

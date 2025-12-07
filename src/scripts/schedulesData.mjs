@@ -30,7 +30,6 @@ class SchedulesData {
             SchedulesData.#schedules.push(schedule);
             Calendar.update();
         } 
-        console.log(SchedulesData.schedules);
     }
 
     static removeSchedule(schedule) {
@@ -56,7 +55,7 @@ class SchedulesData {
             for (const shift of schedule.shifts) {
                 scheduleFmt.shifts.push({
                     name: shift.name, 
-                    iconTag: shift.iconTag
+                    iconTag: shift.iconTag,
                 })
             }
             obj.push(scheduleFmt);
@@ -65,22 +64,13 @@ class SchedulesData {
     }
 
     static parseJSON(list) {
-        console.log("PARSE_JSON_SCHEDULES :: BEGIN")
-        console.log(list);
         for (const schedule of list) {
-            console.log("schedule passed")
             const schedule_item = new Schedule();
-            console.log(schedule)
-            console.log(schedule.name)
             schedule_item.name = schedule.name;
             for (const shift_item of schedule.shifts) {
-                console.log('ADD: shift');
-                console.log(shift_item)
-                console.log(shift_item.name)
                 const shift = new Shift(shift_item.name, shift_item.iconTag);
             }
         }
-        console.log("PARSE_JSON_SCHEDULES :: END")
     }
 }
 

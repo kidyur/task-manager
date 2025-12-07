@@ -54,7 +54,6 @@ class Schedule {
         const btn = document.getElementById('schedule-page__add-shift-btn');
         btn.addEventListener('click', async () => {
             const shift = new Shift();
-            Shift.offLastActiveShift();
             shift.select();
             Calendar.update();
         })

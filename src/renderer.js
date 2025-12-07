@@ -51,8 +51,6 @@ Schedule.setupScheduleManager();
 TaskList.start();
 
 const data = await window.electronAPI.getSharedData();
-console.log('Получено из main:', data);
-console.log(data.schedules);
 SchedulesData.parseJSON(data.schedules);
 // TaskList.parseJSON(data.tasksData);
 

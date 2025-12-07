@@ -28,7 +28,7 @@
     --fg-color: #535353;
     --fg-color-active: #A22C29; 
     --font-main-color: #EFF1F3; 
-    --font-warning-color: #A22C29; 
+    --font-warning-color: rgb(196, 0, 0); 
     --text-color-500: black;
     --text-color-300: #434343;
 }
@@ -41,7 +41,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     top: 0;
     overflow: hidden;
     left: 0;
@@ -92,9 +92,13 @@ button {
     height: 100vh;
     background-color: var(--bg-color);
     flex-direction: column;
-    padding: 0 var(--padding-big);
     align-items: center;
-    border: 2px solid var(--font-main-color);
+}
+
+.page:nth-child(2n + 1) {
+    box-shadow: 0 0 20px 0 black;
+    z-index: 2;
+    height: 90vh;   
 }
 
 input {
