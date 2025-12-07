@@ -3,11 +3,15 @@ import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
 
 class Schedule {
-    #element         = HTMLDivElement;
+    #element         = undefined;
     #shifts          = [];
+    get shifts() {return this.#shifts}
+
     #name            = "";   
-    #input           = HTMLInputElement;
-    #beginningDate   = Date;
+    get name() { return this.#name }
+    set name(n) { this.#name = n }
+    #input           = undefined;
+    #beginningDate   = undefined;
     get beginningDate() {
         const date = new Date(this.#beginningDate);
         return date;
@@ -141,12 +145,8 @@ class Schedule {
     }
 
     addShift(shift) {
-        if (shift.constructor.name != "Shift") {
-            alert("Попытка добавить в список смен объект, не являющийся сменой");
-        } else {
-            this.#shifts.push(shift);
-            Calendar.update();
-        }
+        this.#shifts.push(shift);
+        Calendar.update();
     }
     
     removeShift(shift) {

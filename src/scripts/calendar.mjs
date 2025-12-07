@@ -3,7 +3,7 @@ import DateData from "./dateData.mjs";
 import Day from './day.mjs';
 
 class Calendar {
-    static #calendarEl = HTMLDivElement;
+    static #calendarEl = undefined;
     static #borderFlag = true;
 
     constructor() { };
@@ -74,7 +74,7 @@ class Calendar {
             if (seq[(day-1) % seq.length] == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
                 Calendar.#borderFlag = !Calendar.#borderFlag;
             }
-            const icon = (seq.length ? shifts[seq[(day-1) % seq.length]].iconURL : "");
+            const icon = (seq.length ? shifts[seq[(day-1) % seq.length]].iconTag : "");
             const d = new Day(day, this.#borderFlag, icon);
         }
         Calendar.#borderFlag = true;
@@ -124,4 +124,5 @@ class Calendar {
 }
 
 export default Calendar;
+
 

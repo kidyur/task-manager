@@ -1,8 +1,25 @@
 import DateData from "./dateData.mjs";
 import Calendar from "./calendar.mjs";
 
+function getAssetPath(relativePath) {
+  if (window.process?.versions?.electron) {
+    // In Electron app
+    if (window.process?.resourcesPath) {
+      // Packaged app
+      const path = require('path');
+      return `file://${path.join(window.process.resourcesPath, 'app.asar.unpacked', 'src', relativePath)}`;
+    } else {
+      // Development
+      return `./${relativePath}`;
+    }
+  } else {
+    // Web app
+    return `./${relativePath}`;
+  }
+}
+
 class Month {
-    #element = HTMLButtonElement;
+    #element = undefined;
     #idx     = 0;
 
     constructor(listEl, idx) {
@@ -30,10 +47,10 @@ class Month {
         this.#element.textContent = text;
     }
 
-    setIcon(imageURL) {
+    setIcon(seasonTag) {
         const icon = document.createElement('div');
         icon.className = 'month__icon';
-        icon.style.backgroundImage = 'url("../icons/' + imageURL + '")';
+        icon.setAttribute('season', seasonTag);
         this.#element.appendChild(icon);
     }
 

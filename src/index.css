@@ -41,6 +41,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-content: center;
     top: 0;
     overflow: hidden;
     left: 0;
@@ -87,13 +88,13 @@ button {
 }
 
 .page {
-    width: 400px;
-    max-width: 300px;
+    width: 300px;
     height: 100vh;
     background-color: var(--bg-color);
     flex-direction: column;
+    padding: 0 var(--padding-big);
     align-items: center;
-    max-width: 500px;
+    border: 2px solid var(--font-main-color);
 }
 
 input {
@@ -129,14 +130,3 @@ footer {
     border-top-right-radius: 40px;
     border-bottom-right-radius: 40px;
 }
-
-
-.default-btn {    
-    display: flex;
-    padding: 10px;
-    border-radius: 10%;
-    border: 2px solid var(--fg-color);
-    margin: 4px;
-    color: var(--fg-color-active);
-}
-

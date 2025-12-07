@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/calendar_page.css">
-    <link rel="stylesheet" href="styles/tasks_page.css">
-    <link rel="stylesheet" href="styles/schedule_page.css">
-    <link rel="stylesheet" href="styles/common.css">
-    <title>2Календарь | Календарь смен, управление задачами</title>
+    <title>Работа не Волк | Календарь смен, управление задачами</title>
 </head>
 
 <body>    
@@ -18,15 +14,18 @@
         <div id="tasks-page__tag-line">            
         </div>        
         <div style="height: 20px"></div>     
-        <button id="tasks-page__add-task-btn" class="default-btn">
+        <button id="tasks-page__add-task-btn">
             Добавить задачу 
-        </button> 
-        <input id="tasks-page__task-name-input" class="tasks-page__input" autocomplete="off" maxlength=60></input>                
-        <div style="height: 20px"></div>        
-        <button id="tasks-page__add-tag-button" class="default-btn">
-            Добавить тэг
         </button>
-        <input id="tasks-page__tag-input" class="tasks-page__input" autocomplete="off"></input>
+        <div>
+            <input type="date" id="tasks-page__date-input"></input>
+        </div>
+        <input id="tasks-page__task-name-input" class="tasks-page__input"></input>                
+        <div style="height: 20px"></div>        
+        <div id="tasks-page__add-tag-button" class="button">
+            Добавить тэг
+        </div>
+        <input id="tasks-page__tag-input" class="tasks-page__input"></input>
         <div id="tasks-page__task-list">
         </div>
     </div>
@@ -42,9 +41,8 @@
         </div>
         <div id="month-picker">
         </div>
-        <div id="calendar"></div>        
+        <div id="calendar"></div>
     </div>
-
     <div id="schedule-page" class="page">
         <div id="schedule-page__groups-line">
             <div id="schedule-page__groups-sector"></div>
@@ -63,30 +61,16 @@
         </div>
     </div>
 
-    <footer>
-        <button id="open-schedule-page-btn" class="footer__btn">
-            <div>Расписание</div>
-        </button>
-        <button id="open-calendar-page-btn" class="footer__btn">
-            <div>Календарь</div>
-        </button>
-        <button id="open-tasks-page-btn" class="footer__btn">
-            <div>Задачи</div>
-        </button>
-    </footer>
-
-    <script src="scripts/footerButtons.js"></script>
-
-    <script type="module" src="scripts/tasks/taskList.mjs"></script>
-    <script type="module" src="scripts/tasks/tag.mjs"></script>
-    <script type="module" src="scripts/tasks/task.mjs"></script>
-    <script type="module" src="scripts/tasks/taskDate.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/taskList.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/tag.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/task.mjs"></script>
+    <script type="module" src="/src/scripts/tasks/taskDate.mjs"></script>
     
-    <script type="module" src="/app.mjs"></script>
-    <script type="module" src="/scripts/calendar.mjs"></script>
-    <script type="module" src="/scripts/schedule.mjs"></script>
-    <script type="module" src="/scripts/schedulesData.mjs"></script>
-    <script type="module" src="/scripts/dateData.mjs"></script>
-    <script type="module" src="/scripts/day.mjs"></script>
+    <script type="module" src="/src/scripts/calendar.mjs"></script>
+    <script type="module" src="/src/scripts/schedule.mjs"></script>
+    <script type="module" src="/src/scripts/schedulesData.mjs"></script>
+    <script type="module" src="/src/scripts/dateData.mjs"></script>
+    <script type="module" src="/src/scripts/day.mjs"></script>
+    <script type="module" src="/src/renderer.js"></script>
 </body>
 </html>
