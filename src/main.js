@@ -64,6 +64,7 @@ app.whenReady().then(() => {
 
 function loadData() {
   const dataPath = path.join(app.getPath('userData'), 'DATA.json');
+  console.log(dataPath);
   sharedData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
   console.log(sharedData);
 }

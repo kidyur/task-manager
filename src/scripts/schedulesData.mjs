@@ -13,8 +13,10 @@ class SchedulesData {
     }
 
     static #schedules = [];
-    static get schedules() { return SchedulesData.#schedules }
-    static set schedules(s) { SchedulesData.#schedules = s }
+    static get schedules() { 
+        return [...this.#schedules];
+    }
+    static set schedules(s) { this.#schedules = s }
 
     constructor() { }
     
@@ -28,6 +30,7 @@ class SchedulesData {
             SchedulesData.#schedules.push(schedule);
             Calendar.update();
         } 
+        console.log(SchedulesData.schedules);
     }
 
     static removeSchedule(schedule) {
@@ -43,8 +46,9 @@ class SchedulesData {
     }
 
     static toJSON() {
-        const obj = [];
-        for (const schedule of SchedulesData.#schedules) {
+        let obj = [];
+        for (const schedule of SchedulesData.schedules) {
+            console.log("Schedule processed")
             const scheduleFmt = {
                 name: schedule.name,
                 shifts: []
@@ -61,12 +65,15 @@ class SchedulesData {
     }
 
     static parseJSON(list) {
+        console.log("PARSE_JSON_SCHEDULES :: BEGIN")
         for (const schedule in list) {
+            console.log("schedule passed")
             const schedule_item = new Schedule();
             for (const shift_item in schedule.shifts) {
                 const shift = new Shift(shift_item.name);
             }
         }
+        console.log("PARSE_JSON_SCHEDULES :: END")
     }
 }
 
