@@ -1,6 +1,16 @@
-import { app, BrowserWindow } from 'electron';
+
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import fs from "fs";
+
+let sharedData = {
+  tasksData: {
+    tasks: [],
+    tags: []
+  },
+  schedules: []
+};
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -28,12 +38,21 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+ipcMain.handle('get-shared-data', () => {
+  return sharedData; // Возвращаем данные
+});
+
+ipcMain.on('set-shared-data', (event, value) => {
+  sharedData = value; // Сохраняем новое значение
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
 
+  loadData();
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   app.on('activate', () => {
@@ -43,11 +62,26 @@ app.whenReady().then(() => {
   });
 });
 
+function loadData() {
+  const dataPath = path.join(app.getPath('userData'), 'DATA.json');
+  sharedData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+  console.log(sharedData);
+}
+
+function saveData() {
+  const dataPath = path.join(app.getPath('userData'), 'DATA.json');
+  console.log("tasksData :: ", sharedData.tasksData);
+  console.log("schedules :: ", sharedData.schedules);
+  const data = JSON.stringify(sharedData, null, 2);
+  fs.writeFileSync(dataPath, data);
+}
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    saveData();
     app.quit();
   }
 });

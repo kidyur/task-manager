@@ -142,6 +142,7 @@
     aspect-ratio: 1;
     background-position: center center;
     background-repeat: no-repeat;
+
     background-size:60%;
 }
 
@@ -186,6 +187,21 @@
     display: inline-block
 }
 
+.month__icon[season="winter"] {
+    background-image: url('../icons/snowflake.svg');
+}
+
+.month__icon[season="spring"] {
+    background-image: url('../icons/flower.svg');
+}
+
+.month__icon[season="summer"] {
+    background-image: url('../icons/sun.svg');
+}
+
+.month__icon[season="fall"] {
+    background-image: url('../icons/leaf.svg');
+}
 
 .month-picker__season:first-child {
     margin-left: 0px;

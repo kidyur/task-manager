@@ -7,7 +7,8 @@ class Task {
     el;
     tags = [];
 
-    hidden = false;
+    dateHidden = false;
+    tagHidden = false;
 
     init(name, date) {     
         TaskList.cancelFilter();
@@ -16,7 +17,7 @@ class Task {
         this.date = date;
 
         let pos = null;        
-        for (let i = TaskList.tasks.length - 1; i >= 0; i--) {                
+        for (let i = TaskList.tasks.length - 1; i >= 0; i--) {  
             if (date >= TaskList.tasks[i].taskDate.date) {                
                 pos = TaskList.tasks[i];
                 TaskList.tasks.splice(i + 1, 0, this);
@@ -60,34 +61,49 @@ class Task {
             }
         }       
         
-        this.taskDate.tasks.push(this);
+        TaskList.tasks.push(this);
 
         TaskList.deselectAllTags();
     }
 
     hide() {
-        if (!this.hidden) {
+        if (!this.isHidden()) {
             this.el.style.display = 'none';        
-            this.hidden = true;
         }
     }
 
     show() {
-        if (this.hidden) {
+        if (this.isHidden()) {
             this.el.style.display = 'flex';
-            this.hidden = false;
         }
     }
 
-    async remove() {
+    isHidden() {
+        return this.dateHidden && this.tagHidden;
+    }
+
+    remove() {
         this.el.remove();
         this.taskDate.tasks.splice(this.taskDate.tasks.indexOf(this), 1);       
         this.taskDate.update();
         TaskList.tasks.splice(TaskList.tasks.indexOf(this), 1);
         // Сохраняем данные
-        const { saveAppData } = await import('../utils/saveData.mjs');
         saveAppData();
+    }
+
+    toJSON() {
+        let obj = {};
+        obj.name = this.name;
+        if (this.tags.length == 0) {
+            obj.tag = "";
+        }
+        else {
+            obj.tag = this.tags[0].name;
+        }
+        obj.date = [this.taskDate.date.getDate(), this.taskDate.date.getMonth(), this.taskDate.date.getYear()];
+        return obj;
     }
 }
 
 export default Task;
+

@@ -4,16 +4,15 @@ import Calendar from "./calendar.mjs";
 
 class Day {
     #borderFlag = false;
-    #element    = HTMLButtonElement;
+    #element    = undefined;
     #iconURL    = "";
     #idx        = 0;
     
-    constructor(idx, borderFlag, iconURL) {
+    constructor(idx, borderFlag, iconTag) {
         const el = document.createElement('div');
         this.#element = el;
         this.#idx = idx;
         this.#borderFlag = borderFlag;
-        this.#iconURL = iconURL;
         el.innerText = idx;
         el.className = 'calendar__day calendar__day_month';
         el.addEventListener('click', () => {
@@ -21,7 +20,7 @@ class Day {
         })
         
         if (SchedulesData.currentSchedule.getShiftsLength() > 0) {
-            this.#createIcon();
+            this.#createIcon(iconTag);
             this.#upperline();
         } 
 
@@ -29,9 +28,9 @@ class Day {
         calendarEl.appendChild(el);
     }
 
-    #createIcon() {
+    #createIcon(iconTag) {
         const icon = document.createElement('div');
-        icon.style.backgroundImage = this.#iconURL;
+        icon.setAttribute('shift-icon', iconTag);
         icon.className = 'calendar__icon';
         this.#element.appendChild(icon);
     }

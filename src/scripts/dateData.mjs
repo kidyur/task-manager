@@ -23,7 +23,7 @@ class DateData {
         this.#chosenMonth = month;
     }
 
-    static #chosenDay = 0;
+    static #chosenDay = 1;
     static get chosenDay() {
         return this.#chosenDay;
     }
@@ -31,7 +31,7 @@ class DateData {
         this.#chosenDay = day;
     }
 
-    static #element = HTMLDivElement;
+    static #element = undefined;
     static #monthsNames = [
         "Январь",   "Февраль", 
         "Март",     "Апрель",  "Май", 
@@ -40,7 +40,7 @@ class DateData {
         "Декабрь"
     ];
 
-    static monthEl = Month;
+    static monthEl = undefined;
     
     constructor() { }
     
@@ -57,12 +57,12 @@ class DateData {
         let monthIdx = 1;
         const seasons = ['Зима', "Весна", "Лето", "Осень", "Зима"];
         let activeMonth = 0;
-        const seasonsIconsURLs = [
-            'snowflake.svg',
-            'flower.svg',
-            'sun.svg',
-            'leaf.svg',
-            'snowflake.svg'
+        const seasonsTags = [
+            'winter',
+            'spring',
+            'summer',
+            'fall',
+            'winter'
         ]
         for (let i = 0; i < 5; i++) {
             const seasonBlock = document.createElement('div');
@@ -73,7 +73,7 @@ class DateData {
                     const month = new Month(seasonBlock, 0);
                     if (m == 0) {
                         month.makeAsSeason(seasons[i]);
-                        month.setIcon(seasonsIconsURLs[i]);
+                        month.setIcon(seasonsTags[i]);
                     }
                 } else {
                     const month = new Month(seasonBlock, monthIdx);

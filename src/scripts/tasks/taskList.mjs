@@ -1,3 +1,4 @@
+// Роман Рузманов, [07.12.2025 13:49]
 import TaskDate from "./taskDate.mjs";
 import Task from "./task.mjs";
 import Tag from "./tag.mjs"
@@ -35,19 +36,17 @@ class TaskList {
         this.tasks.push(zeroTask);
         this.dates.push(zeroDate);
         
-        new Tag(this).init('вычмаш');
-        new Tag(this).init('ангем');
-        
 
         this.addTagButton.addEventListener('click', () => {
-            this.addTag();
+            this.addTag(this.tagInput.value);
         });    
         this.addTaskButton.addEventListener('click', () => {
-            this.addTask();
+            this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
         });
         this.filterButton.addEventListener('click', () => {
-            this.filter(); 
+            this.filterByTag(); 
         });
+
     }
 
     static deselectAllTags() {
@@ -56,30 +55,8 @@ class TaskList {
         }
     }
 
-    static filter() {
-        let isCancelFilter = true;
-        for (let tag of this.tags) {
-            if (tag.selected) {
-                isCancelFilter = false;
-            }
-        }
-
-        if (isCancelFilter) {
-            this.cancelFilter();
-            return;
-        }
-
-
-        for (let task of this.tasks) {
-            let hide = true;
-            for (let tag of this.tags) {
-                if (tag.selected) {
-                    if (task.tags.includes(tag.name)) {
-                        hide = false;
-                        break;
-                    }
-                }
-            }
+    static update() {        
+        for (const task of this.tasks) {
             if (hide) {
                 task.hide();
             }
@@ -87,13 +64,90 @@ class TaskList {
                 task.show();
             }
         }
-        
 
         for (let d of this.dates) {
             d.update();
         }
 
         this.deselectAllTags();
+    }
+
+    static filterByTag() {
+        let cancelFilter = true;
+        for (let tag of this.tags)  {
+            if (tag.selected) {
+                cancelFilter = false;
+                break;
+            }
+        }
+
+        if (cancelFilter) {
+            for (let task of this.tasks) {
+                task.tagHidden = false;
+            }
+        }
+        else {
+            for (let task of this.tasks) {
+                let hide = true;            
+
+                for (let tag of this.tags) {              
+                    if (!hide) break;
+
+                    if (tag.selected) {
+                        if (task.tags.includes(tag.name)) {
+                            hide = false;
+                            break;
+                        }   
+                    }
+                }
+
+                task.tagHidden = hide;
+            }   
+        }
+
+        this.update();   
+    }
+
+    static filterByDate() {         
+        let chosedDate = Date(DateData.chosenYear, DateData.chosenMonth, DateData.chosenDay);
+        for (let task of this.tasks) {
+            let hide = true;
+                        
+            if (task.taskDate.date.valueOf() < chosedDate.valueOf()) {
+                hide = false;
+            }            
+
+            task.tagHidden = hide;
+        }         
+
+        this.update();
+    }
+
+    static parseJSON(list) {        
+        for (const task of list.tasks) {            
+            this.addTask(task.name, new Date(task.date[0], task.date[1], task.date[2]));
+        }        
+        for (const tag of list.tags) {
+            this.addTag(tag.name);
+        }
+
+    }
+
+    static toJSON() {
+        let res = {};
+        let tasks = [];
+        let tags = [];
+        for (const task of this.tasks) {
+            tasks.push(task.toJSON());
+        }                
+        for (const tag of this.tags) {
+            tags.push(tag.name);
+        }
+        console.log(res);
+
+        res.tasks = tasks;
+        res.tags = tags;
+        return res;
     }
 
     static cancelFilter() {
@@ -106,25 +160,22 @@ class TaskList {
         }
     }
 
-    static addTask() {
-        if (this.taskNameInput.value != '') {
-            new Task().init(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
-            this.taskNameInput.value = '';
-        }
+    static addTask(name, date) {
+        new Task().init(name, date);
+        this.taskNameInput.value = '';
     }
 
-    static addTag() {        
-        if (this.tagInput.value != '' && this.tags.length < 7) {                
+    static addTag(name) {        
+        if (name != '') {                
             for (let t of this.tags) {                
                 if (t.name == this.tagInput.value) {
                     return;
                 }
             }            
-            new Tag().init(this.tagInput.value);
-            TaskList.tagInput.value = '';                    
+            new Tag().init(name);
+            this.tagInput.value = '';                    
         }
     }
 }
 
 export default TaskList
-    

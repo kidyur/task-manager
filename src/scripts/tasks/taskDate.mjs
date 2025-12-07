@@ -28,7 +28,7 @@ class TaskDate {
         }
 
         for (let t of this.tasks) {
-            if (!t.hidden) {
+            if (!t.isHidden()) {
                 this.show();
                 return;
             }
