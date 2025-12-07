@@ -35,9 +35,7 @@ import Calendar from "/src/scripts/calendar.mjs";
 import DateData from "/src/scripts/dateData.mjs";
 import Schedule from "/src/scripts/schedule.mjs";
 import TaskList from "/src/scripts/tasks/taskList.mjs";
-import SchedulesData from "/src/scripts/SchedulesData.mjs";
-
-
+import SchedulesData from "/src/scripts/schedulesData.mjs";
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({

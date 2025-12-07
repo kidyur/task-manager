@@ -10,10 +10,10 @@ class Shift {
     #input     = undefined;
     #iconTag   = "";
     get iconTag() { return this.#iconTag };
-    
-    constructor(name="") {
+
+    constructor(name="", tag="") {
         const shiftEl = document.createElement('div');
-        shiftEl.className = 'shift shift--editing';
+        shiftEl.className = 'shift';
         this.#element = shiftEl;
 
         shiftEl.innerHTML = `
@@ -27,15 +27,18 @@ class Shift {
         shiftEl.addEventListener('click', () => {
             this.select();
         })
-
-        this.createIconsField();
+        this.createIconsField(tag);
         this.createInput();
         this.createDeleteBtn();
         this.appendToShiftsList();
+        this.#input.value = name;
+        SchedulesData.currentSchedule.addShift(this);
 
         if (SchedulesData.currentSchedule.beginningShift == Shift) {
             this.tagAsCurrent();
         }
+
+        this.select();
     }
 
     static offLastActiveShift() {
@@ -75,7 +78,7 @@ class Shift {
     createDeleteBtn() {
         const btn = document.createElement('button');
         btn.className = 'shift__delete-btn';
-        btn.addEventListener('click', async () => {
+        btn.addEventListener('click', () => {
             SchedulesData.currentSchedule.removeShift(this);
             const shiftList = document.getElementById('schedule-page__shift-list');
             if (SchedulesData.currentSchedule.beginningShift == this) {
@@ -91,7 +94,7 @@ class Shift {
         this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);
     }
 
-    createIconsField() {
+    createIconsField(iconTag) {
         const iconTags = [
             'books',
             'moon_and_sun',
@@ -110,6 +113,12 @@ class Shift {
             const btn = document.createElement('button');
             btn.className = 'shift__icon';
             btn.setAttribute('shift-icon', tag);
+
+            if (tag == iconTag) {
+                this.#iconTag = tag;
+                btn.className = 'shift__icon shift__icon--first';
+            }
+
             btn.addEventListener('click', () => {
                 this.#iconTag = tag;
                 const prevIcon = field.getElementsByClassName('shift__icon--first')[0];

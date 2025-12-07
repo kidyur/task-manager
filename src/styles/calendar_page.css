@@ -76,8 +76,9 @@
     margin-top: var(--margin-medium);
     width: calc(100% - 2 * var(--padding-medium) - 6px);
     cursor: pointer;
-    border: 3px solid white;
+    /* border: 3px solid white; */
     padding: var(--padding-medium); 
+    font-size: 24px;
     z-index: 2;
 }
 
