@@ -1,5 +1,6 @@
 import Schedule from "./schedule.mjs";
 import Calendar from "./calendar.mjs";
+import Shift from "./shift.mjs";
 
 class SchedulesData {
     static #SCHEDULES_LIMIT = 3;
@@ -7,15 +8,13 @@ class SchedulesData {
     static #currentSchedule = new Schedule(true);
     static get currentSchedule() { return SchedulesData.#currentSchedule };
     static set currentSchedule(schedule) {
-        if (schedule.constructor.name != "Schedule") {
-            alert("Попытка присвоить текущему расписанию некорректное значение");
-        } else {
-            SchedulesData.#currentSchedule = schedule;
-            Calendar.update();
-        }
+        SchedulesData.#currentSchedule = schedule;
+        Calendar.update();
     }
 
     static #schedules = [];
+    static get schedules() { return SchedulesData.#schedules }
+    static set schedules(s) { SchedulesData.#schedules = s }
 
     constructor() { }
     
@@ -25,32 +24,49 @@ class SchedulesData {
     }
 
     static addSchedule(schedule) {
-        if (schedule.constructor.name != "Schedule") {
-            alert("Попытка добавить в список расписаний некорректное значение");
-        } else {
-            if (this.getSchedulesLength() <= SchedulesData.#SCHEDULES_LIMIT) {
-                SchedulesData.#schedules.push(schedule);
-                Calendar.update();
-            } else {
-                alert("Достигнуто максимальное количество расписаний");
-            }
-        }
+        if (this.getSchedulesLength() <= SchedulesData.#SCHEDULES_LIMIT) {
+            SchedulesData.#schedules.push(schedule);
+            Calendar.update();
+        } 
     }
 
     static removeSchedule(schedule) {
-        if (schedule.constructor.name != "Schedule") {
-            alert("Попытка удалить некорректное значение из списка расписаний");
-        } else {
-            const idx = SchedulesData.#schedules.indexOf(schedule);
-            if (idx != -1) {
-                SchedulesData.#schedules.splice(idx, 1);
-            }
-            Calendar.update();
+        const idx = SchedulesData.#schedules.indexOf(schedule);
+        if (idx != -1) {
+            SchedulesData.#schedules.splice(idx, 1);
         }
+        Calendar.update();
     }
 
     static getSchedulesLength() {
         return SchedulesData.#schedules.length;
+    }
+
+    static toJSON() {
+        const obj = [];
+        for (const schedule of SchedulesData.#schedules) {
+            const scheduleFmt = {
+                name: schedule.name,
+                shifts: []
+            };
+            for (const shift of schedule.shifts) {
+                scheduleFmt.shifts.push({
+                    name: shift.name, 
+                    iconTag: shift.iconTag
+                })
+            }
+            obj.push(scheduleFmt);
+        }
+        return obj;
+    }
+
+    static parseJSON(list) {
+        for (const schedule in list) {
+            const schedule_item = new Schedule();
+            for (const shift_item in schedule.shifts) {
+                const shift = new Shift(shift_item.name);
+            }
+        }
     }
 }
 

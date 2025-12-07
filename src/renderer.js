@@ -35,15 +35,24 @@ import Calendar from "/src/scripts/calendar.mjs";
 import DateData from "/src/scripts/dateData.mjs";
 import Schedule from "/src/scripts/schedule.mjs";
 import TaskList from "/src/scripts/tasks/taskList.mjs";
+import SchedulesData from "/src/scripts/SchedulesData.mjs";
 
-window.onload = () => {
-    Calendar.init();
-    DateData.initDatePicker();
-    Calendar.update();
-    Schedule.setupScheduleManager();
-    TaskList.start();
-}
 
-console.log(
-  '👋 This message is being logged by "renderer.js", included via Vite',
-);
+
+window.addEventListener('beforeunload', () => {
+    window.electronAPI.setSharedData({
+        tasksData: TaskList.toJSON(),
+        schedules: SchedulesData.toJSON()
+    });
+})
+
+Calendar.init();
+DateData.initDatePicker();
+Calendar.update();
+Schedule.setupScheduleManager();
+TaskList.start();
+
+const data = await window.electronAPI.getSharedData();
+console.log('Получено из main:', data);
+SchedulesData.parseJSON(data.schedules);
+TaskList.parseJSON(data.tasksData);

@@ -3,14 +3,15 @@ import Schedule from "./schedule.mjs";
 import Calendar from "./calendar.mjs";
 
 class Shift {
-    #element   = HTMLDivElement;
+    #element   = undefined;
     #name      = "";
-    #input     = HTMLInputElement;
+    get name() { return this.#name }
+
+    #input     = undefined;
+    #iconTag   = "";
+    get iconTag() { return this.#iconTag };
     
-    #iconURL   = "";
-    get iconURL() { return this.#iconURL };
-    
-    constructor() {
+    constructor(name="") {
         const shiftEl = document.createElement('div');
         shiftEl.className = 'shift shift--editing';
         this.#element = shiftEl;
@@ -58,8 +59,11 @@ class Shift {
         input.className = 'shift__input';
         input.maxLength = 24;
         input.placeholder = "День";
-        input.addEventListener('blur', () => {
+        input.addEventListener('blur', async () => {
             this.#name = input.value;
+            // Сохраняем данные
+            const { saveAppData } = await import('./utils/saveData.mjs');
+            saveAppData();
         })
         input.addEventListener('dblclick', () => {
             if (SchedulesData.currentSchedule.beginningShift != this) {
@@ -74,7 +78,7 @@ class Shift {
     createDeleteBtn() {
         const btn = document.createElement('button');
         btn.className = 'shift__delete-btn';
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             SchedulesData.currentSchedule.removeShift(this);
             const shiftList = document.getElementById('schedule-page__shift-list');
             if (SchedulesData.currentSchedule.beginningShift == this) {
@@ -86,30 +90,31 @@ class Shift {
             }
             shiftList.removeChild(this.#element);
         })
+        
         this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);
     }
 
     createIconsField() {
-        const iconPaths = [
-            'books.svg',
-            'moon_and_sun.svg',
-            'moon.svg',
-            'notebook.svg',
-            'plant.svg',
-            'sleep.svg',
-            'student.svg',
-            'sun_and_moon.svg',
-            'sun.svg',
-            'sunset.svg'
+        const iconTags = [
+            'books',
+            'moon_and_sun',
+            'moon',
+            'notebook',
+            'plant',
+            'sleep',
+            'student',
+            'sun_and_moon',
+            'sun',
+            'sunset'
         ];
         const field = document.createElement('div');
         field.className = 'shift__right-block';
-        for (const path of iconPaths) {
+        for (const tag of iconTags) {
             const btn = document.createElement('button');
             btn.className = 'shift__icon';
-            btn.style.backgroundImage = 'url(./src/icons/' + path + ')';
+            btn.setAttribute('shift-icon', tag);
             btn.addEventListener('click', () => {
-                this.#iconURL = 'url(./src/icons/' + path + ')';
+                this.#iconTag = tag;
                 const prevIcon = field.getElementsByClassName('shift__icon--first')[0];
                 if (prevIcon) {
                     prevIcon.className = 'shift__icon';

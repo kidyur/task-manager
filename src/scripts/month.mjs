@@ -2,7 +2,7 @@ import DateData from "./dateData.mjs";
 import Calendar from "./calendar.mjs";
 
 class Month {
-    #element = HTMLButtonElement;
+    #element = undefined;
     #idx     = 0;
 
     constructor(listEl, idx) {
@@ -30,10 +30,10 @@ class Month {
         this.#element.textContent = text;
     }
 
-    setIcon(imageURL) {
+    setIcon(seasonTag) {
         const icon = document.createElement('div');
         icon.className = 'month__icon';
-        icon.style.backgroundImage = 'url("./src/icons/' + imageURL + '")';
+        icon.setAttribute('season', seasonTag);
         this.#element.appendChild(icon);
     }
 

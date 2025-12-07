@@ -3,11 +3,15 @@ import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
 
 class Schedule {
-    #element         = HTMLDivElement;
+    #element         = undefined;
     #shifts          = [];
+    get shifts() {return this.#shifts}
+
     #name            = "";   
-    #input           = HTMLInputElement;
-    #beginningDate   = Date;
+    get name() { return this.#name }
+    set name(n) { this.#name = n }
+    #input           = undefined;
+    #beginningDate   = undefined;
     get beginningDate() {
         const date = new Date(this.#beginningDate);
         return date;
@@ -42,18 +46,19 @@ class Schedule {
 
     static #setupAddShiftBtn() {
         const btn = document.getElementById('schedule-page__add-shift-btn');
-        btn.addEventListener('click', () => {
-            const shift = new Shift();
-            SchedulesData.currentSchedule.addShift(shift);
-            Shift.offLastActiveShift();
-            shift.select();
-            Calendar.update();
-        })
+        btn.addEventListener('click', async () => {
+                const shift = new Shift();
+                SchedulesData.currentSchedule.addShift(shift);
+                Shift.offLastActiveShift();
+                shift.select();
+                Calendar.update();
+            })
     }
+    
 
     static #setupCreateScheduleBtn() {
         const btn = document.getElementById('schedule-page__add-schedule-btn');
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             if (SchedulesData.getSchedulesLength() < 3) {
                 const schedule = new Schedule();
                 SchedulesData.addSchedule(schedule);
@@ -105,7 +110,7 @@ class Schedule {
     
     static #setupDeleteBtn() {
         const deleteBtn = document.getElementById('schedule-page__delete-schedule-btn');
-        deleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', async () => {
             const activeScheduleElement = document.getElementsByClassName('schedule-page__group--active')[0];  
             activeScheduleElement.remove();
             SchedulesData.removeSchedule(SchedulesData.currentSchedule);
@@ -120,7 +125,7 @@ class Schedule {
         input.className = 'schedule__input';
         input.maxLength = 24;
         input.value = '';
-        input.addEventListener('blur', () => {
+        input.addEventListener('blur', async () => {
             this.name = input.value;
         })
         this.#input = input;
@@ -141,12 +146,8 @@ class Schedule {
     }
 
     addShift(shift) {
-        if (shift.constructor.name != "Shift") {
-            alert("Попытка добавить в список смен объект, не являющийся сменой");
-        } else {
-            this.#shifts.push(shift);
-            Calendar.update();
-        }
+        this.#shifts.push(shift);
+        Calendar.update();
     }
     
     removeShift(shift) {
