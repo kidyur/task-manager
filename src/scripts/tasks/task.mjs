@@ -79,7 +79,11 @@ class Task {
     }
 
     isHidden() {
+<<<<<<< HEAD:src/scripts/tasks/task.mjs
         return this.dateHidden && this.tagHidden;
+=======
+        return this.dateHidden || this.tagHidden;
+>>>>>>> roman:scripts/tasks/task.mjs
     }
 
     remove() {
@@ -87,6 +91,19 @@ class Task {
         this.taskDate.tasks.splice(this.taskDate.tasks.indexOf(this), 1);       
         this.taskDate.update();
         TaskList.tasks.splice(TaskList.tasks.indexOf(this), 1);
+    }
+
+    toJSON() {
+        let obj = {};
+        obj.name = this.name;
+        if (this.tags.length == 0) {
+            obj.tag = "";
+        }
+        else {
+            obj.tag = this.tags[0].name;
+        }
+        obj.date = [this.taskDate.date.getDate(), this.taskDate.date.getMonth(), this.taskDate.date.getYear()];
+        return obj;
     }
 
     toJSON() {
