@@ -15,15 +15,6 @@
 }
 
 
-#tasks-page__add-task-btn {    
-    display: flex;
-    padding: 10px;
-    border-radius: 10%;
-    /*right: var(--margin-big);*/
-    color: var(--fg-color-active);
-}
-
-
 #tasks-page__filter-btn {
     /*position: fixed;*/
     display: flex;
@@ -97,12 +88,14 @@
     margin-right: auto;
 }
 
-.tasks-page__complete-task-btn {
-    border-radius: 100%;
+.default-btn {
+    display: flex;
     border: 2px var(--fg-color) solid;
     background-color: unset; 
-    height: 50%;
-    aspect-ratio: 1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    color: var(--font-main-color);
 }
 
 .tasks-page__input {
@@ -111,4 +104,6 @@
     background-color: unset; 
     height: 20px;        
     color: var(--font-main-color);
+    margin: 5px;
+    width: 90%;
 }
