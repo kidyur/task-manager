@@ -85,6 +85,19 @@ class Task {
         this.taskDate.update();
         TaskList.tasks.splice(TaskList.tasks.indexOf(this), 1);        
     }
+
+    toJSON() {
+        let obj = {};
+        obj.name = this.name;
+        if (this.tags.length == 0) {
+            obj.tag = "";
+        }
+        else {
+            obj.tag = this.tags[0].name;
+        }
+        obj.date = [this.taskDate.date.getDate(), this.taskDate.date.getMonth(), this.taskDate.date.getYear()];
+        return obj;
+    }
 }
 
 export default Task;

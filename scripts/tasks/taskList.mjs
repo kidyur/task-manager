@@ -35,15 +35,12 @@ class TaskList {
         this.tasks.push(zeroTask);
         this.dates.push(zeroDate);
         
-        new Tag(this).init('вычмаш');
-        new Tag(this).init('ангем');
-        
 
         this.addTagButton.addEventListener('click', () => {
-            this.addTag();
+            this.addTag(this.tagInput.value);
         });    
         this.addTaskButton.addEventListener('click', () => {
-            this.addTask();
+            this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
         });
         this.filterButton.addEventListener('click', () => {
             this.filter(); 
@@ -85,7 +82,7 @@ class TaskList {
                     if (task.tags.includes(tag.name)) {
                         hide = false;
                         break;
-                    }
+                    }   
                 }
             }
             if (hide) {
@@ -102,6 +99,26 @@ class TaskList {
         }
 
         this.deselectAllTags();
+        this.toJSON();
+    }
+
+    static parseJSON(list) {        
+        for (const task of list.tasks) {            
+            this.addTask(task.name, new Date(task.date[0], task.date[1], task.date[2]));
+        }        
+        for (const tag of list.tags) {
+            this.addTag(tag.name);
+        }
+
+    }
+
+    static toJSON() {
+        let res = []
+        for (const task of this.tasks) {
+            res.push(task.toJSON());
+        }        
+        console.log(res);
+        return res;
     }
 
     static cancelFilter() {
@@ -114,22 +131,22 @@ class TaskList {
         }
     }
 
-    static addTask() {
-        if (this.taskNameInput.value != '') {
-            new Task().init(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay));
+    static addTask(name, date) {
+        if (name != '') {
+            new Task().init(name, date);
             this.taskNameInput.value = '';
         }
     }
 
-    static addTag() {        
-        if (this.tagInput.value != '') {                
+    static addTag(name) {        
+        if (name != '') {                
             for (let t of this.tags) {                
                 if (t.name == this.tagInput.value) {
                     return;
                 }
             }            
-            new Tag().init(this.tagInput.value);
-            TaskList.tagInput.value = '';                    
+            new Tag().init(name);
+            this.tagInput.value = '';                    
         }
     }
 }
