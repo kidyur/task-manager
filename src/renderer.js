@@ -44,15 +44,18 @@ window.addEventListener('beforeunload', () => {
     });
 })
 
-Calendar.init();
-DateData.initDatePicker();
-Calendar.update();
-Schedule.setupScheduleManager();
-TaskList.start();
 
-const data = await window.electronAPI.getSharedData();
-SchedulesData.parseJSON(data.schedules);
-TaskList.parseJSON(data.tasksData);
+document.addEventListener('DOMContentLoaded', async () => {
+    Calendar.init();
+    DateData.initDatePicker();
+    Calendar.update();
+    Schedule.setupScheduleManager();
+    TaskList.start();
+
+    const data = await window.electronAPI.getSharedData();
+    SchedulesData.parseJSON(data.schedules);
+    TaskList.parseJSON(data.tasksData);
+});
 
 
 document.addEventListener('keydown', (ev) => {

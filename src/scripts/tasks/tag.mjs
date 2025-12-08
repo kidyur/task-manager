@@ -14,6 +14,14 @@ class Tag {
         this.el.className = 'tasks-page__tag';
         this.el.innerHTML = '#' + name;    
         
+        const delBtn = document.createElement('button');
+        delBtn.className = 'tasks-page__delete-tag-btn';
+        delBtn.addEventListener('click', () => {
+           this.remove(); 
+        });
+
+        this.el.appendChild(delBtn);
+
         this.el.addEventListener('click', () => {
             this.setSelected(!this.selected);
         });    
@@ -36,6 +44,15 @@ class Tag {
         }
         this.selected = val;
     }
+
+    remove() {
+        console.log(TaskList.tags);
+        this.el.remove();        
+        TaskList.tags.splice(TaskList.tags.indexOf(this), 1);
+        TaskList.selectedTag = null;
+        console.log(TaskList.tags); 
+    }
+
 }
 
 export default Tag

@@ -37,14 +37,20 @@
     margin-bottom: var(--margin-small);
     border-radius: 15px;
     margin-left: var(--margin-small);
+    display: flex;
+    align-items: center;
 }
 
 .tasks-page__tag--enabled {
     padding: var(--padding-small) var(--padding-medium);
-    border: 2px solid var(--fg-color);
-    color: var(--fg-color-active);    
+    border: 2px solid var(--font-warning-color);
+    color: var(--font-warning-color);
+    margin: 0;
+    margin-bottom: var(--margin-small);
     border-radius: 15px;
     margin-left: var(--margin-small);
+    display: flex;
+    align-items: center;
 }
 
 .tasks-page__tag-in-task {
@@ -127,4 +133,15 @@
     height: 80%;
     font-size: 20px;
     aspect-ratio: 1;
+}
+
+.tasks-page__delete-tag-btn {
+    border-radius: 100%;
+    height: 14px;
+    width: 14px;
+    margin: 0;
+    padding: 0;
+    border: var(--font-warning-color) 2px solid;
+    background-color: var(--font-warning-color);
+    margin-left: var(--margin-small);
 }

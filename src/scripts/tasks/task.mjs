@@ -45,6 +45,7 @@ class Task {
         }
 
 
+        console.log(pos);
         if (pos) {
             if (pos.taskDate.date.valueOf() != date.valueOf()) {              
                 let taskDate = new TaskDate();
@@ -75,10 +76,10 @@ class Task {
                 taskDate.init(date);
                 this.taskDate = taskDate;
                     
-                TaskList.tasks[0].el.insertAdjacentElement('beforebegin', taskDate.el); 
+                TaskList.tasks[0].taskDate.el.insertAdjacentElement('beforebegin', taskDate.el); 
                 taskDate.el.insertAdjacentElement('afterend', element);
 
-                TaskList.tasks.push(this);                
+                TaskList.tasks.splice(0, 0, this);                
             }
         }       
 

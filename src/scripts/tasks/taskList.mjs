@@ -131,14 +131,16 @@ class TaskList {
     }
 
     static addTag(name) {        
-        if (name != '') {                
-            for (let t of this.tags) {                
-                if (t.name == this.tagInput.value) {
-                    return;
-                }
+        if (this.tags.length <= 8) {
+            if (name != '') {                
+                for (let t of this.tags) {                
+                    if (t.name == this.tagInput.value) {
+                        return;
+                    }
+                }            
+                new Tag().init(name);
+                this.tagInput.value = '';                    
             }            
-            new Tag().init(name);
-            this.tagInput.value = '';                    
         }
     }
 }
