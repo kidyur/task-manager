@@ -1,52 +1,36 @@
-import SchedulesData from "./schedulesData.mjs";
 import DateData from "./dateData.mjs";
 import Calendar from "./calendar.mjs";
 import TaskList from "./tasks/taskList.mjs"
 
 class Day {
     #borderFlag = false;
-    #element    = undefined;
-    #iconURL    = "";
+    #element    = null;
     #idx        = 0;
-    #value = 0;
     #title = '';
     
-    constructor(idx, borderFlag = false, iconTag = "") {
-        const el = document.createElement('div');
-        this.#element = el;
-        this.#idx = idx;
-        this.#borderFlag = borderFlag;
-        el.innerText = idx;
-        el.className = 'calendar__day calendar__day_month';
-        el.addEventListener('click', () => {
-            this.select();
+    constructor(title) {
+        this.#element = document.createElement('div');
+        this.#element.className = 'calendar__day calendar__day_month';
+        this.#element.innerHTML = `
+            <div class="day__title"></div>
+            <div class="calendar__icon"></div>
+        `;
+        this.#setTitle(title);
+        this.#element.addEventListener('click', () => {
+            this.#select();
         })
-        
-        if (SchedulesData.currentSchedule.getShiftsLength() > 0) {
-            this.#createIcon(iconTag);
-            this.#upperline();
-        } 
-
         const calendarEl = document.getElementById('calendar');
-        calendarEl.appendChild(el);
+        calendarEl.appendChild(this.#element);
     }
 
     updateView(title, border = false, icon = "") {
-        this.#title = title;
-        this.#element.textContent = title;
+        this.#setTitle(title);
+        this.#setBorder(border);
+        this.#setIcon(icon);
+    }
+
+    #setBorder(border) {
         this.#borderFlag = border;
-        this.#iconURL = icon;
-        this.#upperline();
-    }
-
-    #createIcon(iconTag) {
-        const icon = document.createElement('div');
-        icon.setAttribute('shift-icon', iconTag);
-        icon.className = 'calendar__icon';
-        this.#element.appendChild(icon);
-    }
-
-    #upperline() {
         if (this.#title == '') {
             this.#element.style.borderTop = '';
             return;
@@ -58,7 +42,16 @@ class Day {
         }
     }
 
-    select() {
+    #setTitle(title) {
+        this.#title = title;
+        this.#element.querySelector(".day__title").innerHTML = title;
+    }
+
+    #setIcon(icon) {
+        this.#element.querySelector('.calendar__icon').setAttribute('shift-icon', icon);
+    }
+
+    #select() {
         DateData.chosenDay = this.#idx;
         const m = DateData.month;
         DateData.chosenMonth = m;
