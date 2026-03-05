@@ -8,8 +8,10 @@ class Day {
     #element    = undefined;
     #iconURL    = "";
     #idx        = 0;
+    #value = 0;
+    #title = '';
     
-    constructor(idx, borderFlag, iconTag) {
+    constructor(idx, borderFlag = false, iconTag = "") {
         const el = document.createElement('div');
         this.#element = el;
         this.#idx = idx;
@@ -26,7 +28,15 @@ class Day {
         } 
 
         const calendarEl = document.getElementById('calendar');
-        calendarEl.appendChild(el);        
+        calendarEl.appendChild(el);
+    }
+
+    updateView(title, border = false, icon = "") {
+        this.#title = title;
+        this.#element.textContent = title;
+        this.#borderFlag = border;
+        this.#iconURL = icon;
+        this.#upperline();
     }
 
     #createIcon(iconTag) {
@@ -37,6 +47,10 @@ class Day {
     }
 
     #upperline() {
+        if (this.#title == '') {
+            this.#element.style.borderTop = '';
+            return;
+        }
         if (this.#borderFlag) {
             this.#element.style.borderTop = '3px solid white';
         } else {

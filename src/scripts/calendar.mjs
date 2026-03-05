@@ -2,18 +2,20 @@ import SchedulesData from "./schedulesData.mjs";
 import DateData from "./dateData.mjs";
 import Day from './day.mjs';
 
-const MILISEC_IN_DAY = 24 * 60 * 60 * 1000;
 
 class Calendar {
     static #calendarEl = undefined;
     static #borderFlag = true;
+
+    static days = [];
 
     constructor() { };
 
     static init() {
         const calendar = document.getElementById('calendar');
         Calendar.#calendarEl = calendar;
-        Calendar.#createWeekDays();
+        // Calendar.#createWeekDays();
+        Calendar.#createDays();
     }
 
     static getAmountOfDaysInCurrentMonth() {
@@ -26,14 +28,8 @@ class Calendar {
         return daysInMonths[DateData.month - 1];
     }
 
-    static #removeDays() {
-        const previousDays = document.querySelectorAll('.calendar__day_month');
-        for (const d of previousDays) {
-            Calendar.#calendarEl.removeChild(d);
-        }
-    }
-
     static #getCorrectShiftsSequenceForCurrentMonth() {
+        const MILISEC_IN_DAY = 24 * 60 * 60 * 1000;
         const seq = [];
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         if (shifts && shifts.length > 1) {
@@ -64,24 +60,8 @@ class Calendar {
         return seq;
     }
 
-    static #appendDays() {
-        const seq = this.#getCorrectShiftsSequenceForCurrentMonth();
-        const amountOfDays = Calendar.getAmountOfDaysInCurrentMonth();
-        const shifts = SchedulesData.currentSchedule.getShiftsCopy();
-        for (let day = 0; day < amountOfDays; day++) {
-            if (seq[day % seq.length] == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
-                Calendar.#borderFlag = !Calendar.#borderFlag;
-            }
-            const icon = (seq.length ? shifts[seq[day % seq.length]].iconTag : "");
-            const d = new Day(day + 1, this.#borderFlag, icon);
-        }
-        Calendar.#borderFlag = true;
-    }
-
     static update() {
-        Calendar.#removeDays();
-        Calendar.#createEmptyDays();
-        Calendar.#appendDays();
+        Calendar.#updateDays();
     }
 
     static offLastWeek() {
@@ -102,31 +82,43 @@ class Calendar {
         }
     }
 
-    static #createWeekDays() {
-        const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-        for (const day of weekDays) {
-            const dayEl = document.createElement('div');
-            dayEl.className = 'calendar__day calendar__day_name';
-            dayEl.innerText = day;
-            Calendar.#calendarEl.appendChild(dayEl);
+    static #createDays() {
+        const week = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+        for (const day of week) {
+            const d = new Day(day);
+        }
+        const month = 42; // 7 days * 6 weeks. Since in worst case one month takes 6 weeks
+        for (let day = 0; day < month; day++) {
+            const d = new Day('', this.#borderFlag, "");
+            Calendar.days.push(d);
         }
     }
 
-    static #createEmptyDays() {
+    static #updateDays() {
+        const seq = this.#getCorrectShiftsSequenceForCurrentMonth();
+        const amountOfDays = Calendar.getAmountOfDaysInCurrentMonth();
+        const shifts = SchedulesData.currentSchedule.getShiftsCopy();
+
         let m = DateData.month + '';
         if (m < 10) {
             m = '0' + m;
         }
         const monthBeginning = new Date(`${DateData.year}-${m}-01`);
-        const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 7 : 0);
-        for (let i = 0; i < amountOfEmptyDays-1; ++i) {
-            const el = document.createElement('div');
-            el.className = 'calendar__day calendar__day_empty calendar__day_month';
-            Calendar.#calendarEl.appendChild(el);
+        const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 6 : 0);
+        for (let d = 0; d < amountOfEmptyDays + amountOfDays; d++) {
+            if (d < amountOfEmptyDays) {
+                Calendar.days[d].updateView('');
+                continue;
+            }
+
+            if (seq[(d - amountOfEmptyDays) % seq.length] == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
+                Calendar.#borderFlag = !Calendar.#borderFlag;
+            }
+            const icon = (seq.length ? shifts[seq[d % seq.length]].iconTag : "");
+            Calendar.days[d].updateView(d - amountOfEmptyDays + 1, Calendar.#borderFlag, icon);
         }
+        Calendar.#borderFlag = true;
     }
 }
 
 export default Calendar;
-
-
