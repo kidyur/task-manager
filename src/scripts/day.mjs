@@ -53,11 +53,8 @@ class Day {
 
     #select() {
         const cal = new Calendar();
-        DateData.chosenDay = this.#idx;
-        const m = DateData.month;
-        DateData.chosenMonth = m;
-        const y = DateData.year;
-        DateData.chosenYear = y;
+        const dateData = new DateData();
+        dateData.setDate(this.#idx);
         cal.offLastWeek();
         const calendar = document.getElementById('calendar');
         const days = calendar.getElementsByClassName('calendar__day_month');
@@ -72,7 +69,7 @@ class Day {
         } else {
             this.#element.classList.add('calendar__day--active2');
         }
-        TaskList.filterByDate(new Date(DateData.chosenYear, DateData.chosenMonth - 1, DateData.chosenDay));
+        TaskList.filterByDate(new Date(dateData.year, dateData.month - 1, dateData.day));
     }
 }
 

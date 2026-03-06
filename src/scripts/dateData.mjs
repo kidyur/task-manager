@@ -1,77 +1,61 @@
+import Calendar from "./calendar.mjs";
 import Month from "./month.mjs";
 
 class DateData {
-    static #month = 0;
-    static get month() { return DateData.#month };
+    #month = 0;
+    get month() { return this.#month; }
 
-    static #year = 0;
-    static get year() { return DateData.#year };
+    #year = 0;
+    get year() { return this.#year; }
 
-    static #chosenYear = 1975;
-    static get chosenYear() {
-        return this.#chosenYear;
-    }
-    static set chosenYear(year) {
-        this.#chosenYear = year;
-    }
+    #day = 0;
+    get day() { return this.#day; }
 
-    static #chosenMonth = 1;
-    static get chosenMonth() {
-        return this.#chosenMonth;
-    }
-    static set chosenMonth(month) {
-        this.#chosenMonth = month;
-    }
+    #element = undefined;
 
-    static #chosenDay = 1;
-    static get chosenDay() {
-        return this.#chosenDay;
-    }
-    static set chosenDay(day) {
-        this.#chosenDay = day;
-    }
 
-    static #element = undefined;
-    static #monthsNames = [
-        "Январь",   "Февраль", 
-        "Март",     "Апрель",  "Май", 
-        "Июнь",     "Июль",    "Август", 
-        "Сентябрь", "Октябрь", "Ноябрь",
-        "Декабрь"
-    ];
+    static #instance = null;
 
-    static monthEl = undefined;
+    monthEl = undefined;
     
-    constructor() { }
+    constructor() { 
+        if (DateData.#instance) {
+            return DateData.#instance;
+        } else {
+            DateData.#instance = this;
+        }
+
+        this.setCurrentDate();
+        this.#setupButton();
+        this.#initDatePicker();
+    }
     
-    static getFirstDayIdxOfCurrMonth() {
-        let m = DateData.month + '';
+    getFirstDayIdxOfCurrMonth() {
+        let m = this.month + '';
         if (m < 10) {
             m = '0' + m;
         }
-        const monthBeginning = new Date(`${DateData.year}-${m}-01`);
+        const monthBeginning = new Date(`${this.year}-${m}-01`);
         return monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 6 : 0);
     }
 
-    static getDaysInCurrMonth() {
+    getDaysInCurrMonth() {
         const daysInMonths = [
             31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
         ] 
-        if (DateData.year % 4 == 0) {
+        if (this.year % 4 == 0) {
             daysInMonths[1] -= 1; // For leap year
         }
-        return daysInMonths[DateData.month - 1];
+        return daysInMonths[this.month - 1];
     }
 
-    static initDatePicker() {
-        DateData.setCurrentDate();
-        DateData.#setupButton();
+    #initDatePicker() {
         const picker = document.getElementById('month-picker');
-        DateData.#element = picker;
+        this.#element = picker;
         const prevYearBtn = document.getElementsByClassName('month-picker__btn')[0];
-        prevYearBtn.addEventListener('click', () => DateData.setPrevYear());
+        prevYearBtn.addEventListener('click', () => this.setPrevYear());
         const nextYearBtn = document.getElementsByClassName('month-picker__btn')[1];
-        nextYearBtn.addEventListener('click', () => DateData.setNextYear());
+        nextYearBtn.addEventListener('click', () => this.setNextYear());
         const now = new Date();
         let monthIdx = 1;
         const seasons = ['Зима', "Весна", "Лето", "Осень", "Зима"];
@@ -85,7 +69,7 @@ class DateData {
         ]
         for (let i = 0; i < 5; i++) {
             const seasonBlock = document.createElement('div');
-            DateData.#element.appendChild(seasonBlock);
+            this.#element.appendChild(seasonBlock);
             seasonBlock.className = 'season';
             for (let m = 0; m < 4; m++) {
                 if (m == 0 || i == 0 && m == 1 || monthIdx > 12) {
@@ -96,7 +80,7 @@ class DateData {
                     }
                 } else {
                     const month = new Month(seasonBlock, monthIdx);
-                    if (DateData.month-1 == monthIdx-1) {
+                    if (this.month-1 == monthIdx-1) {
                         activeMonth = month;
                     }
                     monthIdx++;
@@ -106,62 +90,73 @@ class DateData {
         activeMonth.select();
     }
 
-    static #updateTitle() {
+    #updateTitle() {
         const title = document.getElementById("calendar-page__title");
-        title.innerText = DateData.#year + ' ' + this.#monthsNames[DateData.#month - 1];
+        title.innerText = this.year + ' ' + this.getMonthName(this.#month - 1);
     }
 
-    static offLastSeason() {
+    offLastSeason() {
         const prevMonths = document.querySelectorAll('.month-picker__month_current');
         for (const m of prevMonths) {
             m.className = 'month-picker__month';
         }
     }
 
-    static getMonthName(idx) {
-        return this.#monthsNames[idx];
+    getMonthName(idx) {
+        const monthsNames = [
+            "Январь",   "Февраль", 
+            "Март",     "Апрель",  "Май", 
+            "Июнь",     "Июль",    "Август", 
+            "Сентябрь", "Октябрь", "Ноябрь",
+            "Декабрь"
+        ];
+        return monthsNames[idx];
     }
 
-    static setCurrentDate() {
-        const currentDate = new Date();
-        DateData.#month = currentDate.getMonth() + 1;
-        DateData.#year = currentDate.getFullYear();
-        DateData.#chosenMonth = currentDate.getMonth() + 1;
-        DateData.#chosenYear = currentDate.getFullYear();
+    #notifyObservers() {
+        const calendar = new Calendar();
+        calendar.update();        
         const monthPickerYear = document.getElementById('month-picker__year');
-        monthPickerYear.textContent = DateData.#year;
-        DateData.#updateTitle();
+        monthPickerYear.textContent = this.#year;
+        this.#updateTitle();
     }
 
-    static setNextYear() {
-        if (DateData.year < 2040) {
-            DateData.offLastSeason();
-            DateData.setDate(DateData.day, DateData.month, DateData.year + 1);
-            if (DateData.month == DateData.chosenMonth && DateData.year == DateData.chosenYear) {
-                DateData.onMonth(DateData.monthEl);
-            }
+    setCurrentDate() {
+        const date = new Date();
+        this.setDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
+
+        this.#notifyObservers();
+    }
+
+    setNextYear() {
+        if (this.year < 2040) {
+            this.offLastSeason();
+            this.setDate(this.day, this.month, this.year + 1);
+            this.onMonth(this.monthEl);
         }
+
+        this.#notifyObservers();
     }
 
-    static setPrevYear() {
-        if (DateData.year > 2000) {
-            DateData.offLastSeason();
-            DateData.setDate(DateData.day, DateData.month, DateData.year - 1);
-            if (DateData.month == DateData.chosenMonth && DateData.year == DateData.chosenYear) {
-                DateData.onMonth(DateData.monthEl);
-            }
+    setPrevYear() {
+        if (this.year > 2000) {
+            this.offLastSeason();
+            this.setDate(this.day, this.month, this.year - 1);
+            this.onMonth(this.monthEl);
         }
+
+        this.#notifyObservers();
     }
 
-    static setDate(day, month, year) {
-        DateData.#month = month;
-        DateData.#year = year;
-        const monthPickerYear = document.getElementById('month-picker__year');
-        monthPickerYear.textContent = DateData.#year;
-        DateData.#updateTitle();
+    setDate(day, month = this.month, year = this.year) {
+        this.#month = month;
+        this.#year = year;
+        this.#day = day;
+
+        this.#notifyObservers();
     }
 
-    static onMonth(element) {
+    onMonth(element) {
         const currMonths = element.parentNode.getElementsByClassName('month-picker__month');
         for (const m of currMonths) {
             m.classList.add('month-picker__month_current');
@@ -169,8 +164,8 @@ class DateData {
         element.classList.add('month-picker__month--active');
     }
 
-    static hide() {
-        DateData.#element.style.display = 'none';
+    hide() {
+        this.#element.style.display = 'none';
         const picker = document.getElementById('month-picker');
         picker.style.display = 'none';
         const title = document.getElementById('calendar-page__title');
@@ -179,7 +174,7 @@ class DateData {
         header.style.display = 'none';
     }
 
-    static #setupButton() {
+    #setupButton() {
         const monthPickerBtn = document.getElementById('calendar-page__month-picker-btn');
         monthPickerBtn.addEventListener('click', () => {
             const picker = document.getElementById('month-picker');

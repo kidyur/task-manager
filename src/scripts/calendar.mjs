@@ -55,11 +55,11 @@ class Calendar {
         }
     }
 
-
     #updateDays() { // FIX: updates twice on shift adding
-        const firstDay = DateData.getFirstDayIdxOfCurrMonth();
+        const dateData = new DateData();
+        const firstDay = dateData.getFirstDayIdxOfCurrMonth();
         let shiftIdx = getFirstShiftIdxOfCurrMonth();
-        const amountOfDays = DateData.getDaysInCurrMonth();
+        const amountOfDays = dateData.getDaysInCurrMonth();
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
         for (let d = 0; d < firstDay + amountOfDays; d++) {
             if (d < firstDay) {

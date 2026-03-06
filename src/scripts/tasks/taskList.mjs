@@ -26,18 +26,17 @@ class TaskList {
             this.addTag(this.tagInput.value);
         });    
         this.addTaskButton.addEventListener('click', () => {
+            const dateData = new DateData();
             if (this.selectedTag) {
-                this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay), this.selectedTag.name);
+                this.addTask(this.taskNameInput.value, new Date(dateData.year, dateData.month-1, dateData.day), this.selectedTag.name);
             }
             else {
-                this.addTask(this.taskNameInput.value, new Date(DateData.chosenYear, DateData.chosenMonth-1, DateData.chosenDay), '');
+                this.addTask(this.taskNameInput.value, new Date(dateData.year, dateData.month-1, dateData.day), '');
             }
         });
         this.filterButton.addEventListener('click', () => {
             this.filterByTag(); 
         });
-        
-
     }
 
     static deselectAllTags() {
@@ -80,12 +79,12 @@ class TaskList {
         this.update();   
     }
 
-    static filterByDate(chosenDate) {         
-        console.log(chosenDate);
+    static filterByDate(Date) {         
+        console.log(Date);
         for (let task of this.tasks) {
             let hide = true;
                         
-            if (task.taskDate.date.valueOf() >= chosenDate.valueOf()) {
+            if (task.taskDate.date.valueOf() >= Date.valueOf()) {
                 hide = false;
             }            
 

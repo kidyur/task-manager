@@ -14,9 +14,10 @@ class Month {
                 this.select();
             })
             const name = document.createElement('div');
-            name.textContent = DateData.getMonthName(idx-1);
+            const dateData = new DateData();
+            name.textContent = dateData.getMonthName(idx-1);
             el.appendChild(name);
-            if (DateData.month == this.#idx) {
+            if (dateData.month == this.#idx) {
                 el.classList.add('month-picker__month--active');
             }
         } 
@@ -39,14 +40,13 @@ class Month {
 
     select() {
         const calendar = new Calendar();
-        DateData.offLastSeason();
-        DateData.onMonth(this.#element);
-        DateData.chosenMonth = this.#idx;
-        DateData.chosenYear = DateData.year;
-        DateData.monthEl = this.#element;
-        DateData.setDate(-1, this.#idx, DateData.year);
+        const dateData = new DateData();
+        dateData.offLastSeason();
+        dateData.onMonth(this.#element);
+        dateData.setDate(dateData.day, this.#idx);
+        dateData.monthEl = this.#element;
         calendar.update();
-        DateData.hide();
+        dateData.hide();
     }
 }
 

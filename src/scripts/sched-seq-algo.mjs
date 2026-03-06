@@ -12,8 +12,9 @@ function getFirstShiftIdxOfCurrMonth() {
     scheduleMonthBeginningDate.setDate(1);
     scheduleMonthBeginningDate.setHours(0, 0, 0, 0);
 
-    const monthFmt = (DateData.month < 10 ? '0': '') + DateData.month;
-    const monthBeginning = new Date(`${DateData.year}-${monthFmt}-01`);
+    const dateData = new DateData();
+    const monthFmt = (dateData.month < 10 ? '0': '') + dateData.month;
+    const monthBeginning = new Date(`${dateData.year}-${monthFmt}-01`);
     
     const gap = Math.floor((monthBeginning - scheduleMonthBeginningDate) / MILISEC_IN_DAY);
     const beginningDate = SchedulesData.currentSchedule.beginningDate;
