@@ -17,7 +17,7 @@ class Calendar {
             Calendar.#instance = this;
         }
 
-        this.#calendarEl = document.getElementById('calendar');
+        this.#render();
         this.#createDays();
     };
 
@@ -41,6 +41,12 @@ class Calendar {
             }
             daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
         }
+    }
+
+    #render() {
+        this.#calendarEl = document.createElement("div");
+        this.#calendarEl.className = "calendar";
+        document.querySelector(".calendar-page").appendChild(this.#calendarEl);
     }
 
     #createDays() {

@@ -19,7 +19,7 @@ class Day {
         this.#element.addEventListener('click', () => {
             this.#select();
         })
-        const calendarEl = document.getElementById('calendar');
+        const calendarEl = document.querySelector('.calendar');
         calendarEl.appendChild(this.#element);
     }
 
