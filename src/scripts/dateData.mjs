@@ -13,7 +13,6 @@ class DateData {
 
     #element = undefined;
 
-
     static #instance = null;
 
     monthEl = undefined;
