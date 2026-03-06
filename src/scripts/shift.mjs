@@ -4,21 +4,21 @@ import Calendar from "./calendar.mjs";
 
 class Shift {
     #element   = undefined;
-    #name      = "";
-    get name() { return this.#name }
+    #title      = "";
+    get title() { return this.#title }
 
     #iconTag   = "";
     get iconTag() { return this.#iconTag };
 
-    constructor(name="", tag="") {
+    constructor(title, tag="") {
+        this.#title = title;
         this.#render();
         this.#element.addEventListener('click', () => {
             this.select();
         })
         this.createIconsField(tag);
         this.createDeleteBtn();
-        this.appendToShiftsList();
-        this.#element.querySelector('.shift__input').value = name;
+        this.#element.querySelector('.shift__input').value = title;
         
         const schedulesData = new SchedulesData();
         if (schedulesData.currentSchedule.beginningShift == Shift) {
@@ -40,6 +40,7 @@ class Shift {
             </div>
             <button class="set-current-day-btn">Дважды кликните на название, чтобы выбрать день текущим</button>
         `;
+        document.getElementById('schedule-page__shift-list').appendChild(this.#element);
     }
 
     static offLastActiveShift() {
@@ -117,11 +118,6 @@ class Shift {
             field.appendChild(btn);
         }
         this.#element.getElementsByClassName('shift__right-block')[0].appendChild(field);
-    }
-
-    appendToShiftsList() {
-        const shiftList = document.getElementById('schedule-page__shift-list');
-        shiftList.appendChild(this.#element);
     }
 
     select() {
