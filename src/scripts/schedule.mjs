@@ -31,17 +31,23 @@ class Schedule {
 
     constructor(title) {
         this.#title = title;
-        this.#element = document.createElement('div');
+        this.#render();
         const schedulesData = new SchedulesData();
         this.#element.addEventListener('click', () => {
             this.select();
             schedulesData.currentSchedule = this;
         })
-        this.#createInput();
-        this.#appendToSchedulesList();
-        this.#input.focus();
         this.select();
     }  
+
+    #render() {
+        this.#element = document.createElement('div');
+        this.#element.className = "schedule-page__group schedule-page__group--active";
+        this.#element.innerHTML = `
+            <input placeholder=${this.#title} class="schedule__input" maxlength=24>
+        `;
+        document.getElementById('schedule-page__groups-sector').appendChild(this.#element);
+    }    
 
     static #setupAddShiftBtn() {
         const btn = document.getElementById('schedule-page__add-shift-btn');
@@ -116,31 +122,13 @@ class Schedule {
             Schedule.updateScheduleManager();
         })
     }
-    
-    #createInput() {
-        const input = document.createElement('input');
-        input.placeholder = "Ваше расписание";
-        input.className = 'schedule__input';
-        input.maxLength = 24;
-        input.addEventListener('blur', async () => {
-            this.name = input.value;
-        })
-        this.#input = input;
-        this.#element.appendChild(input);
-    }
-    
-    #appendToSchedulesList() {
-        const sector = document.getElementById('schedule-page__groups-sector');
-        sector.appendChild(this.#element);
-    }
-    
+        
     select() {
         Schedule.offAllSchedules();
         this.#element.className = 'schedule-page__group schedule-page__group--active';
         const schedulesData = new SchedulesData();
         schedulesData.currentSchedule = this;
         this.#listShifts();
-        this.#input.focus();
     }
 
     addShift(shift) {
