@@ -57,8 +57,6 @@ class DateData {
     setCurrentDate() {
         const date = new Date();
         this.setDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
-
-        this.#notifyObservers();
     }
 
     setDate(day, month = this.month, year = this.year) {
