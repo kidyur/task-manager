@@ -5,7 +5,7 @@ import Shift from "./shift.mjs";
 class SchedulesData {
     #SCHEDULES_LIMIT = 3;
     
-    #currentSchedule = new Schedule(true);
+    #currentSchedule = null;
     get currentSchedule() { return this.#currentSchedule };
     set currentSchedule(schedule) {
         this.#currentSchedule = schedule;
@@ -14,10 +14,6 @@ class SchedulesData {
     }
 
     #schedules = [];
-    get schedules() { 
-        return [...this.#schedules];
-    }
-    set schedules(s) { this.#schedules = s }
 
     static #instance = null;
 
@@ -28,11 +24,9 @@ class SchedulesData {
             SchedulesData.#instance = this;
         }
     }
-    
-    reload() {
-        this.#schedules = [];
-        const calendar = new Calendar();
-        calendar.updateView();
+
+    getSchedulesLength() {
+        return this.#schedules.length;
     }
 
     addSchedule(schedule) {
@@ -50,10 +44,6 @@ class SchedulesData {
         }
         const calendar = new Calendar();
         calendar.updateView();
-    }
-
-    getSchedulesLength() {
-        return this.#schedules.length;
     }
 
     toJSON() {

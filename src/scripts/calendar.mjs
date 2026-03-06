@@ -49,7 +49,10 @@ class Calendar {
         let shiftIdx = getFirstShiftIdxOfCurrMonth();
         const amountOfDays = dateData.getDaysInCurrMonth();
         const schedulesData = new SchedulesData();
-        const shifts = schedulesData.currentSchedule.getShiftsCopy();
+        let shifts = []
+        if (schedulesData.currentSchedule != null) {
+            shifts = schedulesData.currentSchedule.getShiftsCopy();
+        }
         for (let d = 0; d < firstDay + amountOfDays; d++) {
             if (d < firstDay) {
                 this.days[d].updateView('');
