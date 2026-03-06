@@ -4,7 +4,6 @@ import Shift from "./shift.mjs";
 
 class SchedulesData {
     #SCHEDULES_LIMIT = 3;
-    
     #currentSchedule = null;
     get currentSchedule() { return this.#currentSchedule };
     set currentSchedule(schedule) {
@@ -12,7 +11,6 @@ class SchedulesData {
         const calendar = new Calendar();
         calendar.updateView();
     }
-
     #schedules = new Map();
 
     static #instance = null;

@@ -12,19 +12,8 @@ class Shift {
     get iconTag() { return this.#iconTag };
 
     constructor(name="", tag="") {
-        const shiftEl = document.createElement('div');
-        shiftEl.className = 'shift';
-        this.#element = shiftEl;
-
-        shiftEl.innerHTML = `
-            <div class="shift__main">
-                <div class="shift__left-block"></div>
-                <div class="shift__right-block"></div>
-            </div>
-            <button class="set-current-day-btn">Дважды кликните на название, чтобы выбрать день текущим</button>
-        `
-
-        shiftEl.addEventListener('click', () => {
+        this.#render();
+        this.#element.addEventListener('click', () => {
             this.select();
         })
         this.createIconsField(tag);
@@ -41,6 +30,18 @@ class Shift {
         }
 
         this.select();
+    }
+
+    #render() {
+        this.#element = document.createElement('div');
+        this.#element.className = 'shift';
+        this.#element.innerHTML = `
+            <div class="shift__main">
+                <div class="shift__left-block"></div>
+                <div class="shift__right-block"></div>
+            </div>
+            <button class="set-current-day-btn">Дважды кликните на название, чтобы выбрать день текущим</button>
+        `;
     }
 
     static offLastActiveShift() {
