@@ -36,6 +36,7 @@ import DateData from "/src/scripts/dateData.mjs";
 import Schedule from "/src/scripts/schedule.mjs";
 import TaskList from "/src/scripts/tasks/taskList.mjs";
 import SchedulesData from "/src/scripts/schedulesData.mjs";
+import DatePicker from './scripts/datePicker.mjs';
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({
@@ -47,6 +48,7 @@ window.addEventListener('beforeunload', () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const calendar = new Calendar();
+    const datePicker = new DatePicker();
     const dateData = new DateData();
     Schedule.setupScheduleManager();
     TaskList.start();

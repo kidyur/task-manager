@@ -1,6 +1,6 @@
 import Calendar from "./calendar.mjs";
 import DatePicker from "./datePicker.mjs";
-import Month from "./month.mjs";
+import TaskList from "./tasks/taskList.mjs";
 
 class DateData {
     #month = 0;
@@ -54,36 +54,9 @@ class DateData {
         return monthsNames[idx];
     }
 
-    #notifyObservers() {
-        const calendar = new Calendar();
-        calendar.updateView();  
-        const datePicker = new DatePicker();
-        datePicker.updateView();
-    }
-
     setCurrentDate() {
         const date = new Date();
         this.setDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
-
-        this.#notifyObservers();
-    }
-
-    setNextYear() {
-        if (this.year < 2040) {
-            this.offLastSeason();
-            this.setDate(this.day, this.month, this.year + 1);
-            this.onMonth(this.monthEl);
-        }
-
-        this.#notifyObservers();
-    }
-
-    setPrevYear() {
-        if (this.year > 2000) {
-            this.offLastSeason();
-            this.setDate(this.day, this.month, this.year - 1);
-            this.onMonth(this.monthEl);
-        }
 
         this.#notifyObservers();
     }
@@ -94,6 +67,14 @@ class DateData {
         this.#day = day;
 
         this.#notifyObservers();
+    }
+
+    #notifyObservers() {
+        const calendar = new Calendar();
+        calendar.updateView();  
+        const datePicker = new DatePicker();
+        datePicker.updateView();
+        TaskList.filterByDate(new Date(this.year, this.month - 1, this.day));
     }
 }
 

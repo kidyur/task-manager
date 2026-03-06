@@ -25,24 +25,6 @@ class Calendar {
         this.#updateDays();
     }
 
-    offLastWeek() {
-        const days = document.querySelectorAll('.calendar__day_week');
-        for (let day of days) {
-            day.className = 'calendar__day calendar__day_month calendar__day_active';
-        }
-    }
-
-    onWeek(dayIndex) {
-        const daysElements = document.getElementsByClassName('calendar__day_month');
-        const weekBeginningIdx = dayIndex - dayIndex % 7;
-        for (let i = 0; i < 7; i++) {
-            if (weekBeginningIdx + i >= daysElements.length) {
-                break;
-            }
-            daysElements[weekBeginningIdx + i].classList.add('calendar__day_week');
-        }
-    }
-
     #render() {
         this.#calendarEl = document.createElement("div");
         this.#calendarEl.className = "calendar";
@@ -56,7 +38,7 @@ class Calendar {
         }
         const month = 42; // 7 days * 6 weeks. Since in worst case one month takes 6 weeks
         for (let day = 0; day < month; day++) {
-            const d = new Day('', this.#borderFlag, "");
+            const d = new Day(-1, this.#borderFlag, "");
             this.days.push(d);
         }
     }

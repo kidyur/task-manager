@@ -1,24 +1,29 @@
 import DateData from "./dateData.mjs";
-import Calendar from "./calendar.mjs";
-import TaskList from "./tasks/taskList.mjs"
 
 class Day {
     #borderFlag = false;
     #element    = null;
     #idx        = 0;
-    #title = '';
     
-    constructor(title) {
+    constructor(idx) {
         this.#render();
-        this.#setTitle(title);
+        this.#setIdx(idx);
         this.#element.addEventListener('click', () => {
-            this.#select();
+            const dateData = new DateData();
+            dateData.setDate(this.#idx);
         })
+    }
+
+    updateView(idx, border = false, icon = "") {
+        this.#setIdx(idx);
+        this.#setBorder(border);
+        this.#setIcon(icon);
+        this.#setClass();
     }
     
     #render() {
         this.#element = document.createElement('div');
-        this.#element.className = 'calendar__day calendar__day_month';
+        this.#element.className = 'calendar__day';
         this.#element.innerHTML = `
             <div class="day__title"></div>
             <div class="calendar__icon"></div>
@@ -27,15 +32,31 @@ class Day {
         calendarEl.appendChild(this.#element);
     }
 
-    updateView(title, border = false, icon = "") {
-        this.#setTitle(title);
-        this.#setBorder(border);
-        this.#setIcon(icon);
+    /**
+     * It makes opacity: 100% for all days of chosen week.
+     * It makes bigger the day you have chosen.
+     */
+    #setClass() {
+        let classname = "calendar__day";
+        const dateData = new DateData();
+        if (dateData.day == this.#idx) {
+            if (this.#borderFlag) {
+                classname += ' calendar__day--active1';
+            } else {
+                classname += ' calendar__day--active2';
+            }
+        }
+        const hook = dateData.day + dateData.getFirstDayIdxOfCurrMonth() - 1;
+        const weekBeginningIdx = hook - hook % 7;
+        if (this.#idx + dateData.getFirstDayIdxOfCurrMonth() <= weekBeginningIdx + 7 && this.#idx + dateData.getFirstDayIdxOfCurrMonth() > weekBeginningIdx) {
+            classname += ' calendar__day_week';
+        }
+        this.#element.className = classname;
     }
 
     #setBorder(border) {
         this.#borderFlag = border;
-        if (this.#title == '') {
+        if (this.#idx == -1 || !Number.isInteger(this.#idx)) {
             this.#element.style.borderTop = '';
             return;
         }
@@ -46,34 +67,17 @@ class Day {
         }
     }
 
-    #setTitle(title) {
-        this.#title = title;
-        this.#element.querySelector(".day__title").innerHTML = title;
+    #setIdx(idx) {
+        this.#idx = idx;
+        if (idx == -1) {
+            this.#element.querySelector(".day__title").innerHTML = '';
+        } else {
+            this.#element.querySelector(".day__title").innerHTML = idx;
+        }
     }
 
     #setIcon(icon) {
         this.#element.querySelector('.calendar__icon').setAttribute('shift-icon', icon);
-    }
-
-    #select() {
-        const cal = new Calendar();
-        const dateData = new DateData();
-        dateData.setDate(this.#idx);
-        cal.offLastWeek();
-        const calendar = document.getElementById('calendar');
-        const days = calendar.getElementsByClassName('calendar__day_month');
-        for (let i = 0; i < days.length; i++) {
-            if (days[i] == this.#element) {
-                cal.onWeek(i);
-                break;
-            }
-        }
-        if (this.#borderFlag) {
-            this.#element.classList.add('calendar__day--active1');
-        } else {
-            this.#element.classList.add('calendar__day--active2');
-        }
-        TaskList.filterByDate(new Date(dateData.year, dateData.month - 1, dateData.day));
     }
 }
 

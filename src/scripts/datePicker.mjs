@@ -15,12 +15,13 @@ class DatePicker {
             DatePicker.#instance = this;
         }
 
+        const dateData = new DateData();
         this.#setupButton();
         this.#element = document.getElementById('month-picker');
         const prevYearBtn = document.getElementsByClassName('month-picker__btn')[0];
-        prevYearBtn.addEventListener('click', () => this.setPrevYear());
+        prevYearBtn.addEventListener('click', () => dateData.setDate(dateData.day, dateData.month, dateData.year - 1));
         const nextYearBtn = document.getElementsByClassName('month-picker__btn')[1];
-        nextYearBtn.addEventListener('click', () => this.setNextYear());
+        nextYearBtn.addEventListener('click', () => dateData.setDate(dateData.day, dateData.month, dateData.year + 1));
         const now = new Date();
         let monthIdx = 1;
         const seasons = ['Зима', "Весна", "Лето", "Осень", "Зима"];
@@ -45,7 +46,6 @@ class DatePicker {
                     }
                 } else {
                     const month = new Month(seasonBlock, monthIdx);
-                    const dateData = new DateData();
                     if (dateData.month-1 == monthIdx-1) {
                         activeMonth = month;
                     }
