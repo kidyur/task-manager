@@ -1,7 +1,7 @@
 import SchedulesData from "./schedulesData.mjs";
 import DateData from "./dateData.mjs";
 import Day from './day.mjs';
-import { getFirstShiftIdxOfMonth } from "./sched-seq-algo.mjs";
+import { getFirstShiftIdxOfCurrMonth } from "./sched-seq-algo.mjs";
 
 class Calendar {
     #calendarEl = undefined;
@@ -20,16 +20,6 @@ class Calendar {
         this.#calendarEl = document.getElementById('calendar');
         this.#createDays();
     };
-
-    getAmountOfDaysInCurrentMonth() {
-        const daysInMonths = [
-            31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-        ] 
-        if (DateData.year % 4 == 0) {
-            daysInMonths[1] -= 1; // For leap year
-        }
-        return daysInMonths[DateData.month - 1];
-    }
 
     update() {
         this.#updateDays();
@@ -65,19 +55,14 @@ class Calendar {
         }
     }
 
-    #updateDays() { // FIX: updates twice on shift adding
-        let shiftIdx = getFirstShiftIdxOfMonth();
-        const amountOfDays = this.getAmountOfDaysInCurrentMonth();
-        const shifts = SchedulesData.currentSchedule.getShiftsCopy();
 
-        let m = DateData.month + '';
-        if (m < 10) {
-            m = '0' + m;
-        }
-        const monthBeginning = new Date(`${DateData.year}-${m}-01`);
-        const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 6 : 0);
-        for (let d = 0; d < amountOfEmptyDays + amountOfDays; d++) {
-            if (d < amountOfEmptyDays) {
+    #updateDays() { // FIX: updates twice on shift adding
+        const firstDay = DateData.getFirstDayIdxOfCurrMonth();
+        let shiftIdx = getFirstShiftIdxOfCurrMonth();
+        const amountOfDays = DateData.getDaysInCurrMonth();
+        const shifts = SchedulesData.currentSchedule.getShiftsCopy();
+        for (let d = 0; d < firstDay + amountOfDays; d++) {
+            if (d < firstDay) {
                 this.days[d].updateView('');
                 continue;
             }
@@ -90,7 +75,7 @@ class Calendar {
                 icon = (shifts.length ? shifts[shiftIdx].iconTag : "");
                 shiftIdx = (shiftIdx + 1) % shifts.length;
             }
-            this.days[d].updateView(d - amountOfEmptyDays + 1, this.#borderFlag, icon);
+            this.days[d].updateView(d - firstDay + 1, this.#borderFlag, icon);
         }
         this.#borderFlag = true;
     }

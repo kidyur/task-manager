@@ -44,6 +44,25 @@ class DateData {
     
     constructor() { }
     
+    static getFirstDayIdxOfCurrMonth() {
+        let m = DateData.month + '';
+        if (m < 10) {
+            m = '0' + m;
+        }
+        const monthBeginning = new Date(`${DateData.year}-${m}-01`);
+        return monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 6 : 0);
+    }
+
+    static getDaysInCurrMonth() {
+        const daysInMonths = [
+            31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+        ] 
+        if (DateData.year % 4 == 0) {
+            daysInMonths[1] -= 1; // For leap year
+        }
+        return daysInMonths[DateData.month - 1];
+    }
+
     static initDatePicker() {
         DateData.setCurrentDate();
         DateData.#setupButton();

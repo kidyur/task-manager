@@ -1,7 +1,7 @@
 import DateData from "./dateData.mjs";
 import SchedulesData from "./schedulesData.mjs";
 
-function getFirstShiftIdxOfMonth() {
+function getFirstShiftIdxOfCurrMonth() {
 	const shifts = SchedulesData.currentSchedule.getShiftsCopy();
     if (shifts.length == 1) return 0; 
     if (shifts.length == 0) return -1;
@@ -32,4 +32,4 @@ function getFirstShiftIdxOfMonth() {
 	return seq[0];
 }
 
-export { getFirstShiftIdxOfMonth };
+export { getFirstShiftIdxOfCurrMonth };
