@@ -9,16 +9,20 @@ class Day {
     #title = '';
     
     constructor(title) {
+        this.#render();
+        this.#setTitle(title);
+        this.#element.addEventListener('click', () => {
+            this.#select();
+        })
+    }
+    
+    #render() {
         this.#element = document.createElement('div');
         this.#element.className = 'calendar__day calendar__day_month';
         this.#element.innerHTML = `
             <div class="day__title"></div>
             <div class="calendar__icon"></div>
         `;
-        this.#setTitle(title);
-        this.#element.addEventListener('click', () => {
-            this.#select();
-        })
         const calendarEl = document.querySelector('.calendar');
         calendarEl.appendChild(this.#element);
     }
