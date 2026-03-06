@@ -74,9 +74,8 @@ class SchedulesData {
 
     #setupAddShiftBtn() {
         const btn = document.getElementById('schedule-page__add-shift-btn');
-        btn.addEventListener('click', async () => {
-            const shift = new Shift();
-            shift.select();
+        btn.addEventListener('click', () => {
+            this.#currentSchedule.addShift(new Shift("hi!", "There!"));
             const calendar = new Calendar();
             calendar.updateView();
         })

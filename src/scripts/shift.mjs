@@ -7,7 +7,6 @@ class Shift {
     #name      = "";
     get name() { return this.#name }
 
-    #input     = undefined;
     #iconTag   = "";
     get iconTag() { return this.#iconTag };
 
@@ -17,14 +16,11 @@ class Shift {
             this.select();
         })
         this.createIconsField(tag);
-        this.createInput();
         this.createDeleteBtn();
         this.appendToShiftsList();
-        this.#input.value = name;
+        this.#element.querySelector('.shift__input').value = name;
+        
         const schedulesData = new SchedulesData();
-
-        schedulesData.currentSchedule.addShift(this);
-
         if (schedulesData.currentSchedule.beginningShift == Shift) {
             this.tagAsCurrent();
         }
@@ -37,7 +33,9 @@ class Shift {
         this.#element.className = 'shift';
         this.#element.innerHTML = `
             <div class="shift__main">
-                <div class="shift__left-block"></div>
+                <div class="shift__left-block">
+                    <input class="shift__input" maxlength=24 placeholder="День">
+                </div>
                 <div class="shift__right-block"></div>
             </div>
             <button class="set-current-day-btn">Дважды кликните на название, чтобы выбрать день текущим</button>
@@ -56,30 +54,8 @@ class Shift {
         if (lastChoice) {
             lastChoice.className = 'shift__input';
         }
-        this.#input.classList.add('shift_current');
         const schedulesData = new SchedulesData();
-
         schedulesData.currentSchedule.setBeginning(this);
-    }
-
-    createInput() {
-        const input = document.createElement('input');
-        input.className = 'shift__input';
-        input.maxLength = 24;
-        input.placeholder = "День";
-        input.addEventListener('blur', async () => {
-            this.#name = input.value;
-        })
-        input.addEventListener('dblclick', () => {
-            const schedulesData = new SchedulesData();
-
-            if (schedulesData.currentSchedule.beginningShift != this) {
-                this.tagAsCurrent();
-            }
-        })
-        input.focus();
-        this.#input = input;
-        this.#element.getElementsByClassName('shift__left-block')[0].appendChild(input);
     }
 
     createDeleteBtn() {
@@ -151,7 +127,6 @@ class Shift {
     select() {
         Shift.offLastActiveShift();
         this.#element.className = 'shift shift--editing';
-        this.#input.focus();
     }
 }
 
