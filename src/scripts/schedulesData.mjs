@@ -32,7 +32,6 @@ class SchedulesData {
     addSchedule(title) {
         if (this.#schedules.size < this.#SCHEDULES_LIMIT) {
             this.#schedules.set(title, new Schedule(title));
-            console.log(this.#schedules);
 
             this.#notifyObservers();
         } 
@@ -76,8 +75,8 @@ class SchedulesData {
     #notifyObservers() {
         const calendar = new Calendar();
         calendar.updateView();
+        Schedule.updateScheduleManager();
     }
-
 }
 
 export default SchedulesData;

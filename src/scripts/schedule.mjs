@@ -31,10 +31,9 @@ class Schedule {
 
     constructor(title) {
         this.#title = title;
-        const group = document.createElement('div');
-        this.#element = group;
+        this.#element = document.createElement('div');
         const schedulesData = new SchedulesData();
-        group.addEventListener('click', () => {
+        this.#element.addEventListener('click', () => {
             this.select();
             schedulesData.currentSchedule = this;
         })
@@ -60,7 +59,6 @@ class Schedule {
         btn.addEventListener('click', () => {
             const schedulesData = new SchedulesData();
             schedulesData.addSchedule(schedulesData.getSchedulesSize());
-            Schedule.updateScheduleManager();
         })
     }
 
@@ -76,12 +74,9 @@ class Schedule {
         const schedulesData = new SchedulesData();
 
         if (schedulesData.getSchedulesSize() == 0) {
-            console.log(1);
             manager.style.display = 'none';
             hint.style.display = 'flex';
         } else {
-            console.log(2);
-
             manager.style.display = 'flex';
             hint.style.display = 'none';
         }
