@@ -30,10 +30,10 @@ class SchedulesData {
     }
 
     addSchedule(schedule) {
-        if (this.getSchedulesLength() <= this.#SCHEDULES_LIMIT) {
+        if (this.getSchedulesLength() < this.#SCHEDULES_LIMIT) {
             this.#schedules.push(schedule);
-            const calendar = new Calendar();
-            calendar.updateView();
+
+            this.#notifyObservers();
         } 
     }
 
@@ -42,8 +42,8 @@ class SchedulesData {
         if (idx != -1) {
             this.#schedules.splice(idx, 1);
         }
-        const calendar = new Calendar();
-        calendar.updateView();
+
+        this.#notifyObservers();
     }
 
     toJSON() {
@@ -73,6 +73,11 @@ class SchedulesData {
                 const shift = new Shift(shift_item.name, shift_item.iconTag);
             }
         }
+    }
+
+    #notifyObservers() {
+        const calendar = new Calendar();
+        calendar.updateView();
     }
 }
 
