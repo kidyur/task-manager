@@ -3,54 +3,62 @@ import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
 
 class SchedulesData {
-    static #SCHEDULES_LIMIT = 3;
+    #SCHEDULES_LIMIT = 3;
     
-    static #currentSchedule = new Schedule(true);
-    static get currentSchedule() { return SchedulesData.#currentSchedule };
-    static set currentSchedule(schedule) {
-        SchedulesData.#currentSchedule = schedule;
+    #currentSchedule = new Schedule(true);
+    get currentSchedule() { return this.#currentSchedule };
+    set currentSchedule(schedule) {
+        this.#currentSchedule = schedule;
         const calendar = new Calendar();
         calendar.updateView();
     }
 
-    static #schedules = [];
-    static get schedules() { 
+    #schedules = [];
+    get schedules() { 
         return [...this.#schedules];
     }
-    static set schedules(s) { this.#schedules = s }
+    set schedules(s) { this.#schedules = s }
 
-    constructor() { }
+    static #instance = null;
+
+    constructor() {
+        if (SchedulesData.#instance) {
+            return SchedulesData.#instance;
+        } else {
+            SchedulesData.#instance = this;
+        }
+    }
     
-    static reload() {
-        SchedulesData.#schedules = [];
+    reload() {
+        this.#schedules = [];
         const calendar = new Calendar();
         calendar.updateView();
     }
 
-    static addSchedule(schedule) {
-        if (this.getSchedulesLength() <= SchedulesData.#SCHEDULES_LIMIT) {
-            SchedulesData.#schedules.push(schedule);
+    addSchedule(schedule) {
+        if (this.getSchedulesLength() <= this.#SCHEDULES_LIMIT) {
+            this.#schedules.push(schedule);
             const calendar = new Calendar();
             calendar.updateView();
         } 
     }
 
-    static removeSchedule(schedule) {
-        const idx = SchedulesData.#schedules.indexOf(schedule);
+    removeSchedule(schedule) {
+        const idx = this.#schedules.indexOf(schedule);
         if (idx != -1) {
-            SchedulesData.#schedules.splice(idx, 1);
+            this.#schedules.splice(idx, 1);
         }
         const calendar = new Calendar();
         calendar.updateView();
     }
 
-    static getSchedulesLength() {
-        return SchedulesData.#schedules.length;
+    getSchedulesLength() {
+        return this.#schedules.length;
     }
 
-    static toJSON() {
+    toJSON() {
         let obj = [];
-        for (const schedule of SchedulesData.schedules) {
+        for (const schedule of this.schedules) {
             console.log("Schedule processed")
             const scheduleFmt = {
                 name: schedule.name,
@@ -67,7 +75,7 @@ class SchedulesData {
         return obj;
     }
 
-    static parseJSON(list) {
+    parseJSON(list) {
         for (const schedule of list) {
             const schedule_item = new Schedule();
             schedule_item.name = schedule.name;

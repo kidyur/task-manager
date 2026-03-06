@@ -48,7 +48,8 @@ class Calendar {
         const firstDay = dateData.getFirstDayIdxOfCurrMonth();
         let shiftIdx = getFirstShiftIdxOfCurrMonth();
         const amountOfDays = dateData.getDaysInCurrMonth();
-        const shifts = SchedulesData.currentSchedule.getShiftsCopy();
+        const schedulesData = new SchedulesData();
+        const shifts = schedulesData.currentSchedule.getShiftsCopy();
         for (let d = 0; d < firstDay + amountOfDays; d++) {
             if (d < firstDay) {
                 this.days[d].updateView('');
@@ -57,7 +58,7 @@ class Calendar {
 
             let icon = "";
             if (shiftIdx != -1) {
-                if (shiftIdx == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
+                if (shiftIdx == shifts.indexOf(schedulesData.currentSchedule.beginningShift)) {
                     this.#borderFlag = !this.#borderFlag;
                 }
                 icon = (shifts.length ? shifts[shiftIdx].iconTag : "");

@@ -32,9 +32,11 @@ class Shift {
         this.createDeleteBtn();
         this.appendToShiftsList();
         this.#input.value = name;
-        SchedulesData.currentSchedule.addShift(this);
+        const schedulesData = new SchedulesData();
 
-        if (SchedulesData.currentSchedule.beginningShift == Shift) {
+        schedulesData.currentSchedule.addShift(this);
+
+        if (schedulesData.currentSchedule.beginningShift == Shift) {
             this.tagAsCurrent();
         }
 
@@ -54,7 +56,9 @@ class Shift {
             lastChoice.className = 'shift__input';
         }
         this.#input.classList.add('shift_current');
-        SchedulesData.currentSchedule.setBeginning(this);
+        const schedulesData = new SchedulesData();
+
+        schedulesData.currentSchedule.setBeginning(this);
     }
 
     createInput() {
@@ -66,7 +70,9 @@ class Shift {
             this.#name = input.value;
         })
         input.addEventListener('dblclick', () => {
-            if (SchedulesData.currentSchedule.beginningShift != this) {
+            const schedulesData = new SchedulesData();
+
+            if (schedulesData.currentSchedule.beginningShift != this) {
                 this.tagAsCurrent();
             }
         })
@@ -79,13 +85,15 @@ class Shift {
         const btn = document.createElement('button');
         btn.className = 'shift__delete-btn';
         btn.addEventListener('click', () => {
-            SchedulesData.currentSchedule.removeShift(this);
+            const schedulesData = new SchedulesData();
+
+            schedulesData.currentSchedule.removeShift(this);
             const shiftList = document.getElementById('schedule-page__shift-list');
-            if (SchedulesData.currentSchedule.beginningShift == this) {
-                if (SchedulesData.currentSchedule.getShiftsLength() > 0) {
-                    SchedulesData.currentSchedule.beginningShift = SchedulesData.currentSchedule.getShiftsCopy()[0];
+            if (schedulesData.currentSchedule.beginningShift == this) {
+                if (schedulesData.currentSchedule.getShiftsLength() > 0) {
+                    schedulesData.currentSchedule.beginningShift = schedulesData.currentSchedule.getShiftsCopy()[0];
                 } else {
-                    SchedulesData.currentSchedule.beginningShift = Shift;
+                    schedulesData.currentSchedule.beginningShift = Shift;
                 }
             }
             shiftList.removeChild(this.#element);

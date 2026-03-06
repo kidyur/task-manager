@@ -50,11 +50,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const calendar = new Calendar();
     const datePicker = new DatePicker();
     const dateData = new DateData();
+    const schedulesData = new SchedulesData();
     Schedule.setupScheduleManager();
     TaskList.start();
 
     const data = await window.electronAPI.getSharedData();
-    SchedulesData.parseJSON(data.schedules);
+    schedulesData.parseJSON(data.schedules);
     TaskList.parseJSON(data.tasksData);
 });
 

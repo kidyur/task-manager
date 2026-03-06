@@ -33,15 +33,16 @@ class Schedule {
         if (!empty_flag) {
             const group = document.createElement('div');
             this.#element = group;
+            const schedulesData = new SchedulesData();
             group.addEventListener('click', () => {
                 this.select();
-                SchedulesData.currentSchedule = this;
+                schedulesData.currentSchedule = this;
             })
             this.#createInput();
             this.#appendToSchedulesList();
             this.#input.focus();
             this.select();
-            SchedulesData.addSchedule(this);
+            schedulesData.addSchedule(this);
             Schedule.updateScheduleManager();
         } else {
             // Cleaning of shifts list view
@@ -64,7 +65,9 @@ class Schedule {
     static #setupCreateScheduleBtn() {
         const btn = document.getElementById('schedule-page__add-schedule-btn');
         btn.addEventListener('click', async () => {
-            if (SchedulesData.getSchedulesLength() < 3) {
+            const schedulesData = new SchedulesData();
+            
+            if (schedulesData.getSchedulesLength() < 3) {
                 const schedule = new Schedule();
             }
         })
@@ -79,7 +82,9 @@ class Schedule {
     static updateScheduleManager() {
         const manager = document.getElementById('schedule-page__manager');
         const hint = document.getElementById('schedule-page__hint');
-        if (SchedulesData.getSchedulesLength() == 0) {
+        const schedulesData = new SchedulesData();
+
+        if (schedulesData.getSchedulesLength() == 0) {
             manager.style.display = 'none';
             hint.style.display = 'flex';
         } else {
@@ -116,8 +121,9 @@ class Schedule {
         deleteBtn.addEventListener('click', async () => {
             const activeScheduleElement = document.getElementsByClassName('schedule-page__group--active')[0];  
             activeScheduleElement.remove();
-            SchedulesData.removeSchedule(SchedulesData.currentSchedule);
-            SchedulesData.currentSchedule = new Schedule(true); 
+            const schedulesData = new SchedulesData();
+            schedulesData.removeSchedule(schedulesData.currentSchedule);
+            schedulesData.currentSchedule = new Schedule(true); 
             Schedule.updateScheduleManager();
         })
     }
@@ -142,13 +148,15 @@ class Schedule {
     select() {
         Schedule.offAllSchedules();
         this.#element.className = 'schedule-page__group schedule-page__group--active';
-        SchedulesData.currentSchedule = this;
+        const schedulesData = new SchedulesData();
+        schedulesData.currentSchedule = this;
         this.#listShifts();
         this.#input.focus();
     }
 
     addShift(shift) {
         this.#shifts.push(shift);
+        this.#listShifts();
         const calendar = new Calendar();
         calendar.updateView();
     }
