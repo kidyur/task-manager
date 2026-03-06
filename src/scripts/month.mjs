@@ -38,13 +38,14 @@ class Month {
     }
 
     select() {
+        const calendar = new Calendar();
         DateData.offLastSeason();
         DateData.onMonth(this.#element);
         DateData.chosenMonth = this.#idx;
         DateData.chosenYear = DateData.year;
         DateData.monthEl = this.#element;
         DateData.setDate(-1, this.#idx, DateData.year);
-        Calendar.update();
+        calendar.update();
         DateData.hide();
     }
 }

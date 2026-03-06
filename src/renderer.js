@@ -46,9 +46,9 @@ window.addEventListener('beforeunload', () => {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    Calendar.init();
+    const calendar = new Calendar();
     DateData.initDatePicker();
-    Calendar.update();
+    calendar.update();
     Schedule.setupScheduleManager();
     TaskList.start();
 

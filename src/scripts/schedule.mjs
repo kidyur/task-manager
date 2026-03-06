@@ -55,7 +55,8 @@ class Schedule {
         btn.addEventListener('click', async () => {
             const shift = new Shift();
             shift.select();
-            Calendar.update();
+            const calendar = new Calendar();
+            calendar.update();
         })
     }
     
@@ -98,7 +99,8 @@ class Schedule {
         this.#beginningDate = new Date();
         this.#beginningDate.setHours(0, 0, 0, 0);
         this.#beginningShift = shift;
-        Calendar.update();
+        const calendar = new Calendar();
+        calendar.update();
     }
 
     #listShifts() {
@@ -147,7 +149,8 @@ class Schedule {
 
     addShift(shift) {
         this.#shifts.push(shift);
-        Calendar.update();
+        const calendar = new Calendar();
+        calendar.update();
     }
     
     removeShift(shift) {
@@ -155,7 +158,8 @@ class Schedule {
         if (idx != -1) {
             this.#shifts.splice(idx, 1);
         }
-        Calendar.update();
+        const calendar = new Calendar();
+        calendar.update();
     }
 
     getShiftsCopy() {

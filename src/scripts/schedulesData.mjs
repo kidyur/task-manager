@@ -9,7 +9,8 @@ class SchedulesData {
     static get currentSchedule() { return SchedulesData.#currentSchedule };
     static set currentSchedule(schedule) {
         SchedulesData.#currentSchedule = schedule;
-        Calendar.update();
+        const calendar = new Calendar();
+        calendar.update();
     }
 
     static #schedules = [];
@@ -22,13 +23,15 @@ class SchedulesData {
     
     static reload() {
         SchedulesData.#schedules = [];
-        Calendar.update();
+        const calendar = new Calendar();
+        calendar.update();
     }
 
     static addSchedule(schedule) {
         if (this.getSchedulesLength() <= SchedulesData.#SCHEDULES_LIMIT) {
             SchedulesData.#schedules.push(schedule);
-            Calendar.update();
+            const calendar = new Calendar();
+            calendar.update();
         } 
     }
 
@@ -37,7 +40,8 @@ class SchedulesData {
         if (idx != -1) {
             SchedulesData.#schedules.splice(idx, 1);
         }
-        Calendar.update();
+        const calendar = new Calendar();
+        calendar.update();
     }
 
     static getSchedulesLength() {

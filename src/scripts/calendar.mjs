@@ -4,21 +4,24 @@ import Day from './day.mjs';
 
 
 class Calendar {
-    static #calendarEl = undefined;
-    static #borderFlag = true;
+    #calendarEl = undefined;
+    #borderFlag = true;
+    static #instance = null
 
-    static days = [];
+    days = [];
 
-    constructor() { };
+    constructor() {
+        if (Calendar.#instance != null) {
+            return Calendar.#instance;
+        } else {
+            Calendar.#instance = this;
+        }
 
-    static init() {
-        const calendar = document.getElementById('calendar');
-        Calendar.#calendarEl = calendar;
-        // Calendar.#createWeekDays();
-        Calendar.#createDays();
-    }
+        this.#calendarEl = document.getElementById('calendar');
+        this.#createDays();
+    };
 
-    static getAmountOfDaysInCurrentMonth() {
+    getAmountOfDaysInCurrentMonth() {
         const daysInMonths = [
             31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
         ] 
@@ -28,7 +31,7 @@ class Calendar {
         return daysInMonths[DateData.month - 1];
     }
 
-    static #getCorrectShiftsSequenceForCurrentMonth() {
+    #getCorrectShiftsSequenceForCurrentMonth() {
         const MILISEC_IN_DAY = 24 * 60 * 60 * 1000;
         const seq = [];
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
@@ -60,18 +63,18 @@ class Calendar {
         return seq;
     }
 
-    static update() {
-        Calendar.#updateDays();
+    update() {
+        this.#updateDays();
     }
 
-    static offLastWeek() {
+    offLastWeek() {
         const days = document.querySelectorAll('.calendar__day_week');
         for (let day of days) {
             day.className = 'calendar__day calendar__day_month calendar__day_active';
         }
     }
 
-    static onWeek(dayIndex) {
+    onWeek(dayIndex) {
         const daysElements = document.getElementsByClassName('calendar__day_month');
         const weekBeginningIdx = dayIndex - dayIndex % 7;
         for (let i = 0; i < 7; i++) {
@@ -82,7 +85,7 @@ class Calendar {
         }
     }
 
-    static #createDays() {
+    #createDays() {
         const week = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
         for (const day of week) {
             const d = new Day(day);
@@ -90,13 +93,13 @@ class Calendar {
         const month = 42; // 7 days * 6 weeks. Since in worst case one month takes 6 weeks
         for (let day = 0; day < month; day++) {
             const d = new Day('', this.#borderFlag, "");
-            Calendar.days.push(d);
+            this.days.push(d);
         }
     }
 
-    static #updateDays() {
+    #updateDays() {
         const seq = this.#getCorrectShiftsSequenceForCurrentMonth();
-        const amountOfDays = Calendar.getAmountOfDaysInCurrentMonth();
+        const amountOfDays = this.getAmountOfDaysInCurrentMonth();
         const shifts = SchedulesData.currentSchedule.getShiftsCopy();
 
         let m = DateData.month + '';
@@ -107,17 +110,17 @@ class Calendar {
         const amountOfEmptyDays = monthBeginning.getDay() + (monthBeginning.getDay() == 0 ? 6 : 0);
         for (let d = 0; d < amountOfEmptyDays + amountOfDays; d++) {
             if (d < amountOfEmptyDays) {
-                Calendar.days[d].updateView('');
+                this.days[d].updateView('');
                 continue;
             }
 
             if (seq[(d - amountOfEmptyDays) % seq.length] == shifts.indexOf(SchedulesData.currentSchedule.beginningShift)) {
-                Calendar.#borderFlag = !Calendar.#borderFlag;
+                this.#borderFlag = !this.#borderFlag;
             }
             const icon = (seq.length ? shifts[seq[d % seq.length]].iconTag : "");
-            Calendar.days[d].updateView(d - amountOfEmptyDays + 1, Calendar.#borderFlag, icon);
+            this.days[d].updateView(d - amountOfEmptyDays + 1, this.#borderFlag, icon);
         }
-        Calendar.#borderFlag = true;
+        this.#borderFlag = true;
     }
 }
 

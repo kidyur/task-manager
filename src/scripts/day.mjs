@@ -52,17 +52,18 @@ class Day {
     }
 
     #select() {
+        const cal = new Calendar();
         DateData.chosenDay = this.#idx;
         const m = DateData.month;
         DateData.chosenMonth = m;
         const y = DateData.year;
         DateData.chosenYear = y;
-        Calendar.offLastWeek();
+        cal.offLastWeek();
         const calendar = document.getElementById('calendar');
         const days = calendar.getElementsByClassName('calendar__day_month');
         for (let i = 0; i < days.length; i++) {
             if (days[i] == this.#element) {
-                Calendar.onWeek(i);
+                cal.onWeek(i);
                 break;
             }
         }
