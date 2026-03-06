@@ -32,13 +32,17 @@ class Schedule {
     constructor(title) {
         this.#title = title;
         this.#render();
+        this.#pinListeners();
+        this.select();
+    }  
+
+    #pinListeners() {
         const schedulesData = new SchedulesData();
         this.#element.addEventListener('click', () => {
             this.select();
             schedulesData.currentSchedule = this;
         })
-        this.select();
-    }  
+    }
 
     #render() {
         this.#element = document.createElement('div');
@@ -49,52 +53,6 @@ class Schedule {
         document.getElementById('schedule-page__groups-sector').appendChild(this.#element);
     }    
 
-    static #setupAddShiftBtn() {
-        const btn = document.getElementById('schedule-page__add-shift-btn');
-        btn.addEventListener('click', async () => {
-            const shift = new Shift();
-            shift.select();
-            const calendar = new Calendar();
-            calendar.updateView();
-        })
-    }
-    
-
-    static #setupCreateScheduleBtn() {
-        const btn = document.getElementById('schedule-page__add-schedule-btn');
-        btn.addEventListener('click', () => {
-            const schedulesData = new SchedulesData();
-            schedulesData.addSchedule(schedulesData.getSchedulesSize());
-        })
-    }
-
-    static setupScheduleManager() {
-        Schedule.#setupDeleteBtn();
-        Schedule.#setupAddShiftBtn();
-        Schedule.#setupCreateScheduleBtn();
-    }
-
-    static updateScheduleManager() {
-        const manager = document.getElementById('schedule-page__manager');
-        const hint = document.getElementById('schedule-page__hint');
-        const schedulesData = new SchedulesData();
-
-        if (schedulesData.getSchedulesSize() == 0) {
-            manager.style.display = 'none';
-            hint.style.display = 'flex';
-        } else {
-            manager.style.display = 'flex';
-            hint.style.display = 'none';
-        }
-    }
-
-    static offAllSchedules() {
-        const elements = document.getElementsByClassName('schedule-page__group');
-        for (const group of elements) {
-            group.className = 'schedule-page__group';
-        }
-    }
-
     setBeginning(shift) {
         this.#beginningDate = new Date();
         this.#beginningDate.setHours(0, 0, 0, 0);
@@ -102,38 +60,15 @@ class Schedule {
         const calendar = new Calendar();
         calendar.updateView();
     }
-
-    #listShifts() {
-        const shiftList = document.getElementById('schedule-page__shift-list');
-        shiftList.innerHTML = '';
-        for (const shift of this.#shifts) {
-            shift.appendToShiftsList();
-        }
-    }
     
-    static #setupDeleteBtn() {
-        const deleteBtn = document.getElementById('schedule-page__delete-schedule-btn');
-        deleteBtn.addEventListener('click', async () => {
-            const activeScheduleElement = document.getElementsByClassName('schedule-page__group--active')[0];  
-            activeScheduleElement.remove();
-            const schedulesData = new SchedulesData();
-            schedulesData.removeSchedule(schedulesData.currentSchedule);
-            schedulesData.currentSchedule = new Schedule(true); 
-            Schedule.updateScheduleManager();
-        })
-    }
-        
     select() {
-        Schedule.offAllSchedules();
         this.#element.className = 'schedule-page__group schedule-page__group--active';
         const schedulesData = new SchedulesData();
         schedulesData.currentSchedule = this;
-        this.#listShifts();
     }
 
     addShift(shift) {
         this.#shifts.push(shift);
-        this.#listShifts();
         const calendar = new Calendar();
         calendar.updateView();
     }

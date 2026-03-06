@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const datePicker = new DatePicker();
     const dateData = new DateData();
     const schedulesData = new SchedulesData();
-    Schedule.setupScheduleManager();
     TaskList.start();
 
     const data = await window.electronAPI.getSharedData();
