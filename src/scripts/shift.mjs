@@ -127,7 +127,7 @@ class Shift {
                 }
                 btn.className = 'shift__icon shift__icon--first';
                 const calendar = new Calendar();
-                calendar.update();
+                calendar.updateView();
             })
             field.appendChild(btn);
         }

@@ -56,7 +56,7 @@ class Schedule {
             const shift = new Shift();
             shift.select();
             const calendar = new Calendar();
-            calendar.update();
+            calendar.updateView();
         })
     }
     
@@ -100,7 +100,7 @@ class Schedule {
         this.#beginningDate.setHours(0, 0, 0, 0);
         this.#beginningShift = shift;
         const calendar = new Calendar();
-        calendar.update();
+        calendar.updateView();
     }
 
     #listShifts() {
@@ -150,7 +150,7 @@ class Schedule {
     addShift(shift) {
         this.#shifts.push(shift);
         const calendar = new Calendar();
-        calendar.update();
+        calendar.updateView();
     }
     
     removeShift(shift) {
@@ -159,7 +159,7 @@ class Schedule {
             this.#shifts.splice(idx, 1);
         }
         const calendar = new Calendar();
-        calendar.update();
+        calendar.updateView();
     }
 
     getShiftsCopy() {

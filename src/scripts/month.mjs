@@ -1,5 +1,6 @@
 import DateData from "./dateData.mjs";
 import Calendar from "./calendar.mjs";
+import DatePicker from "./datePicker.mjs";
 
 class Month {
     #element = undefined;
@@ -39,14 +40,13 @@ class Month {
     }
 
     select() {
-        const calendar = new Calendar();
         const dateData = new DateData();
-        dateData.offLastSeason();
-        dateData.onMonth(this.#element);
+        const datePicker = new DatePicker();
+        datePicker.offLastSeason();
+        datePicker.onMonth(this.#element);
         dateData.setDate(dateData.day, this.#idx);
-        dateData.monthEl = this.#element;
-        calendar.update();
-        dateData.hide();
+        datePicker.monthEl = this.#element;
+        datePicker.hide();
     }
 }
 

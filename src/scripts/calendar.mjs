@@ -21,7 +21,7 @@ class Calendar {
         this.#createDays();
     };
 
-    update() {
+    updateView() {
         this.#updateDays();
     }
 
