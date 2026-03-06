@@ -7,10 +7,10 @@ class Schedule {
     #shifts          = [];
     get shifts() {return this.#shifts}
 
-    #name            = "";   
-    get name() { return this.#name }
-    set name(n) { 
-        this.#name = n;
+    #title            = "";   
+    get title() { return this.#title }
+    set title(n) { 
+        this.#title = n;
         this.#input.value = n;
     }
     #input           = undefined;
@@ -29,26 +29,19 @@ class Schedule {
         shift.tagAsCurrent();
     }
 
-    constructor(empty_flag=false) {
-        if (!empty_flag) {
-            const group = document.createElement('div');
-            this.#element = group;
-            const schedulesData = new SchedulesData();
-            group.addEventListener('click', () => {
-                this.select();
-                schedulesData.currentSchedule = this;
-            })
-            this.#createInput();
-            this.#appendToSchedulesList();
-            this.#input.focus();
+    constructor(title) {
+        this.#title = title;
+        const group = document.createElement('div');
+        this.#element = group;
+        const schedulesData = new SchedulesData();
+        group.addEventListener('click', () => {
             this.select();
-            schedulesData.addSchedule(this);
-            Schedule.updateScheduleManager();
-        } else {
-            // Cleaning of shifts list view
-            const shiftList = document.getElementById('schedule-page__shift-list');
-            shiftList.innerHTML = '';
-        }
+            schedulesData.currentSchedule = this;
+        })
+        this.#createInput();
+        this.#appendToSchedulesList();
+        this.#input.focus();
+        this.select();
     }  
 
     static #setupAddShiftBtn() {
@@ -64,12 +57,10 @@ class Schedule {
 
     static #setupCreateScheduleBtn() {
         const btn = document.getElementById('schedule-page__add-schedule-btn');
-        btn.addEventListener('click', async () => {
+        btn.addEventListener('click', () => {
             const schedulesData = new SchedulesData();
-            
-            if (schedulesData.getSchedulesLength() < 3) {
-                const schedule = new Schedule();
-            }
+            schedulesData.addSchedule(schedulesData.getSchedulesSize());
+            Schedule.updateScheduleManager();
         })
     }
 
@@ -84,10 +75,13 @@ class Schedule {
         const hint = document.getElementById('schedule-page__hint');
         const schedulesData = new SchedulesData();
 
-        if (schedulesData.getSchedulesLength() == 0) {
+        if (schedulesData.getSchedulesSize() == 0) {
+            console.log(1);
             manager.style.display = 'none';
             hint.style.display = 'flex';
         } else {
+            console.log(2);
+
             manager.style.display = 'flex';
             hint.style.display = 'none';
         }

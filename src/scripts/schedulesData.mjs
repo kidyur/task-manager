@@ -13,7 +13,7 @@ class SchedulesData {
         calendar.updateView();
     }
 
-    #schedules = [];
+    #schedules = new Map();
 
     static #instance = null;
 
@@ -25,23 +25,21 @@ class SchedulesData {
         }
     }
 
-    getSchedulesLength() {
-        return this.#schedules.length;
+    getSchedulesSize() {
+        return this.#schedules.size;
     }
 
-    addSchedule(schedule) {
-        if (this.getSchedulesLength() < this.#SCHEDULES_LIMIT) {
-            this.#schedules.push(schedule);
+    addSchedule(title) {
+        if (this.#schedules.size < this.#SCHEDULES_LIMIT) {
+            this.#schedules.set(title, new Schedule(title));
+            console.log(this.#schedules);
 
             this.#notifyObservers();
         } 
     }
 
-    removeSchedule(schedule) {
-        const idx = this.#schedules.indexOf(schedule);
-        if (idx != -1) {
-            this.#schedules.splice(idx, 1);
-        }
+    removeSchedule(title) {
+        this.#schedules.delete(title);
 
         this.#notifyObservers();
     }
@@ -79,6 +77,7 @@ class SchedulesData {
         const calendar = new Calendar();
         calendar.updateView();
     }
+
 }
 
 export default SchedulesData;
