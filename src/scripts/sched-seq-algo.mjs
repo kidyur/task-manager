@@ -4,7 +4,7 @@ import SchedulesData from "./schedulesData.mjs";
 function getFirstShiftIdxOfCurrMonth() {
     const schedulesData = new SchedulesData();
     if (schedulesData.currentSchedule == null) return -1;
-	const shifts = schedulesData.currentSchedule.getShiftsCopy();
+	const shifts = schedulesData.currentSchedule.shifts;
     if (shifts.length == 1) return 0; 
     if (shifts.length == 0) return -1;
 

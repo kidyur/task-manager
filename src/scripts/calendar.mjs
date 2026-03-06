@@ -51,7 +51,7 @@ class Calendar {
         const schedulesData = new SchedulesData();
         let shifts = []
         if (schedulesData.currentSchedule != null) {
-            shifts = schedulesData.currentSchedule.getShiftsCopy();
+            shifts = schedulesData.currentSchedule.shifts;
         }
         for (let d = 0; d < firstDay + amountOfDays; d++) {
             if (d < firstDay) {

@@ -5,7 +5,7 @@ import Shift from "./shift.mjs";
 class Schedule {
     #element         = undefined;
     #shifts          = [];
-    get shifts() {return this.#shifts}
+    get shifts() { return [...this.#shifts]; }
 
     #title            = "";   
     get title() { return this.#title }
@@ -80,15 +80,6 @@ class Schedule {
         }
         const calendar = new Calendar();
         calendar.updateView();
-    }
-
-    getShiftsCopy() {
-        const copy = this.#shifts;
-        return copy;
-    }
-
-    getShiftsLength() {
-        return this.#shifts.length;
     }
 }
 
