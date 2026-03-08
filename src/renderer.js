@@ -56,6 +56,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     schedulesData.clear();
     schedulesData.addSchedule("temp");
+    schedulesData.currentSchedule.addShift();
+    editor.hide();
 
     TaskList.start();
 

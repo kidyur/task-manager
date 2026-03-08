@@ -1,4 +1,6 @@
 import Editor from "./editor.mjs";
+import Calendar from "./calendar.mjs";
+import "./shift.css";
 
 
 class Shift {
@@ -7,38 +9,45 @@ class Shift {
     #isCurrent = false;
     #icon   = "";
 
-    constructor(title, icon) {
-        this.#title = title;
-        this.#icon = icon;
+    constructor(title, icon="student") {
         this.#render();
+        this.setValues(title, icon);
         this.#pinListeners();
     }
 
-    setTitle(title) {
-        this.#title = title;
+    setValues(title, icon) {
+        this.#setTitle(title);
+        this.#setIcon(icon);
+        
+        this.#notifyObservers();
     }
 
+    getTitle() {
+        return this.#title;
+    }
+    
     getIcon() {
         return this.#icon; 
     }
 
-    setIcon(icon) {
+    #setTitle(title) {
+        this.#title = title;
+        this.#element.querySelector(".shift__title").textContent = this.#title;
+    }
+
+    #setIcon(icon) {
         this.#icon = icon;
+        this.#element.querySelector(".shift__icon").setAttribute("shift-icon", icon);
     }
 
     #render() {
         this.#element = document.createElement('div');
         this.#element.className = 'shift';
         this.#element.innerHTML = `
-            <div class="shift__main">
-                <div class="shift__left-block">
-                    <input class="shift__input" maxlength=24 placeholder="День">
-                </div>
-                <div class="shift__right-block"></div>
-            </div>
-            <button class="set-current-day-btn">Дважды кликните на название, чтобы выбрать день текущим</button>
+            <p class="shift__title"></p>
+            <div class="shift__icon"></div>
         `;
-        document.getElementById('schedule-page__shift-list').appendChild(this.#element);
+        document.querySelector('.schedule-page__shift-list').appendChild(this.#element);
     }
 
     #pinListeners() {
@@ -46,6 +55,11 @@ class Shift {
             const editor = new Editor();
             editor.open(this);
         });
+    }
+
+    #notifyObservers() {
+        const calendar = new Calendar();
+        calendar.updateView();
     }
 }
 

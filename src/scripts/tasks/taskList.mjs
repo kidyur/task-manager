@@ -80,7 +80,6 @@ class TaskList {
     }
 
     static filterByDate(Date) {         
-        console.log(Date);
         for (let task of this.tasks) {
             let hide = true;
                         

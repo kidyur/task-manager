@@ -95,7 +95,7 @@ class SchedulesData {
                 <button id="schedule-page__add-schedule-btn" class="schedule-page__add-schedule-btn">+</button>
             </div>
 
-            <div id="schedule-page__shift-list"></div>
+            <div class="schedule-page__shift-list"></div>
             
             <div id="schedule-page__manager">
                 <button id="schedule-page__add-shift-btn">+ Добавить день</button> 
@@ -113,16 +113,26 @@ class SchedulesData {
 
     #pinListeners() {
         this.#element.querySelector('#schedule-page__delete-schedule-btn')
-                     .addEventListener("click", () => this.removeCurrentSchedule());
+                     .addEventListener("click", () => {
+            this.removeCurrentSchedule();
+
+            this.#notifyObservers();
+        });
+    
         this.#element.querySelector('#schedule-page__add-shift-btn')
                      .addEventListener("click", () => {
-            const editor = new Editor();
-            editor.open();
-        });
-        this.#element.querySelector('#schedule-page__add-schedule-btn')
-                     .addEventListener("click", () => this.addSchedule("helloworldd!"));
-    }
+            this.#currentSchedule.addShift();
 
+            this.#notifyObservers();
+        });
+
+        this.#element.querySelector('#schedule-page__add-schedule-btn')
+                     .addEventListener("click", () => {
+            this.addSchedule("helloworldd!");
+
+            this.#notifyObservers();
+        });
+    }
 
     #updateScheduleManager() {
         const manager = document.getElementById('schedule-page__manager');
@@ -134,6 +144,15 @@ class SchedulesData {
         } else {
             manager.style.display = 'flex';
             hint.style.display = 'none';
+        }
+    }
+
+    #updateView() {
+        const shiftsList = this.#element.querySelector(".schedule-page__shift-list");
+        shiftsList.innerHTML = "";
+        const shifts = this.#currentSchedule.getShiftsCopy();
+        for (let i = 0; i < shifts.length; i++) {
+            // const shiftEl = 
         }
     }
 

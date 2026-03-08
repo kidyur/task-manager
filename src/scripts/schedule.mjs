@@ -1,33 +1,14 @@
 import SchedulesData from "./schedulesData.mjs";
 import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
+import Editor from "./editor.mjs";
 
 class Schedule {
     #element         = undefined;
     #shifts          = [];
-    get shifts() { return [...this.#shifts]; }
-
     #title            = "";   
-    get title() { return this.#title }
-    set title(n) { 
-        this.#title = n;
-        this.#input.value = n;
-    }
-    #input           = undefined;
-    #beginningDate   = undefined;
-    get beginningDate() {
-        const date = new Date(this.#beginningDate);
-        return date;
-    }
-    #beginningShift  = Shift;
-    get beginningShift() {
-        return this.#beginningShift;
-    }
-    set beginningShift(shift) {
-        this.#beginningShift = shift;
-        this.setBeginning(shift);
-        shift.tagAsCurrent();
-    }
+    #beginningDate   = null;
+    #beginningShift  = null;
 
     constructor(title) {
         this.#title = title;
@@ -35,6 +16,10 @@ class Schedule {
         this.#pinListeners();
         this.select();
     }  
+
+    getBeginningDate() {
+        return this.#beginningDate;
+    }
 
     getTitle() {
         return this.#title;
@@ -61,8 +46,8 @@ class Schedule {
         this.#beginningDate = new Date();
         this.#beginningDate.setHours(0, 0, 0, 0);
         this.#beginningShift = shift;
-        const calendar = new Calendar();
-        calendar.updateView();
+
+        this.#notifyObservers();
     }
     
     select() {
@@ -71,11 +56,20 @@ class Schedule {
         schedulesData.currentSchedule = this;
     }
 
-    addShift(title) {
+    addShift(title = "Придумайте название дню") {
         const shift = new Shift(title);
         this.#shifts.push(shift);
-        const calendar = new Calendar();
-        calendar.updateView();
+        if (this.#shifts.length == 1) {
+            this.setBeginning(shift);
+        }
+        const editor = new Editor();
+        editor.open(shift);
+
+        this.#notifyObservers();
+    }
+
+    getShiftsCopy() {
+        return [...this.#shifts];
     }
     
     removeShift(shift) {
@@ -83,6 +77,11 @@ class Schedule {
         if (idx != -1) {
             this.#shifts.splice(idx, 1);
         }
+
+        this.#notifyObservers();
+    }
+    
+    #notifyObservers() {
         const calendar = new Calendar();
         calendar.updateView();
     }
