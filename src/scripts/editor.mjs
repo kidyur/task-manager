@@ -1,12 +1,12 @@
-class Window {
+class Editor {
     #element = null;
     static #instance = null;
 
     constructor() {
-        if (Window.#instance) {
-            return Window.#instance;
+        if (Editor.#instance) {
+            return Editor.#instance;
         } else {
-            Window.#instance = this;
+            Editor.#instance = this;
         }
 
         this.#render();
@@ -22,12 +22,12 @@ class Window {
 
     #render() {
         this.#element = document.createElement("div");
-        this.#element.className = "window-outer";
+        this.#element.className = "editor-outer";
         this.#element.innerHTML = `
-            <div class="window"></div>
+            <div class="editor"></div>
         `;
         document.querySelector("body").appendChild(this.#element);
     }
 }
 
-export default Window;
+export default Editor;
