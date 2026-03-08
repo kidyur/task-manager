@@ -36,6 +36,10 @@ class Schedule {
         this.select();
     }  
 
+    getTitle() {
+        return this.#title;
+    }
+
     #pinListeners() {
         const schedulesData = new SchedulesData();
         this.#element.addEventListener('click', () => {
@@ -67,7 +71,8 @@ class Schedule {
         schedulesData.currentSchedule = this;
     }
 
-    addShift(shift) {
+    addShift(title) {
+        const shift = new Shift(title);
         this.#shifts.push(shift);
         const calendar = new Calendar();
         calendar.updateView();

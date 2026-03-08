@@ -1,0 +1,37 @@
+.editor-outer {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  backdrop-filter: brightness(30%) blur(3px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor {
+  min-width: 300px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 10px 20px;
+}
+
+.editor__icons-grid {
+  background-color: black;
+  display: grid;
+  grid-template-columns: repeat(3, 20%);
+}
+
+.editor__icon {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: unset;
+  opacity: 40%;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: none;
+}

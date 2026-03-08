@@ -64,7 +64,7 @@ class Calendar {
                 if (shiftIdx == shifts.indexOf(schedulesData.currentSchedule.beginningShift)) {
                     this.#borderFlag = !this.#borderFlag;
                 }
-                icon = (shifts.length ? shifts[shiftIdx].iconTag : "");
+                icon = (shifts.length ? shifts[shiftIdx].getIcon() : "");
                 shiftIdx = (shiftIdx + 1) % shifts.length;
             }
             this.days[d].updateView(d - firstDay + 1, this.#borderFlag, icon);

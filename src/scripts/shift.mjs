@@ -1,31 +1,29 @@
-import SchedulesData from "./schedulesData.mjs";
-import Schedule from "./schedule.mjs";
-import Calendar from "./calendar.mjs";
+import Editor from "./editor.mjs";
+
 
 class Shift {
-    #element   = undefined;
+    #element   = null;
     #title      = "";
-    get title() { return this.#title }
+    #isCurrent = false;
+    #icon   = "";
 
-    #iconTag   = "";
-    get iconTag() { return this.#iconTag };
-
-    constructor(title, tag="") {
+    constructor(title, icon) {
         this.#title = title;
+        this.#icon = icon;
         this.#render();
-        this.#element.addEventListener('click', () => {
-            this.select();
-        })
-        this.createIconsField(tag);
-        this.createDeleteBtn();
-        this.#element.querySelector('.shift__input').value = title;
-        
-        const schedulesData = new SchedulesData();
-        if (schedulesData.currentSchedule.beginningShift == Shift) {
-            this.tagAsCurrent();
-        }
+        this.#pinListeners();
+    }
 
-        this.select();
+    setTitle(title) {
+        this.#title = title;
+    }
+
+    getIcon() {
+        return this.#icon; 
+    }
+
+    setIcon(icon) {
+        this.#icon = icon;
     }
 
     #render() {
@@ -43,86 +41,11 @@ class Shift {
         document.getElementById('schedule-page__shift-list').appendChild(this.#element);
     }
 
-    static offLastActiveShift() {
-        const shift = document.getElementsByClassName('shift--editing')[0];
-        if (shift) {
-            shift.className = 'shift';
-        }
-    }
-
-    tagAsCurrent() {
-        const lastChoice = document.getElementsByClassName('shift_current')[0];
-        if (lastChoice) {
-            lastChoice.className = 'shift__input';
-        }
-        const schedulesData = new SchedulesData();
-        schedulesData.currentSchedule.setBeginning(this);
-    }
-
-    createDeleteBtn() {
-        const btn = document.createElement('button');
-        btn.className = 'shift__delete-btn';
-        btn.addEventListener('click', () => {
-            const schedulesData = new SchedulesData();
-
-            schedulesData.currentSchedule.removeShift(this);
-            const shiftList = document.getElementById('schedule-page__shift-list');
-            if (schedulesData.currentSchedule.beginningShift == this) {
-                if (schedulesData.currentSchedule.getShiftsLength() > 0) {
-                    schedulesData.currentSchedule.beginningShift = schedulesData.currentSchedule.getShiftsCopy()[0];
-                } else {
-                    schedulesData.currentSchedule.beginningShift = Shift;
-                }
-            }
-            shiftList.removeChild(this.#element);
-        })
-        
-        this.#element.getElementsByClassName('shift__left-block')[0].appendChild(btn);
-    }
-
-    createIconsField(iconTag) {
-        const iconTags = [
-            'books',
-            'moon_and_sun',
-            'moon',
-            'notebook',
-            'plant',
-            'sleep',
-            'student',
-            'sun_and_moon',
-            'sun',
-            'sunset'
-        ];
-        const field = document.createElement('div');
-        field.className = 'shift__right-block';
-        for (const tag of iconTags) {
-            const btn = document.createElement('button');
-            btn.className = 'shift__icon';
-            btn.setAttribute('shift-icon', tag);
-
-            if (tag == iconTag) {
-                this.#iconTag = tag;
-                btn.className = 'shift__icon shift__icon--first';
-            }
-
-            btn.addEventListener('click', () => {
-                this.#iconTag = tag;
-                const prevIcon = field.getElementsByClassName('shift__icon--first')[0];
-                if (prevIcon) {
-                    prevIcon.className = 'shift__icon';
-                }
-                btn.className = 'shift__icon shift__icon--first';
-                const calendar = new Calendar();
-                calendar.updateView();
-            })
-            field.appendChild(btn);
-        }
-        this.#element.getElementsByClassName('shift__right-block')[0].appendChild(field);
-    }
-
-    select() {
-        Shift.offLastActiveShift();
-        this.#element.className = 'shift shift--editing';
+    #pinListeners() {
+        this.#element.addEventListener("click", () => {
+            const editor = new Editor();
+            editor.open(this);
+        });
     }
 }
 

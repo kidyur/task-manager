@@ -34,7 +34,6 @@
 }
 
 body {
-    color: #EFF1F3;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     position: absolute;
@@ -48,39 +47,6 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: var(--bg-color);
-}
-
-h1 {
-    width: 100%;
-    color: var(--fg-color);
-    top: 0;
-    font-size: 40px;
-    font-weight: 400;
-    margin: 0;
-    padding-top: var(--padding-big);
-    padding-left: var(--padding-big);
-}
-
-h2 {
-    width: 100%;
-    color: var(--font-main-color);
-    top: 0;
-    font-size: 32px;
-    font-weight: 400;
-    margin: 0;
-    padding-top: var(--padding-medium);
-    padding-left: var(--padding-big);
-}
-
-p {
-    margin: 0;
-    padding: 0;
-}
-
-button {
-    cursor: pointer;
-    background: unset;
-    border: none;
 }
 
 #schedule-page {
@@ -108,9 +74,7 @@ button {
 
 input {
     outline: none;
-    color: rgb(145, 145, 145);
 }
-
 
 #open-schedule-page-btn {
     border-top-left-radius: 40px;
@@ -120,15 +84,4 @@ input {
 #open-tasks-page-btn {
     border-top-right-radius: 40px;
     border-bottom-right-radius: 40px;
-}
-
-
-button {
-    display: flex;
-    border: 2px var(--fg-color) solid;
-    background-color: unset; 
-    padding: var(--padding-small) var(--padding-medium);
-    margin: 5px;
-    color: var(--font-main-color);
-    box-shadow: 0 0 20px 0 black;
 }

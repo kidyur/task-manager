@@ -53,6 +53,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dateData = new DateData();
     const schedulesData = new SchedulesData();
     const editor = new Editor();
+
+    schedulesData.clear();
+    schedulesData.addSchedule("temp");
+
     TaskList.start();
 
     const data = await window.electronAPI.getSharedData();

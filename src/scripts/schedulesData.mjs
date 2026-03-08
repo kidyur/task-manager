@@ -1,6 +1,7 @@
 import Schedule from "./schedule.mjs";
 import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
+import Editor from "./editor.mjs";
 
 class SchedulesData {
     #SCHEDULES_LIMIT = 3;
@@ -12,6 +13,7 @@ class SchedulesData {
         calendar.updateView();
     }
     #schedules = new Map();
+    #element = null;
 
     static #instance = null;
 
@@ -22,7 +24,8 @@ class SchedulesData {
             SchedulesData.#instance = this;
         }
 
-        this.#setupScheduleManager();
+        this.#render();
+        this.#pinListeners();
     }
 
     getSchedulesSize() {
@@ -37,6 +40,18 @@ class SchedulesData {
         } 
     }
 
+    clear() {
+        this.#schedules.clear();
+
+        this.#notifyObservers();
+    }
+
+    removeCurrentSchedule() {
+        this.#schedules.delete(this.#currentSchedule.getTitle());
+
+        this.#notifyObservers();
+    }
+
     removeSchedule(title) {
         this.#schedules.delete(title);
 
@@ -46,7 +61,6 @@ class SchedulesData {
     toJSON() {
         let obj = [];
         for (const schedule of this.schedules) {
-            console.log("Schedule processed")
             const scheduleFmt = {
                 name: schedule.name,
                 shifts: []
@@ -54,7 +68,7 @@ class SchedulesData {
             for (const shift of schedule.shifts) {
                 scheduleFmt.shifts.push({
                     name: shift.name, 
-                    iconTag: shift.iconTag,
+                    iconTag: shift.getIcon(),
                 })
             }
             obj.push(scheduleFmt);
@@ -67,73 +81,60 @@ class SchedulesData {
             const schedule_item = new Schedule();
             schedule_item.name = schedule.name;
             for (const shift_item of schedule.shifts) {
-                const shift = new Shift(shift_item.name, shift_item.iconTag);
+                const shift = new Shift(shift_item.getTitle(), shift_item.getIcon());
             }
         }
     }
 
-    #setupAddShiftBtn() {
-        const btn = document.getElementById('schedule-page__add-shift-btn');
-        btn.addEventListener('click', () => {
-            this.#currentSchedule.addShift(new Shift("hi!", "There!"));
-            const calendar = new Calendar();
-            calendar.updateView();
-        })
+    #render() {
+        this.#element = document.createElement("div");
+        this.#element.className = "schedules-table";
+        this.#element.innerHTML = `
+            <div id="schedule-page__groups-line">
+                <div id="schedule-page__groups-sector"></div>
+                <button id="schedule-page__add-schedule-btn" class="schedule-page__add-schedule-btn">+</button>
+            </div>
+
+            <div id="schedule-page__shift-list"></div>
+            
+            <div id="schedule-page__manager">
+                <button id="schedule-page__add-shift-btn">+ Добавить день</button> 
+                <button id="schedule-page__delete-schedule-btn">Удалить расписание</button>
+            </div>
+
+            <div id="schedule-page__hint">
+                <div id="long-arrow"></div>
+                <div id="lightbulb"></div>
+                <p>Создайте своё первое <br> расписание</p>
+            </div>
+        `;
+        document.querySelector("#schedule-page").appendChild(this.#element);
     }
 
-    #setupCreateScheduleBtn() {
-        const btn = document.getElementById('schedule-page__add-schedule-btn');
-        btn.addEventListener('click', () => {
-            const schedulesData = new SchedulesData();
-            schedulesData.addSchedule(schedulesData.getSchedulesSize());
-        })
+    #pinListeners() {
+        this.#element.querySelector('#schedule-page__delete-schedule-btn')
+                     .addEventListener("click", () => this.removeCurrentSchedule());
+        this.#element.querySelector('#schedule-page__add-shift-btn')
+                     .addEventListener("click", () => {
+            const editor = new Editor();
+            editor.open();
+        });
+        this.#element.querySelector('#schedule-page__add-schedule-btn')
+                     .addEventListener("click", () => this.addSchedule("helloworldd!"));
     }
 
-    #setupScheduleManager() {
-        this.#setupDeleteBtn();
-        this.#setupAddShiftBtn();
-        this.#setupCreateScheduleBtn();
-    }
 
     #updateScheduleManager() {
         const manager = document.getElementById('schedule-page__manager');
         const hint = document.getElementById('schedule-page__hint');
-        const schedulesData = new SchedulesData();
 
-        if (schedulesData.getSchedulesSize() == 0) {
+        if (this.getSchedulesSize() == 0) {
             manager.style.display = 'none';
             hint.style.display = 'flex';
         } else {
             manager.style.display = 'flex';
             hint.style.display = 'none';
         }
-    }
-
-    #offAllSchedules() {
-        const elements = document.getElementsByClassName('schedule-page__group');
-        for (const group of elements) {
-            group.className = 'schedule-page__group';
-        }
-    }
-    
-    #listShifts() {
-        const shiftList = document.getElementById('schedule-page__shift-list');
-        shiftList.innerHTML = '';
-        for (const shift of this.#currentSchedule.shifts) {
-            shift.appendToShiftsList();
-        }
-    }
-    
-    #setupDeleteBtn() {
-        const deleteBtn = document.getElementById('schedule-page__delete-schedule-btn');
-        deleteBtn.addEventListener('click', async () => {
-            const activeScheduleElement = document.getElementsByClassName('schedule-page__group--active')[0];  
-            activeScheduleElement.remove();
-            const schedulesData = new SchedulesData();
-            schedulesData.removeSchedule(schedulesData.currentSchedule);
-            schedulesData.currentSchedule = new Schedule(true); 
-            Schedule.updateScheduleManager();
-        })
     }
 
     #notifyObservers() {
