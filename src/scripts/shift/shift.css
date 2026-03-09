@@ -21,41 +21,41 @@
 }
 
 *[shift-icon="books"] {
-    background-image: url('../icons/books.svg');
+    background-image: url('../../icons/books.svg');
 }
 
 *[shift-icon="moon_and_sun"] {
-    background-image: url('../icons/moon_and_sun.svg');
+    background-image: url('../../icons/moon_and_sun.svg');
 }
 
 *[shift-icon="moon"] {
-    background-image: url('../icons/moon.svg');
+    background-image: url('../../icons/moon.svg');
 }
 
 *[shift-icon="notebook"] {
-    background-image: url('../icons/notebook.svg');
+    background-image: url('../../icons/notebook.svg');
 }
 
 *[shift-icon="plant"] {
-    background-image: url('../icons/plant.svg');
+    background-image: url('../../icons/plant.svg');
 }
 
 *[shift-icon="sleep"] {
-    background-image: url('../icons/sleep.svg');
+    background-image: url('../../icons/sleep.svg');
 }
 
 *[shift-icon="student"] {
-    background-image: url('../icons/student.svg');
+    background-image: url('../../icons/student.svg');
 }
 
 *[shift-icon="sun_and_moon"] {
-    background-image: url('../icons/sun_and_moon.svg');
+    background-image: url('../../icons/sun_and_moon.svg');
 }
 
 *[shift-icon="sun"] {
-    background-image: url('../icons/sun.svg');
+    background-image: url('../../icons/sun.svg');
 }
 
 *[shift-icon="sunset"] {
-    background-image: url('../icons/sunset.svg');
+    background-image: url('../../icons/sunset.svg');
 }
