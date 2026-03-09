@@ -1,7 +1,7 @@
-import SchedulesData from "./schedulesData.mjs";
-import Calendar from "./calendar.mjs";
-import Shift from "./shift.mjs";
-import Editor from "./editor.mjs";
+import SchedulesData from "../schedules-table/schedulesData.mjs";
+import Calendar from "../calendar/calendar.mjs";
+import Shift from "../shift/shift.mjs";
+import Editor from "../editor/editor.mjs";
 
 class Schedule {
     #element         = undefined;

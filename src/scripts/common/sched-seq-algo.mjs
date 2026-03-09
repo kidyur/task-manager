@@ -1,5 +1,5 @@
-import DateData from "./dateData.mjs";
-import SchedulesData from "./schedulesData.mjs";
+import DateData from "../calendar/dateData.mjs";
+import SchedulesData from "../schedules-table/schedulesData.mjs";
 
 function getFirstShiftIdxOfCurrMonth() {
     const schedulesData = new SchedulesData();

@@ -1,11 +1,11 @@
 import './index.css';
 import './styles/tasks_page.css';
 
-import Calendar from "/src/scripts/calendar.mjs";
-import DateData from "/src/scripts/dateData.mjs";
+import Calendar from './scripts/calendar/calendar.mjs';
+import DateData from './scripts/calendar/dateData.mjs';
 import TaskList from "/src/scripts/tasks/taskList.mjs";
-import SchedulesData from "/src/scripts/schedulesData.mjs";
-import Editor from './scripts/editor.mjs';
+import SchedulesData from './scripts/schedules-table/schedulesData.mjs';
+import Editor from "./scripts/editor/editor.mjs";
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({

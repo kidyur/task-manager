@@ -1,5 +1,5 @@
 import Calendar from "./calendar.mjs";
-import TaskList from "./tasks/taskList.mjs";
+import TaskList from "../tasks/taskList.mjs";
 
 class DateData {
     #month = 0;

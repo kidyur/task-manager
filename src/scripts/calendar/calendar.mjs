@@ -1,7 +1,7 @@
-import SchedulesData from "./schedulesData.mjs";
+import SchedulesData from "../schedules-table/schedulesData.mjs";
 import DateData from "./dateData.mjs";
-import Day from './day.mjs';
-import { getFirstShiftIdxOfCurrMonth } from "./sched-seq-algo.mjs";
+import Day from "../day/day.mjs";
+import { getFirstShiftIdxOfCurrMonth } from "../common/sched-seq-algo.mjs";
 import "./calendar.css";
 
 

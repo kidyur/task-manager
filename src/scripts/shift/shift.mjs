@@ -1,5 +1,5 @@
-import Editor from "./editor.mjs";
-import Calendar from "./calendar.mjs";
+import Editor from "../editor/editor.mjs";
+import Calendar from "../calendar/calendar.mjs";
 import "./shift.css";
 
 

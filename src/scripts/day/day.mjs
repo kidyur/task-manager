@@ -1,4 +1,4 @@
-import DateData from "./dateData.mjs";
+import DateData from "../calendar/dateData.mjs";
 
 class Day {
     #borderFlag = false;

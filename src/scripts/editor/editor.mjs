@@ -1,6 +1,6 @@
 import "./editor.css";
-import SchedulesData from "./schedulesData.mjs";
-import Shift from "./shift.mjs";
+import SchedulesData from "../schedules-table/schedulesData.mjs";
+import Shift from "../shift/shift.mjs";
 
 
 class Editor {
