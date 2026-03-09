@@ -2,6 +2,8 @@ import TaskDate from "./taskDate.mjs";
 import Task from "./task.mjs";
 import Tag from "./tag.mjs"
 import DateData from "../calendar/dateData.mjs";
+import './tasks_page.css';
+
 
 
 class TaskList {

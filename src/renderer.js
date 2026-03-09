@@ -1,5 +1,4 @@
 import './index.css';
-import './styles/tasks_page.css';
 
 import Calendar from './scripts/calendar/calendar.mjs';
 import DateData from './scripts/calendar/dateData.mjs';
