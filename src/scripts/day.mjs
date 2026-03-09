@@ -28,8 +28,8 @@ class Day {
             <div class="day__title"></div>
             <div class="calendar__icon"></div>
         `;
-        const calendarEl = document.querySelector('.calendar');
-        calendarEl.appendChild(this.#element);
+        const grid = document.querySelector('.calendar__days-grid');
+        grid.appendChild(this.#element);
     }
 
     /**

@@ -17,8 +17,12 @@ class Schedule {
         this.select();
     }  
 
+    getBeginningShift() {
+        return this.#beginningShift;
+    }
+
     getBeginningDate() {
-        return this.#beginningDate;
+        return new Date(this.#beginningDate);
     }
 
     getTitle() {
@@ -56,15 +60,15 @@ class Schedule {
         schedulesData.currentSchedule = this;
     }
 
-    addShift(title = "Придумайте название дню") {
-        const shift = new Shift(title);
+    addShift(title = "Придумайте название дню", icon = "") {
+        const shift = new Shift(title, icon);
         this.#shifts.push(shift);
         if (this.#shifts.length == 1) {
             this.setBeginning(shift);
         }
         const editor = new Editor();
         editor.open(shift);
-
+        
         this.#notifyObservers();
     }
 

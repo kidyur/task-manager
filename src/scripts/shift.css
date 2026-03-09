@@ -6,10 +6,11 @@
   width: 100%;
   box-sizing: border-box;
   padding-inline: 20px;
+  cursor: pointer;
 }
 
 .shift__title {
-
+  color: white;
 }
 
 .shift__icon {

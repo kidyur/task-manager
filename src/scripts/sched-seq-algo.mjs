@@ -21,7 +21,8 @@ function getFirstShiftIdxOfCurrMonth() {
     const gap = Math.floor((monthBeginning - scheduleMonthBeginningDate) / MILISEC_IN_DAY);
     const beginningDate = schedulesData.currentSchedule.getBeginningDate();
     let remainder = (beginningDate.getDate()) % shifts.length;
-    let idx = shifts.indexOf(schedulesData.currentSchedule.beginningShift);
+
+    let idx = shifts.indexOf(schedulesData.currentSchedule.getBeginningShift());
 
     // Мы доводим до того остатка, с которого начнём 
     // заполнять календарь.
@@ -33,7 +34,8 @@ function getFirstShiftIdxOfCurrMonth() {
             seq[i] = shifts.length + seq[i];
         }
     }
-	return seq[0];
+
+    return seq[0];
 }
 
 export { getFirstShiftIdxOfCurrMonth };

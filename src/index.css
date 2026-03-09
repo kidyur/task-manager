@@ -54,7 +54,7 @@ body {
 }
 
 .page {
-    width: 300px;
+    width: 400px;
     height: 100vh;
     background-color: var(--bg-color);
     flex-direction: column;

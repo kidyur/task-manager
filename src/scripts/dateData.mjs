@@ -1,5 +1,4 @@
 import Calendar from "./calendar.mjs";
-import DatePicker from "./datePicker.mjs";
 import TaskList from "./tasks/taskList.mjs";
 
 class DateData {
@@ -70,8 +69,6 @@ class DateData {
     #notifyObservers() {
         const calendar = new Calendar();
         calendar.updateView();  
-        const datePicker = new DatePicker();
-        datePicker.updateView();
         TaskList.filterByDate(new Date(this.year, this.month - 1, this.day));
     }
 }

@@ -2,6 +2,8 @@ import SchedulesData from "./schedulesData.mjs";
 import DateData from "./dateData.mjs";
 import Day from './day.mjs';
 import { getFirstShiftIdxOfCurrMonth } from "./sched-seq-algo.mjs";
+import "./calendar.css";
+
 
 class Calendar {
     #calendarEl = undefined;
@@ -28,7 +30,11 @@ class Calendar {
     #render() {
         this.#calendarEl = document.createElement("div");
         this.#calendarEl.className = "calendar";
-        document.querySelector(".calendar-page").appendChild(this.#calendarEl);
+        this.#calendarEl.innerHTML = `
+            <div class="calendar__days-grid"></div>
+            <div class="calendar__months-roulette"></div>
+        `;
+        document.querySelector("body").appendChild(this.#calendarEl);
     }
 
     #createDays() {
@@ -43,7 +49,7 @@ class Calendar {
         }
     }
 
-    #updateDays() { // FIX: updates twice on shift adding
+    #updateDays() {
         const dateData = new DateData();
         const firstDay = dateData.getFirstDayIdxOfCurrMonth();
         let shiftIdx = getFirstShiftIdxOfCurrMonth();
@@ -61,10 +67,10 @@ class Calendar {
 
             let icon = "";
             if (shiftIdx != -1) {
-                if (shiftIdx == shifts.indexOf(schedulesData.currentSchedule.beginningShift)) {
+                if (shiftIdx == shifts.indexOf(schedulesData.currentSchedule.getBeginningShift())) {
                     this.#borderFlag = !this.#borderFlag;
                 }
-                icon = (shifts.length ? shifts[shiftIdx].getIcon() : "");
+                icon = shifts[shiftIdx].getIcon()
                 shiftIdx = (shiftIdx + 1) % shifts.length;
             }
             this.days[d].updateView(d - firstDay + 1, this.#borderFlag, icon);

@@ -2,6 +2,7 @@ import Schedule from "./schedule.mjs";
 import Calendar from "./calendar.mjs";
 import Shift from "./shift.mjs";
 import Editor from "./editor.mjs";
+import "./schedules-table.css";
 
 class SchedulesData {
     #SCHEDULES_LIMIT = 3;
@@ -108,7 +109,7 @@ class SchedulesData {
                 <p>Создайте своё первое <br> расписание</p>
             </div>
         `;
-        document.querySelector("#schedule-page").appendChild(this.#element);
+        document.querySelector("body").appendChild(this.#element);
     }
 
     #pinListeners() {

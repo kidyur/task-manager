@@ -1,7 +1,9 @@
-#schedule-page {
-    /* visibility: hidden;
-    pointer-events: none; */
+
+.schedules-table {
+    width: 400px;
+    height: 100%;
 }
+
 
 #schedule-page__groups-line {
     width: calc(100% - var(--padding-medium));
@@ -49,6 +51,8 @@
     /* box-shadow: 4px 4px 10px 0px black; */
     box-shadow: 0px 0px 0px 0px black;
     color: white;
+    background-color: unset;
+    border: none;
     font-size: 20px;
     padding: 0;
     height: 30px;
