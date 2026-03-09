@@ -34,7 +34,7 @@
   background-position: center;
   cursor: pointer;
   border: none;
-  background-image: url("../icons/arrow.svg");
+  background-image: url("../../icons/arrow.svg");
 }
 
 .calendar__arrow-btn:last-child {
