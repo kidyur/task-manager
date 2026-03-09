@@ -34,28 +34,39 @@ class DateData {
 
     getDaysInCurrMonth() {
         const daysInMonths = [
-            31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+            31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
         ] 
         if (this.year % 4 == 0) {
-            daysInMonths[1] -= 1; // For leap year
+            daysInMonths[1] += 1; // For leap year
         }
         return daysInMonths[this.month - 1];
-    }
-
-    getMonthName(idx) {
-        const monthsNames = [
-            "Январь",   "Февраль", 
-            "Март",     "Апрель",  "Май", 
-            "Июнь",     "Июль",    "Август", 
-            "Сентябрь", "Октябрь", "Ноябрь",
-            "Декабрь"
-        ];
-        return monthsNames[idx];
     }
 
     setCurrentDate() {
         const date = new Date();
         this.setDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
+    }
+
+    setNextMonth() {
+        let month = this.#month;
+        let year = this.#year;
+        month += 1;
+        if (month == 13) {
+            month = 1;
+            year += 1;
+        }
+        this.setDate(this.#day, month, year);
+    }
+
+    setPreviousMonth() {
+        let month = this.#month;
+        let year = this.#year;
+        month -= 1;
+        if (month == 0) {
+            month = 12;
+            year -= 1;
+        }
+        this.setDate(this.#day, month, year);
     }
 
     setDate(day, month = this.month, year = this.year) {

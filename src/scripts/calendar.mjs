@@ -21,10 +21,26 @@ class Calendar {
 
         this.#render();
         this.#createDays();
+        this.#pinListeners();
     };
 
     updateView() {
         this.#updateDays();
+        this.#updateDateTitle();
+    }
+
+    #updateDateTitle() {
+        const dateData = new DateData();
+        const title = this.#calendarEl.querySelector(".calendar__date-title");
+        const monthsNames = [
+             'Январь' , 'Февраль' , 
+             'Март' , 'Апрель' , 'Май' , 
+             'Июнь' , 'Июль' , 'Август' , 
+             'Сентябрь' , 'Октябрь' , 'Ноябрь' , 
+             'Декабрь'
+        ];
+        let newTitle = `${dateData.year}, ${monthsNames[dateData.month - 1]}`;
+        title.innerHTML = newTitle;
     }
 
     #render() {
@@ -32,9 +48,27 @@ class Calendar {
         this.#calendarEl.className = "calendar";
         this.#calendarEl.innerHTML = `
             <div class="calendar__days-grid"></div>
-            <div class="calendar__months-roulette"></div>
+            <div class="calendar__months-roulette">
+                <button class="calendar__arrow-btn"></button>
+                <p class="calendar__date-title">Текущая дата</p>
+                <button class="calendar__arrow-btn"></button>
+            </div>
         `;
         document.querySelector("body").appendChild(this.#calendarEl);
+    }
+
+    #pinListeners() {
+        const dateData = new DateData();
+
+        this.#calendarEl.querySelectorAll(".calendar__arrow-btn")[0]
+                        .addEventListener("click", () => {
+            dateData.setPreviousMonth();
+        })
+
+        this.#calendarEl.querySelectorAll(".calendar__arrow-btn")[1]
+                        .addEventListener("click", () => {
+            dateData.setNextMonth();
+        })
     }
 
     #createDays() {
@@ -59,12 +93,15 @@ class Calendar {
         if (schedulesData.currentSchedule != null) {
             shifts = schedulesData.currentSchedule.getShiftsCopy();
         }
-        for (let d = 0; d < firstDay + amountOfDays; d++) {
+        for (let d = 0; d < this.days.length; d++) {
             if (d < firstDay) {
                 this.days[d].updateView('');
                 continue;
             }
-
+            if (d >= firstDay + amountOfDays) {
+                this.days[d].updateView('');
+                continue;
+            }
             let icon = "";
             if (shiftIdx != -1) {
                 if (shiftIdx == shifts.indexOf(schedulesData.currentSchedule.getBeginningShift())) {
@@ -74,6 +111,7 @@ class Calendar {
                 shiftIdx = (shiftIdx + 1) % shifts.length;
             }
             this.days[d].updateView(d - firstDay + 1, this.#borderFlag, icon);
+            
         }
         this.#borderFlag = true;
     }
