@@ -34,7 +34,9 @@ class SchedulesTableModel {
 
     addSchedule(title) {
         if (this.#schedules.size < this.#SCHEDULES_LIMIT) {
-            this.#schedules.set(title, new Schedule(title));
+            const schedule = new Schedule(title);
+            this.#schedules.set(new Date(), schedule);
+            schedule.select();
 
             this.#notifyObservers();
         } 
@@ -86,47 +88,24 @@ class SchedulesTableModel {
         }
     }
 
+    updateView() {
+        for (const [title, schedule] of this.#schedules) {
+            schedule.updateView();
+        }
+    }
+
     #render() {
         this.#element = document.createElement("div");
         this.#element.className = "schedules-table";
         this.#element.innerHTML = `
-            <div id="schedule-page__groups-line">
-                <div id="schedule-page__groups-sector"></div>
-                <button id="schedule-page__add-schedule-btn" class="schedule-page__add-schedule-btn">+</button>
-            </div>
-
-            <div class="schedule-page__shift-list"></div>
-            
-            <div id="schedule-page__manager">
-                <button id="schedule-page__add-shift-btn">+ Добавить день</button> 
-                <button id="schedule-page__delete-schedule-btn">Удалить расписание</button>
-            </div>
-
-            <div id="schedule-page__hint">
-                <div id="long-arrow"></div>
-                <div id="lightbulb"></div>
-                <p>Создайте своё первое <br> расписание</p>
-            </div>
+            <button class="schedules-table__add-btn">Добавить новое расписание</button>
+            <div class="schedules-table__table"></div>
         `;
         document.querySelector("body").appendChild(this.#element);
     }
 
     #pinListeners() {
-        this.#element.querySelector('#schedule-page__delete-schedule-btn')
-                     .addEventListener("click", () => {
-            this.removeCurrentSchedule();
-
-            this.#notifyObservers();
-        });
-    
-        this.#element.querySelector('#schedule-page__add-shift-btn')
-                     .addEventListener("click", () => {
-            this.#currentSchedule.addShift();
-
-            this.#notifyObservers();
-        });
-
-        this.#element.querySelector('#schedule-page__add-schedule-btn')
+        this.#element.querySelector('.schedules-table__add-btn')
                      .addEventListener("click", () => {
             this.addSchedule("helloworldd!");
 
@@ -134,32 +113,9 @@ class SchedulesTableModel {
         });
     }
 
-    #updateScheduleManager() {
-        const manager = document.getElementById('schedule-page__manager');
-        const hint = document.getElementById('schedule-page__hint');
-
-        if (this.getSchedulesSize() == 0) {
-            manager.style.display = 'none';
-            hint.style.display = 'flex';
-        } else {
-            manager.style.display = 'flex';
-            hint.style.display = 'none';
-        }
-    }
-
-    #updateView() {
-        const shiftsList = this.#element.querySelector(".schedule-page__shift-list");
-        shiftsList.innerHTML = "";
-        const shifts = this.#currentSchedule.getShiftsCopy();
-        for (let i = 0; i < shifts.length; i++) {
-            // const shiftEl = 
-        }
-    }
-
     #notifyObservers() {
         const calendarView = new CalendarView();
         calendarView.updateView();
-        this.#updateScheduleManager();
     }
 }
 

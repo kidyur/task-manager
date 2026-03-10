@@ -1,28 +1,11 @@
-.schedule__input {
-    background-color: unset;
-    border: none;
-    color: var(--fg-color);
-    width: 300px;
-    font-size: 14px;
-    pointer-events: none;
-}
-
-.schedule-page__group--active input {
+.schedule__title {
+    color: white;
     font-size: 24px;
-    color: var(--font-main-color)
 }
 
-.schedule-page__group--active .schedule__delete-btn {
-    display: inline;
+.schedule__shifts-list {
+    height: 100%;
 }
 
-.schedule-page__group--active input {
-    pointer-events: all;
-}
-
-.schedule-page__group {
-    cursor: pointer;
-    height: 40px;
-    display: flex;
-    align-items: center;
+.schedule__add-shift-btn {
 }

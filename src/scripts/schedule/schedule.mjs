@@ -5,17 +5,16 @@ import Editor from "../editor/editor.mjs";
 import "./schedule.css";
 
 class Schedule {
-    #element         = undefined;
+    #element         = null;
     #shifts          = [];
     #title            = "";   
     #beginningDate   = null;
     #beginningShift  = null;
 
     constructor(title) {
-        this.#title = title;
         this.#render();
         this.#pinListeners();
-        this.select();
+        this.setTitle(title);
     }  
 
     getBeginningShift() {
@@ -30,6 +29,11 @@ class Schedule {
         return this.#title;
     }
 
+    setTitle(title) {
+        this.#title = title;
+        this.#element.querySelector(".schedule__title").innerHTML = title;
+    }
+
     #pinListeners() {
         const schedulesTableModel = new SchedulesTableModel();
         this.#element.addEventListener('click', () => {
@@ -40,12 +44,25 @@ class Schedule {
 
     #render() {
         this.#element = document.createElement('div');
-        this.#element.className = "schedule-page__group schedule-page__group--active";
+        this.#element.className = "schedule";
         this.#element.innerHTML = `
-            <input placeholder=${this.#title} class="schedule__input" maxlength=24>
+            <p class="schedule__title">${this.#title}</p>
+            <div class="schedule__shifts-list schedule__shifts-list--visible"></div>
+            <button class="schedule__add-shift-btn">+ Добавить день</button> 
         `;
-        document.getElementById('schedule-page__groups-sector').appendChild(this.#element);
+        document.querySelector('.schedules-table__table').appendChild(this.#element);
     }    
+
+    updateView() {
+        const schedulesTable = new SchedulesTableModel();
+        if (schedulesTable.currentSchedule == this) {
+            this.#element.querySelector(".schedule__shifts-list").style.display = "block";
+            this.#element.querySelector(".schedule__add-shift-btn").style.display = "block";
+        } else {
+            this.#element.querySelector(".schedule__shifts-list").style.display = "none";
+            this.#element.querySelector(".schedule__add-shift-btn").style.display = "none";
+        }
+    }
 
     setBeginning(shift) {
         this.#beginningDate = new Date();
@@ -56,9 +73,10 @@ class Schedule {
     }
     
     select() {
-        this.#element.className = 'schedule-page__group schedule-page__group--active';
         const schedulesTableModel = new SchedulesTableModel();
         schedulesTableModel.currentSchedule = this;
+
+        this.#notifyObservers();
     }
 
     addShift(title = "Придумайте название дню", icon = "") {
@@ -89,6 +107,8 @@ class Schedule {
     #notifyObservers() {
         const calendarView = new CalendarView();
         calendarView.updateView();
+        const schedulesTable = new SchedulesTableModel();
+        schedulesTable.updateView();
     }
 }
 

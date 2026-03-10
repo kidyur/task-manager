@@ -1,6 +1,7 @@
 import Editor from "../editor/editor.mjs";
 import CalendarView from "../calendar/calendar-view.mjs";
 import "./shift.css";
+import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
 
 
 class Shift {
@@ -47,7 +48,7 @@ class Shift {
             <p class="shift__title"></p>
             <div class="shift__icon"></div>
         `;
-        document.querySelector('.schedule-page__shift-list').appendChild(this.#element);
+        document.querySelector('.schedule__shifts-list--visible').appendChild(this.#element);
     }
 
     #pinListeners() {
