@@ -1,11 +1,23 @@
 .schedule__title {
     color: white;
     font-size: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 20px;
+}
+
+.schedule {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .schedule__shifts-list {
     height: 100%;
+    width: 100%;
 }
 
 .schedule__add-shift-btn {
+    width: fit-content
 }

@@ -51,8 +51,8 @@ class Schedule {
         this.#element.className = "schedule";
         this.#element.innerHTML = `
             <p class="schedule__title">${this.#title}</p>
-            <div class="schedule__shifts-list schedule__shifts-list--visible"></div>
-            <button class="schedule__add-shift-btn">+ Добавить день</button> 
+            <div class="schedule__shifts-list"></div>
+            <button class="schedule__add-shift-btn">Добавить день</button> 
         `;
         document.querySelector('.schedules-table__table').appendChild(this.#element);
     }    
@@ -62,9 +62,11 @@ class Schedule {
         if (schedulesTable.currentSchedule == this) {
             this.#element.querySelector(".schedule__shifts-list").style.display = "block";
             this.#element.querySelector(".schedule__add-shift-btn").style.display = "block";
+            this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list schedule__shifts-list--visible";
         } else {
             this.#element.querySelector(".schedule__shifts-list").style.display = "none";
             this.#element.querySelector(".schedule__add-shift-btn").style.display = "none";
+            this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list";
         }
     }
 
@@ -89,8 +91,6 @@ class Schedule {
         if (this.#shifts.length == 1) {
             this.setBeginning(shift);
         }
-        const shiftEditor = new ShiftEditor();
-        shiftEditor.open(shift);
         
         this.#notifyObservers();
     }
@@ -102,6 +102,7 @@ class Schedule {
     removeShift(shift) {
         const idx = this.#shifts.indexOf(shift);
         if (idx != -1) {
+            this.#shifts[idx].destructor();
             this.#shifts.splice(idx, 1);
         }
 

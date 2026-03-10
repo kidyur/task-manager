@@ -65,7 +65,7 @@ class ShiftEditor {
                 <input class="shift-editor__input" placeholder="Название смены">
                 <button class="shift-editor__hide-btn">Отмена</button>
                 <button class="shift-editor__submit-btn">Изменить</button>
-                <button class="shift-editor__remove-btn">Удалить смену</button>
+                <button class="shift-editor__remove-btn">Удалить</button>
             </div>
         `;
         this.#renderIconsGrid();

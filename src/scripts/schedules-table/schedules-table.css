@@ -2,4 +2,19 @@
 .schedules-table {
     width: 400px;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.schedules-table__table {
+    width: 100%;
+}
+
+.schedules-table__footer {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

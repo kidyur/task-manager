@@ -16,6 +16,10 @@ class Shift {
         this.#pinListeners();
     }
 
+    destructor() {
+        document.querySelector('.schedule__shifts-list--visible').removeChild(this.#element);
+    }
+
     setValues(title, icon) {
         this.#setTitle(title);
         this.#setIcon(icon);

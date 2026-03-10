@@ -11,8 +11,9 @@ class SchedulesTableModel {
     get currentSchedule() { return this.#currentSchedule };
     set currentSchedule(schedule) {
         this.#currentSchedule = schedule;
-        const calendarView = new CalendarView();
-        calendarView.updateView();
+
+
+        this.#notifyObservers();
     }
     #schedules = new Map();
     #element = null;
@@ -100,8 +101,10 @@ class SchedulesTableModel {
         this.#element = document.createElement("div");
         this.#element.className = "schedules-table";
         this.#element.innerHTML = `
+        <div class="schedules-table__table"></div>
+        <div class="schedules-table__footer">
             <button class="schedules-table__add-btn">Добавить новое расписание</button>
-            <div class="schedules-table__table"></div>
+        </div>
         `;
         document.querySelector("body").appendChild(this.#element);
     }

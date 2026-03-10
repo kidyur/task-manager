@@ -67,6 +67,9 @@ class ScheduleEditor {
 
     #submit() {
         const title = this.#element.querySelector(".schedule-editor__input").value;
+        if (title == "") {
+            return;
+        }
         if (this.#schedule != null) {
             this.#schedule.setTitle(title);
         } else {

@@ -23,8 +23,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const scheduleEditor = new ScheduleEditor();
 
     schedulesTableModel.clear();
-    schedulesTableModel.addSchedule("hoho");
-    shiftEditor.open();
+    schedulesTableModel.addSchedule("Учёба");
+    schedulesTableModel.currentSchedule.addShift("1", "student");
+    schedulesTableModel.currentSchedule.addShift("2", "");
+    schedulesTableModel.currentSchedule.addShift("3", "");
+
+
+    schedulesTableModel.addSchedule("Тренировка");
+    schedulesTableModel.currentSchedule.addShift("1", "sun");
+    schedulesTableModel.currentSchedule.addShift("2", "");
+    schedulesTableModel.currentSchedule.addShift("3", "");
+    schedulesTableModel.currentSchedule.addShift("3", "");
+    shiftEditor.close();
 
     TaskList.start();
 
