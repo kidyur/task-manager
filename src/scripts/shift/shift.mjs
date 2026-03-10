@@ -1,4 +1,4 @@
-import Editor from "../editor/editor.mjs";
+import ShiftEditor from "../shift-editor/shift-editor.mjs";
 import CalendarView from "../calendar/calendar-view.mjs";
 import "./shift.css";
 import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
@@ -10,7 +10,7 @@ class Shift {
     #isCurrent = false;
     #icon   = "";
 
-    constructor(title, icon="student") {
+    constructor(title, icon) {
         this.#render();
         this.setValues(title, icon);
         this.#pinListeners();
@@ -53,8 +53,8 @@ class Shift {
 
     #pinListeners() {
         this.#element.addEventListener("click", () => {
-            const editor = new Editor();
-            editor.open(this);
+            const shiftEditor = new ShiftEditor();
+            shiftEditor.open(this);
         });
     }
 

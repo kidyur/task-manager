@@ -1,7 +1,9 @@
 import Schedule from "../schedule/schedule.mjs";
 import CalendarView from "../calendar/calendar-view.mjs";
 import Shift from "../shift/shift.mjs";
+import ScheduleEditor from "../schedule-editor/schedule-editor.mjs";
 import "./schedules-table.css";
+
 
 class SchedulesTableModel {
     #SCHEDULES_LIMIT = 3;
@@ -107,7 +109,8 @@ class SchedulesTableModel {
     #pinListeners() {
         this.#element.querySelector('.schedules-table__add-btn')
                      .addEventListener("click", () => {
-            this.addSchedule("helloworldd!");
+            const scheduleEditor = new ScheduleEditor()
+            scheduleEditor.open();
 
             this.#notifyObservers();
         });

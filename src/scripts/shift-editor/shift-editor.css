@@ -1,4 +1,4 @@
-.editor-outer {
+.shift-editor-outer {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -9,20 +9,20 @@
   justify-content: center;
 }
 
-.editor {
+.shift-editor {
   min-width: 300px;
   background-color: #f5f5f5;
   border-radius: 4px;
   padding: 10px 20px;
 }
 
-.editor__icons-grid {
+.shift-editor__icons-grid {
   background-color: black;
   display: grid;
   grid-template-columns: repeat(3, 20%);
 }
 
-.editor__icon {
+.shift-editor__icon {
   width: 30px;
   height: 30px;
   padding: 0;
@@ -36,6 +36,6 @@
   box-shadow: none;
 }
 
-.editor__icon--active {
+.shift-editor__icon--active {
   opacity: 100%;
 }

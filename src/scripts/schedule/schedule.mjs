@@ -1,7 +1,7 @@
 import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
 import CalendarView from "../calendar/calendar-view.mjs";
 import Shift from "../shift/shift.mjs";
-import Editor from "../editor/editor.mjs";
+import ShiftEditor from "../shift-editor/shift-editor.mjs";
 import "./schedule.css";
 
 class Schedule {
@@ -38,7 +38,11 @@ class Schedule {
         const schedulesTableModel = new SchedulesTableModel();
         this.#element.addEventListener('click', () => {
             this.select();
-            schedulesTableModel.currentSchedule = this;
+        })
+
+        this.#element.querySelector(".schedule__add-shift-btn").addEventListener('click', () => {
+            const shiftEditor = new ShiftEditor();
+            shiftEditor.open();
         })
     }
 
@@ -85,8 +89,8 @@ class Schedule {
         if (this.#shifts.length == 1) {
             this.setBeginning(shift);
         }
-        const editor = new Editor();
-        editor.open(shift);
+        const shiftEditor = new ShiftEditor();
+        shiftEditor.open(shift);
         
         this.#notifyObservers();
     }
