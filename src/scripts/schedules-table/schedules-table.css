@@ -14,7 +14,24 @@
 
 .schedules-table__footer {
     height: 100px;
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    padding-inline: 20px;
+}
+
+.schedules-table__add-btn {
+    border-radius: 30px;
+    height: 60px;
+    border: none;
+    cursor: pointer;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    font-size: 40px;
+    background-color: rgb(224, 67, 67);
+    color: white;
     justify-content: center;
 }

@@ -52,13 +52,8 @@ class SchedulesTableModel {
     }
 
     removeCurrentSchedule() {
+        this.#currentSchedule.destructor();
         this.#schedules.delete(this.#currentSchedule.getTitle());
-
-        this.#notifyObservers();
-    }
-
-    removeSchedule(title) {
-        this.#schedules.delete(title);
 
         this.#notifyObservers();
     }
@@ -103,7 +98,9 @@ class SchedulesTableModel {
         this.#element.innerHTML = `
         <div class="schedules-table__table"></div>
         <div class="schedules-table__footer">
-            <button class="schedules-table__add-btn">Добавить новое расписание</button>
+            <button class="schedules-table__add-btn">
+                +
+            </button>
         </div>
         `;
         document.querySelector("body").appendChild(this.#element);

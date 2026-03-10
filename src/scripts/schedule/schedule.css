@@ -1,4 +1,7 @@
-.schedule__title {
+.schedule__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     color: white;
     font-size: 24px;
     width: 100%;

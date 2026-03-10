@@ -3,6 +3,7 @@ import CalendarView from "../calendar/calendar-view.mjs";
 import Shift from "../shift/shift.mjs";
 import ShiftEditor from "../shift-editor/shift-editor.mjs";
 import "./schedule.css";
+import ScheduleEditor from "../schedule-editor/schedule-editor.mjs";
 
 class Schedule {
     #element         = null;
@@ -16,6 +17,10 @@ class Schedule {
         this.#pinListeners();
         this.setTitle(title);
     }  
+
+    destructor() {
+        document.querySelector(".schedules-table__table").removeChild(this.#element);
+    }
 
     getBeginningShift() {
         return this.#beginningShift;
@@ -35,7 +40,6 @@ class Schedule {
     }
 
     #pinListeners() {
-        const schedulesTableModel = new SchedulesTableModel();
         this.#element.addEventListener('click', () => {
             this.select();
         })
@@ -44,13 +48,22 @@ class Schedule {
             const shiftEditor = new ShiftEditor();
             shiftEditor.open();
         })
+
+        this.#element.querySelector(".schedule__edit-btn").addEventListener('click', () => {
+            const scheduleEditor = new ScheduleEditor();
+            scheduleEditor.open(this);
+        })
     }
 
     #render() {
         this.#element = document.createElement('div');
         this.#element.className = "schedule";
         this.#element.innerHTML = `
-            <p class="schedule__title">${this.#title}</p>
+            <div class="schedule__header">
+                <p class="schedule__title">${this.#title}</p>
+                <button class="schedule__edit-btn">Ред</button>
+            </div>
+            
             <div class="schedule__shifts-list"></div>
             <button class="schedule__add-shift-btn">Добавить день</button> 
         `;
@@ -60,10 +73,12 @@ class Schedule {
     updateView() {
         const schedulesTable = new SchedulesTableModel();
         if (schedulesTable.currentSchedule == this) {
+            this.#element.className = "schedule schedule--active";
             this.#element.querySelector(".schedule__shifts-list").style.display = "block";
             this.#element.querySelector(".schedule__add-shift-btn").style.display = "block";
             this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list schedule__shifts-list--visible";
         } else {
+            this.#element.className = "schedule";
             this.#element.querySelector(".schedule__shifts-list").style.display = "none";
             this.#element.querySelector(".schedule__add-shift-btn").style.display = "none";
             this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list";
@@ -80,6 +95,7 @@ class Schedule {
     
     select() {
         const schedulesTableModel = new SchedulesTableModel();
+        this.#element.className = "schedule";
         schedulesTableModel.currentSchedule = this;
 
         this.#notifyObservers();

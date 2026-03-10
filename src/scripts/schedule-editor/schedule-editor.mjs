@@ -26,10 +26,13 @@ class ScheduleEditor {
     updateView() {
         if (this.#schedule != null) {
             this.#element.querySelector('h1').textContent = "Изменение расписания"; 
+            this.#element.querySelector('.schedule-editor__input').value = this.#schedule.getTitle(); 
             this.#element.querySelector('.schedule-editor__remove-btn').style.display = "inline-block";
+            this.#element.querySelector('.schedule-editor__submit-btn').textContent = "Изменить"; 
         } else {
             this.#element.querySelector('h1').textContent = "Создание расписания"; 
-            this.#element.querySelector('.schedule-editor__remove-btn').style.display = "none"; 
+            this.#element.querySelector('.schedule-editor__remove-btn').style.display = "none";
+            this.#element.querySelector('.schedule-editor__submit-btn').textContent = "Создать"; 
         }
     }
 
@@ -48,7 +51,7 @@ class ScheduleEditor {
                 <input class="schedule-editor__input" placeholder="Название расписания">
                 <button class="schedule-editor__hide-btn">Отмена</button>
                 <button class="schedule-editor__submit-btn">Создать</button>
-                <button class="schedule-editor__remove-btn">Удалить расписание</button>
+                <button class="schedule-editor__remove-btn">Удалить</button>
             </div>
         `;
         document.querySelector("body").appendChild(this.#element);
@@ -82,6 +85,7 @@ class ScheduleEditor {
     #removeSchedule() {
         const schedulesTable = new SchedulesTableModel();
         schedulesTable.removeCurrentSchedule()
+        this.close();
     }
 }
 
