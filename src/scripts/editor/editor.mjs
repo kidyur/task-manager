@@ -1,5 +1,5 @@
 import "./editor.css";
-import SchedulesData from "../schedules-table/schedulesData.mjs";
+import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
 import Shift from "../shift/shift.mjs";
 
 
@@ -93,8 +93,8 @@ class Editor {
     }
 
     #removeShift() {
-        const schedulesData = new SchedulesData();
-        schedulesData.currentSchedule.removeShift(this.#shift);
+        const schedulesTableModel = new SchedulesTableModel();
+        schedulesTableModel.currentSchedule.removeShift(this.#shift);
         
         this.hide();
     }

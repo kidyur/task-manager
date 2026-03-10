@@ -1,7 +1,7 @@
-import Calendar from "./calendar.mjs";
+import CalendarView from "./calendar-view.mjs";
 import TaskList from "../tasks/taskList.mjs";
 
-class DateData {
+class CalendarModel {
     #month = 0;
     get month() { return this.#month; }
 
@@ -14,10 +14,10 @@ class DateData {
     static #instance = null;
     
     constructor() { 
-        if (DateData.#instance) {
-            return DateData.#instance;
+        if (CalendarModel.#instance) {
+            return CalendarModel.#instance;
         } else {
-            DateData.#instance = this;
+            CalendarModel.#instance = this;
         }
 
         this.setCurrentDate();
@@ -78,10 +78,10 @@ class DateData {
     }
 
     #notifyObservers() {
-        const calendar = new Calendar();
-        calendar.updateView();  
+        const calendarView = new CalendarView();
+        calendarView.updateView();  
         TaskList.filterByDate(new Date(this.year, this.month - 1, this.day));
     }
 }
 
-export default DateData;
+export default CalendarModel;

@@ -1,7 +1,7 @@
 import TaskDate from "./taskDate.mjs";
 import Task from "./task.mjs";
 import Tag from "./tag.mjs"
-import DateData from "../calendar/dateData.mjs";
+import CalendarModel from "../calendar/calendar-model.mjs";
 import './tasks_page.css';
 
 
@@ -28,12 +28,12 @@ class TaskList {
             this.addTag(this.tagInput.value);
         });    
         this.addTaskButton.addEventListener('click', () => {
-            const dateData = new DateData();
+            const calendarViewModel = new CalendarModel();
             if (this.selectedTag) {
-                this.addTask(this.taskNameInput.value, new Date(dateData.year, dateData.month-1, dateData.day), this.selectedTag.name);
+                this.addTask(this.taskNameInput.value, new Date(calendarViewModel.year, calendarViewModel.month-1, calendarViewModel.day), this.selectedTag.name);
             }
             else {
-                this.addTask(this.taskNameInput.value, new Date(dateData.year, dateData.month-1, dateData.day), '');
+                this.addTask(this.taskNameInput.value, new Date(calendarViewModel.year, calendarViewModel.month-1, calendarViewModel.day), '');
             }
         });
         this.filterButton.addEventListener('click', () => {

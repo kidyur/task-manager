@@ -1,22 +1,22 @@
-import SchedulesData from "../schedules-table/schedulesData.mjs";
-import DateData from "./dateData.mjs";
+import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
+import CalendarModel from "./calendar-model.mjs";
 import Day from "../day/day.mjs";
 import { getFirstShiftIdxOfCurrMonth } from "../common/sched-seq-algo.mjs";
 import "./calendar.css";
 
 
-class Calendar {
-    #calendarEl = undefined;
+class CalendarView {
+    #calendarViewEl = undefined;
     #borderFlag = true;
     static #instance = null
 
     days = [];
 
     constructor() {
-        if (Calendar.#instance != null) {
-            return Calendar.#instance;
+        if (CalendarView.#instance != null) {
+            return CalendarView.#instance;
         } else {
-            Calendar.#instance = this;
+            CalendarView.#instance = this;
         }
 
         this.#render();
@@ -30,8 +30,8 @@ class Calendar {
     }
 
     #updateDateTitle() {
-        const dateData = new DateData();
-        const title = this.#calendarEl.querySelector(".calendar__date-title");
+        const calendarViewModel = new CalendarModel();
+        const title = this.#calendarViewEl.querySelector(".calendarView__date-title");
         const monthsNames = [
              'Январь' , 'Февраль' , 
              'Март' , 'Апрель' , 'Май' , 
@@ -39,35 +39,35 @@ class Calendar {
              'Сентябрь' , 'Октябрь' , 'Ноябрь' , 
              'Декабрь'
         ];
-        let newTitle = `${dateData.year}, ${monthsNames[dateData.month - 1]}`;
+        let newTitle = `${calendarViewModel.year}, ${monthsNames[calendarViewModel.month - 1]}`;
         title.innerHTML = newTitle;
     }
 
     #render() {
-        this.#calendarEl = document.createElement("div");
-        this.#calendarEl.className = "calendar";
-        this.#calendarEl.innerHTML = `
-            <div class="calendar__days-grid"></div>
-            <div class="calendar__months-roulette">
-                <button class="calendar__arrow-btn"></button>
-                <p class="calendar__date-title">Текущая дата</p>
-                <button class="calendar__arrow-btn"></button>
+        this.#calendarViewEl = document.createElement("div");
+        this.#calendarViewEl.className = "calendarView";
+        this.#calendarViewEl.innerHTML = `
+            <div class="calendarView__days-grid"></div>
+            <div class="calendarView__months-roulette">
+                <button class="calendarView__arrow-btn"></button>
+                <p class="calendarView__date-title">Текущая дата</p>
+                <button class="calendarView__arrow-btn"></button>
             </div>
         `;
-        document.querySelector("body").appendChild(this.#calendarEl);
+        document.querySelector("body").appendChild(this.#calendarViewEl);
     }
 
     #pinListeners() {
-        const dateData = new DateData();
+        const calendarViewModel = new CalendarModel();
 
-        this.#calendarEl.querySelectorAll(".calendar__arrow-btn")[0]
+        this.#calendarViewEl.querySelectorAll(".calendarView__arrow-btn")[0]
                         .addEventListener("click", () => {
-            dateData.setPreviousMonth();
+            calendarViewModel.setPreviousMonth();
         })
 
-        this.#calendarEl.querySelectorAll(".calendar__arrow-btn")[1]
+        this.#calendarViewEl.querySelectorAll(".calendarView__arrow-btn")[1]
                         .addEventListener("click", () => {
-            dateData.setNextMonth();
+            calendarViewModel.setNextMonth();
         })
     }
 
@@ -84,14 +84,14 @@ class Calendar {
     }
 
     #updateDays() {
-        const dateData = new DateData();
-        const firstDay = dateData.getFirstDayIdxOfCurrMonth();
+        const calendarViewModel = new CalendarModel();
+        const firstDay = calendarViewModel.getFirstDayIdxOfCurrMonth();
         let shiftIdx = getFirstShiftIdxOfCurrMonth();
-        const amountOfDays = dateData.getDaysInCurrMonth();
-        const schedulesData = new SchedulesData();
+        const amountOfDays = calendarViewModel.getDaysInCurrMonth();
+        const schedulesTableModel = new SchedulesTableModel();
         let shifts = []
-        if (schedulesData.currentSchedule != null) {
-            shifts = schedulesData.currentSchedule.getShiftsCopy();
+        if (schedulesTableModel.currentSchedule != null) {
+            shifts = schedulesTableModel.currentSchedule.getShiftsCopy();
         }
         for (let d = 0; d < this.days.length; d++) {
             if (d < firstDay) {
@@ -104,7 +104,7 @@ class Calendar {
             }
             let icon = "";
             if (shiftIdx != -1) {
-                if (shiftIdx == shifts.indexOf(schedulesData.currentSchedule.getBeginningShift())) {
+                if (shiftIdx == shifts.indexOf(schedulesTableModel.currentSchedule.getBeginningShift())) {
                     this.#borderFlag = !this.#borderFlag;
                 }
                 icon = shifts[shiftIdx].getIcon()
@@ -117,4 +117,4 @@ class Calendar {
     }
 }
 
-export default Calendar;
+export default CalendarView;

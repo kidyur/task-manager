@@ -1,16 +1,16 @@
 import Schedule from "../schedule/schedule.mjs";
-import Calendar from "../calendar/calendar.mjs";
+import CalendarView from "../calendar/calendar-view.mjs";
 import Shift from "../shift/shift.mjs";
 import "./schedules-table.css";
 
-class SchedulesData {
+class SchedulesTableModel {
     #SCHEDULES_LIMIT = 3;
     #currentSchedule = null;
     get currentSchedule() { return this.#currentSchedule };
     set currentSchedule(schedule) {
         this.#currentSchedule = schedule;
-        const calendar = new Calendar();
-        calendar.updateView();
+        const calendarView = new CalendarView();
+        calendarView.updateView();
     }
     #schedules = new Map();
     #element = null;
@@ -18,10 +18,10 @@ class SchedulesData {
     static #instance = null;
 
     constructor() {
-        if (SchedulesData.#instance) {
-            return SchedulesData.#instance;
+        if (SchedulesTableModel.#instance) {
+            return SchedulesTableModel.#instance;
         } else {
-            SchedulesData.#instance = this;
+            SchedulesTableModel.#instance = this;
         }
 
         this.#render();
@@ -157,12 +157,12 @@ class SchedulesData {
     }
 
     #notifyObservers() {
-        const calendar = new Calendar();
-        calendar.updateView();
+        const calendarView = new CalendarView();
+        calendarView.updateView();
         this.#updateScheduleManager();
     }
 }
 
-export default SchedulesData;
+export default SchedulesTableModel;
 
 

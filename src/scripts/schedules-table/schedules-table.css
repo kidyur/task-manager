@@ -4,7 +4,6 @@
     height: 100%;
 }
 
-
 #schedule-page__groups-line {
     width: calc(100% - var(--padding-medium));
     display: flex;
@@ -23,12 +22,6 @@
     flex-direction: column-reverse;
 }
 
-.schedule-page__group {
-    cursor: pointer;
-    height: 40px;
-    display: flex;
-    align-items: center;
-}
 
 .schedule-page__add-schedule-btn--passive {
     box-shadow: none;
@@ -84,7 +77,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* flex-direction: column; */
     position: relative;
     font-size: 24px;
     width: calc(100% - 2 * var(--margin-medium));
@@ -149,28 +141,6 @@
     display: none;
 }
 
-.schedule__input {
-    background-color: unset;
-    border: none;
-    color: var(--fg-color);
-    width: 300px;
-    font-size: 14px;
-    pointer-events: none;
-}
-
-.schedule-page__group--active input {
-    font-size: 24px;
-    color: var(--font-main-color)
-}
-
-.schedule-page__group--active .schedule__delete-btn {
-    display: inline;
-}
-
-.schedule-page__group--active input {
-    pointer-events: all;
-}
-
 
 .schedule-page__choose-group-btn {
     padding: var(--padding-small) var(--padding-medium);
@@ -201,47 +171,6 @@
 
 .schedule-page__edit-group-btn--active {
     display: inline-block;
-}
-
-#group-editor {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: brightness(70%) blur(5px);
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-#group-editor__input {
-    margin-top: var(--margin-medium);
-    width: 100%;
-    margin-bottom: var(--margin-medium);
-}
-
-#group-editor__close-btn {
-    height: 20px;
-    aspect-ratio: 1;
-    margin-left: var(--margin-big);
-}
-
-#group-editor__window {
-    background-color: var(--bg-color);
-    display: flex; 
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    border: 2px solid var(--fg-color);
-    padding: var(--padding-medium) var(--padding-big);
-}
-
-#group-editor__window button {
-    border-radius: 100%;
-    aspect-ratio: 1;
-    height: 100%;
 }
 
 #schedule-page__add-shift-btn {

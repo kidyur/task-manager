@@ -1,28 +1,28 @@
-import DateData from "../calendar/dateData.mjs";
-import SchedulesData from "../schedules-table/schedulesData.mjs";
+import CalendarModel from "../calendar/calendar-model.mjs";
+import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
 
 function getFirstShiftIdxOfCurrMonth() {
-    const schedulesData = new SchedulesData();
-    if (schedulesData.currentSchedule == null) return -1;
-	const shifts = schedulesData.currentSchedule.getShiftsCopy();
+    const schedulesTableModel = new SchedulesTableModel();
+    if (schedulesTableModel.currentSchedule == null) return -1;
+	const shifts = schedulesTableModel.currentSchedule.getShiftsCopy();
     if (shifts.length == 1) return 0; 
     if (shifts.length == 0) return -1;
 
 	const MILISEC_IN_DAY = 24 * 60 * 60 * 1000;
 	const seq = [];
-    const scheduleMonthBeginningDate = schedulesData.currentSchedule.getBeginningDate();
+    const scheduleMonthBeginningDate = schedulesTableModel.currentSchedule.getBeginningDate();
     scheduleMonthBeginningDate.setDate(1);
     scheduleMonthBeginningDate.setHours(0, 0, 0, 0);
 
-    const dateData = new DateData();
-    const monthFmt = (dateData.month < 10 ? '0': '') + dateData.month;
-    const monthBeginning = new Date(`${dateData.year}-${monthFmt}-01`);
+    const calendarViewModel = new CalendarModel();
+    const monthFmt = (calendarViewModel.month < 10 ? '0': '') + calendarViewModel.month;
+    const monthBeginning = new Date(`${calendarViewModel.year}-${monthFmt}-01`);
     
     const gap = Math.floor((monthBeginning - scheduleMonthBeginningDate) / MILISEC_IN_DAY);
-    const beginningDate = schedulesData.currentSchedule.getBeginningDate();
+    const beginningDate = schedulesTableModel.currentSchedule.getBeginningDate();
     let remainder = (beginningDate.getDate()) % shifts.length;
 
-    let idx = shifts.indexOf(schedulesData.currentSchedule.getBeginningShift());
+    let idx = shifts.indexOf(schedulesTableModel.currentSchedule.getBeginningShift());
 
     // Мы доводим до того остатка, с которого начнём 
     // заполнять календарь.

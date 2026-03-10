@@ -1,7 +1,8 @@
-import SchedulesData from "../schedules-table/schedulesData.mjs";
-import Calendar from "../calendar/calendar.mjs";
+import SchedulesTableModel from "../schedules-table/schedules-table-model.mjs";
+import CalendarView from "../calendar/calendar-view.mjs";
 import Shift from "../shift/shift.mjs";
 import Editor from "../editor/editor.mjs";
+import "./schedule.css";
 
 class Schedule {
     #element         = undefined;
@@ -30,10 +31,10 @@ class Schedule {
     }
 
     #pinListeners() {
-        const schedulesData = new SchedulesData();
+        const schedulesTableModel = new SchedulesTableModel();
         this.#element.addEventListener('click', () => {
             this.select();
-            schedulesData.currentSchedule = this;
+            schedulesTableModel.currentSchedule = this;
         })
     }
 
@@ -56,8 +57,8 @@ class Schedule {
     
     select() {
         this.#element.className = 'schedule-page__group schedule-page__group--active';
-        const schedulesData = new SchedulesData();
-        schedulesData.currentSchedule = this;
+        const schedulesTableModel = new SchedulesTableModel();
+        schedulesTableModel.currentSchedule = this;
     }
 
     addShift(title = "Придумайте название дню", icon = "") {
@@ -86,8 +87,8 @@ class Schedule {
     }
     
     #notifyObservers() {
-        const calendar = new Calendar();
-        calendar.updateView();
+        const calendarView = new CalendarView();
+        calendarView.updateView();
     }
 }
 

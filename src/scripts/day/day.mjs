@@ -1,4 +1,6 @@
-import DateData from "../calendar/dateData.mjs";
+import CalendarModel from "../calendar/calendar-model.mjs";
+import "./day.css";
+
 
 class Day {
     #borderFlag = false;
@@ -9,8 +11,8 @@ class Day {
         this.#render();
         this.#setIdx(idx);
         this.#element.addEventListener('click', () => {
-            const dateData = new DateData();
-            dateData.setDate(this.#idx);
+            const calendarViewModel = new CalendarModel();
+            calendarViewModel.setDate(this.#idx);
         })
     }
 
@@ -23,12 +25,12 @@ class Day {
     
     #render() {
         this.#element = document.createElement('div');
-        this.#element.className = 'calendar__day';
+        this.#element.className = 'calendarView__day';
         this.#element.innerHTML = `
             <div class="day__title"></div>
-            <div class="calendar__icon"></div>
+            <div class="calendarView__icon"></div>
         `;
-        const grid = document.querySelector('.calendar__days-grid');
+        const grid = document.querySelector('.calendarView__days-grid');
         grid.appendChild(this.#element);
     }
 
@@ -37,19 +39,19 @@ class Day {
      * It makes bigger the day you have chosen.
      */
     #setClass() {
-        let classname = "calendar__day";
-        const dateData = new DateData();
-        if (dateData.day == this.#idx) {
+        let classname = "calendarView__day";
+        const calendarViewModel = new CalendarModel();
+        if (calendarViewModel.day == this.#idx) {
             if (this.#borderFlag) {
-                classname += ' calendar__day--active1';
+                classname += ' calendarView__day--active1';
             } else {
-                classname += ' calendar__day--active2';
+                classname += ' calendarView__day--active2';
             }
         }
-        const hook = dateData.day + dateData.getFirstDayIdxOfCurrMonth() - 1;
+        const hook = calendarViewModel.day + calendarViewModel.getFirstDayIdxOfCurrMonth() - 1;
         const weekBeginningIdx = hook - hook % 7;
-        if (this.#idx + dateData.getFirstDayIdxOfCurrMonth() <= weekBeginningIdx + 7 && this.#idx + dateData.getFirstDayIdxOfCurrMonth() > weekBeginningIdx) {
-            classname += ' calendar__day_week';
+        if (this.#idx + calendarViewModel.getFirstDayIdxOfCurrMonth() <= weekBeginningIdx + 7 && this.#idx + calendarViewModel.getFirstDayIdxOfCurrMonth() > weekBeginningIdx) {
+            classname += ' calendarView__day_week';
         }
         this.#element.className = classname;
     }
@@ -77,7 +79,7 @@ class Day {
     }
 
     #setIcon(icon) {
-        this.#element.querySelector('.calendar__icon').setAttribute('shift-icon', icon);
+        this.#element.querySelector('.calendarView__icon').setAttribute('shift-icon', icon);
     }
 }
 

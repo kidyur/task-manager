@@ -15,14 +15,6 @@
     --color-200: #a2aab5;
     --color-100: #c0c6cf;
 
-    /* 
-    white: #EFF1F3
-    dark-green: #343E3D
-    green: #607466
-    red: #A22C29
-    dark-red: #902923
-    */
-
     /* Colors */
     --bg-color: #202020;
     --fg-color: #535353;
@@ -49,10 +41,6 @@ body {
     background-color: var(--bg-color);
 }
 
-#schedule-page {
-    width: 430px;
-}
-
 .page {
     width: 400px;
     height: 100vh;
@@ -61,27 +49,3 @@ body {
     align-items: center;
 }
 
-.page:nth-child(2) {
-    height: 90vh
-}
-
-.page:nth-child(2n + 1) {
-    box-shadow: 0 0 20px 0 black;
-    z-index: 2;
-    height: 90vh;   
-    margin: calc(2 * var(--margin-big));
-}
-
-input {
-    outline: none;
-}
-
-#open-schedule-page-btn {
-    border-top-left-radius: 40px;
-    border-bottom-left-radius: 40px;
-}
-
-#open-tasks-page-btn {
-    border-top-right-radius: 40px;
-    border-bottom-right-radius: 40px;
-}

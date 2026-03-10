@@ -1,5 +1,5 @@
 import Editor from "../editor/editor.mjs";
-import Calendar from "../calendar/calendar.mjs";
+import CalendarView from "../calendar/calendar-view.mjs";
 import "./shift.css";
 
 
@@ -58,8 +58,8 @@ class Shift {
     }
 
     #notifyObservers() {
-        const calendar = new Calendar();
-        calendar.updateView();
+        const calendarView = new CalendarView();
+        calendarView.updateView();
     }
 }
 
