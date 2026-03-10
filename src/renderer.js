@@ -24,17 +24,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     schedulesTableModel.clear();
     schedulesTableModel.addSchedule("Учёба");
-    schedulesTableModel.currentSchedule.addShift("1", "student");
-    schedulesTableModel.currentSchedule.addShift("2", "");
-    schedulesTableModel.currentSchedule.addShift("3", "");
+    schedulesTableModel.currentSchedule.addShift("1. Ботаем матан", "student");
+    schedulesTableModel.currentSchedule.addShift("2. Полевой, C++", "");
+    schedulesTableModel.currentSchedule.addShift("3. Чертим-чертим", "");
 
 
     schedulesTableModel.addSchedule("Тренировка");
-    schedulesTableModel.currentSchedule.addShift("1", "sun");
-    schedulesTableModel.currentSchedule.addShift("2", "");
-    schedulesTableModel.currentSchedule.addShift("3", "");
-    schedulesTableModel.currentSchedule.addShift("3", "");
+    schedulesTableModel.currentSchedule.addShift("1. День ног", "sun");
+    schedulesTableModel.currentSchedule.addShift("2. Отдых", "");
+    schedulesTableModel.currentSchedule.addShift("3. День рук", "");
+    schedulesTableModel.currentSchedule.addShift("3. Отдых", "");
+
+    schedulesTableModel.addSchedule("Работа");
+    schedulesTableModel.currentSchedule.addShift("1. Утро", "sun");
+    schedulesTableModel.currentSchedule.addShift("2. В ночь", "");
+    schedulesTableModel.currentSchedule.addShift("3. Из ночи", "");
+    schedulesTableModel.currentSchedule.addShift("3. Выходной", "");
+
+    schedulesTableModel.addSchedule("Хобби");
+    schedulesTableModel.currentSchedule.addShift("1. Играем на гитаре", "sun");
+    schedulesTableModel.currentSchedule.addShift("2. Вышиваем крестиком", "");
+    schedulesTableModel.currentSchedule.addShift("3. Поем в хоре", "");
+    schedulesTableModel.currentSchedule.addShift("3. Играем на гармошке", "");
+
+    schedulesTableModel.addSchedule("Спорт");
+    schedulesTableModel.currentSchedule.addShift("1. Теннис", "sun");
+    schedulesTableModel.currentSchedule.addShift("2. Отдых", "");
+    schedulesTableModel.currentSchedule.addShift("3. Отдых", "");
+    schedulesTableModel.currentSchedule.addShift("3. Отдых", "");
+
+    schedulesTableModel.addSchedule("Персонал");
+    schedulesTableModel.addSchedule("Завод");
+    schedulesTableModel.addSchedule("Фазы луны");
+
+
     shiftEditor.close();
+
+    schedulesTableModel.currentSchedule = null;
 
     TaskList.start();
 

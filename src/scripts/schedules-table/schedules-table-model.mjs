@@ -6,12 +6,11 @@ import "./schedules-table.css";
 
 
 class SchedulesTableModel {
-    #SCHEDULES_LIMIT = 3;
+    #SCHEDULES_LIMIT = 10;
     #currentSchedule = null;
     get currentSchedule() { return this.#currentSchedule };
     set currentSchedule(schedule) {
         this.#currentSchedule = schedule;
-
 
         this.#notifyObservers();
     }
@@ -96,6 +95,7 @@ class SchedulesTableModel {
         this.#element = document.createElement("div");
         this.#element.className = "schedules-table";
         this.#element.innerHTML = `
+        <h1 class="schedules-table__title">Ваши расписания</h1>
         <div class="schedules-table__table"></div>
         <div class="schedules-table__footer">
             <button class="schedules-table__add-btn">
@@ -119,6 +119,7 @@ class SchedulesTableModel {
     #notifyObservers() {
         const calendarView = new CalendarView();
         calendarView.updateView();
+        this.updateView();
     }
 }
 

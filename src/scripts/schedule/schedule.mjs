@@ -76,10 +76,12 @@ class Schedule {
             this.#element.className = "schedule schedule--active";
             this.#element.querySelector(".schedule__shifts-list").style.display = "block";
             this.#element.querySelector(".schedule__add-shift-btn").style.display = "block";
+            this.#element.querySelector(".schedule__edit-btn").style.display = "inline";
             this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list schedule__shifts-list--visible";
         } else {
             this.#element.className = "schedule";
             this.#element.querySelector(".schedule__shifts-list").style.display = "none";
+            this.#element.querySelector(".schedule__edit-btn").style.display = "none";
             this.#element.querySelector(".schedule__add-shift-btn").style.display = "none";
             this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list";
         }

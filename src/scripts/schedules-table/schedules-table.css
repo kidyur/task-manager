@@ -4,12 +4,25 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-direction: column;
+}
+
+.schedules-table__title {
+    color: white;
+    font-size: 30px;
+    text-align: start;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 20px;
 }
 
 .schedules-table__table {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .schedules-table__footer {
@@ -20,6 +33,9 @@
     justify-content: flex-end;
     box-sizing: border-box;
     padding-inline: 20px;
+    bottom: 0;
+    left: 0;
+    margin-top: auto;
 }
 
 .schedules-table__add-btn {
