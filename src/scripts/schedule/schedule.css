@@ -3,15 +3,13 @@
 }
 
 .schedule--active {
-    order: -1;
-    border-top: 2px solid white;
-    border-bottom: 2px solid white;
+    order: 999;
     display: flex;
     width: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-block: 20px;
+    flex-grow: 1;
 }
 
 .schedule--active .schedule__header {
@@ -20,8 +18,9 @@
 }
 
 .schedule--active .schedule__title {
-    background-color: var(--bg-color);
-    height: 60px;
+    background-color: rgb(217, 217, 217);
+    color: black;
+    border: 2px white solid;
 }
 
 .schedule__header {
@@ -35,7 +34,9 @@
 }
 
 .schedule__title {
+    cursor: pointer;
     height: 32px;
+    border: 2px solid rgb(49, 49, 49);
     background-color: rgb(42, 42, 42);
     border-radius: 20px;
     padding-inline: 16px;
@@ -47,17 +48,20 @@
 
 
 .schedule__shifts-list {
-    height: 400px;
+    margin-top: 4px;
+    height: 100%;
+    flex-grow: 1;    
+    border-top: 2px solid rgb(49, 49, 49);
     width: 100%;
 }
 
 .schedule__add-shift-btn {
-    width: fit-content;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    box-sizing: border-box;
-    background-color: unset;
     color: white;
-    font-size: 16px;
+    font-size: 30px;
+    cursor: pointer;
 }
+
+.schedule__add-shift-title {
+    border: none;
+}
+

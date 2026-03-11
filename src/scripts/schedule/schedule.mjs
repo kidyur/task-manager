@@ -40,7 +40,7 @@ class Schedule {
     }
 
     #pinListeners() {
-        this.#element.addEventListener('click', () => {
+        this.#element.querySelector(".schedule__title").addEventListener('click', () => {
             this.select();
         })
 
@@ -65,7 +65,11 @@ class Schedule {
             </div>
             
             <div class="schedule__shifts-list"></div>
-            <button class="schedule__add-shift-btn">Добавить день</button> 
+            <div class="schedule__add-shift-field shift">
+                <button class="schedule__add-shift-btn shift__icon">+</button>
+                <p class="schedule__add-shift-title shift__title">Добавить смену</p> 
+            </div>
+
         `;
         document.querySelector('.schedules-table__table').appendChild(this.#element);
     }    
@@ -75,14 +79,14 @@ class Schedule {
         if (schedulesTable.currentSchedule == this) {
             this.#element.className = "schedule schedule--active";
             this.#element.querySelector(".schedule__shifts-list").style.display = "block";
-            this.#element.querySelector(".schedule__add-shift-btn").style.display = "block";
+            this.#element.querySelector(".schedule__add-shift-field").style.display = "flex";
             this.#element.querySelector(".schedule__edit-btn").style.display = "inline";
             this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list schedule__shifts-list--visible";
         } else {
             this.#element.className = "schedule";
             this.#element.querySelector(".schedule__shifts-list").style.display = "none";
             this.#element.querySelector(".schedule__edit-btn").style.display = "none";
-            this.#element.querySelector(".schedule__add-shift-btn").style.display = "none";
+            this.#element.querySelector(".schedule__add-shift-field").style.display = "none";
             this.#element.querySelector(".schedule__shifts-list").className = "schedule__shifts-list";
         }
     }

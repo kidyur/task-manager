@@ -49,14 +49,14 @@ class Shift {
         this.#element = document.createElement('div');
         this.#element.className = 'shift';
         this.#element.innerHTML = `
-            <p class="shift__title"></p>
             <div class="shift__icon"></div>
+            <p class="shift__title"></p>
         `;
         document.querySelector('.schedule__shifts-list--visible').appendChild(this.#element);
     }
 
     #pinListeners() {
-        this.#element.addEventListener("click", () => {
+        this.#element.querySelector(".shift__icon").addEventListener("click", () => {
             const shiftEditor = new ShiftEditor();
             shiftEditor.open(this);
         });

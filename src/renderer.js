@@ -29,11 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     schedulesTableModel.currentSchedule.addShift("3. Чертим-чертим", "");
 
 
-    schedulesTableModel.addSchedule("Тренировка");
-    schedulesTableModel.currentSchedule.addShift("1. День ног", "sun");
-    schedulesTableModel.currentSchedule.addShift("2. Отдых", "");
-    schedulesTableModel.currentSchedule.addShift("3. День рук", "");
-    schedulesTableModel.currentSchedule.addShift("3. Отдых", "");
+
 
     schedulesTableModel.addSchedule("Работа");
     schedulesTableModel.currentSchedule.addShift("1. Утро", "sun");
@@ -57,10 +53,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     schedulesTableModel.addSchedule("Завод");
     schedulesTableModel.addSchedule("Фазы луны");
 
+    schedulesTableModel.addSchedule("Тренировка");
+    schedulesTableModel.currentSchedule.addShift("1. День ног", "sun");
+    schedulesTableModel.currentSchedule.addShift("2. Отдых", "");
+    schedulesTableModel.currentSchedule.addShift("3. День рук", "");
+    schedulesTableModel.currentSchedule.addShift("3. Отдых", "");
 
     shiftEditor.close();
 
-    schedulesTableModel.currentSchedule = null;
 
     TaskList.start();
 
