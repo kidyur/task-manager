@@ -1,40 +1,55 @@
 .calendarView__day {
   display: flex;
-  opacity: 30%;
-  border-radius: 8px;
+  background-color: rgb(42, 42, 42);
+  border-radius: 10px;
   border: 2px solid rgb(49, 49, 49);
   color: var(--font-main-color);
   align-items: center;
   cursor: pointer;
+  height: 80px;
   flex-direction: column;
   justify-content: space-between;
   padding-top: var(--padding-small);
   transition: .5s;
-  padding-bottom: var(--margin-small);
 }
 
 .calendar__day-title {
   border: none;
+  background-color: var(--bg-color);
 }
 
-.calendarView__day_week {
+.calendarView__day * {
+  opacity: 30%;
+}
+
+.calendarView__day_week * {
   opacity: 100%;
 }
 
 .calendarView__icon {
-  height: 50%;
+  width: 100%;
   background-position: center;
   background-repeat: no-repeat;
   aspect-ratio: 1;
 }
 
+.day__title {
+  box-sizing: border-box;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+}
 
 .calendarView__day--active1 {
-  box-shadow: 0px 0px 0px 3px white, 4px 4px 10px 1px black;
+  background-color: rgb(217, 217, 217);
+  color: black;
   z-index: 1;
+  border: 2px solid white;
 }
 
 .calendarView__day--active2 {
-  box-shadow: 0px 0px 0px 3px red, 4px 4px 10px 1px black;
+  background-color: red;
+  color: white;
   z-index: 1;
+  border: 2px solid rgb(255, 70, 70);
 }

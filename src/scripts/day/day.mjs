@@ -65,10 +65,17 @@ class Day {
             this.#element.style.borderTop = '';
             return;
         }
-        if (this.#borderFlag) {
-            this.#element.style.borderTop = '3px solid white';
+
+        const calendarModel = new CalendarModel();
+        
+        if (this.#idx != calendarModel.day) {
+            if (this.#borderFlag) {
+                this.#element.querySelector(".day__title").style.borderBottom = '3px solid white';
+            } else {
+                this.#element.querySelector(".day__title").style.borderBottom = '3px solid red';
+            }
         } else {
-            this.#element.style.borderTop = '3px solid red';
+            this.#element.querySelector(".day__title").style.borderBottom = 'none';
         }
     }
 

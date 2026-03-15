@@ -15,8 +15,9 @@
   width: 100%;
   height: calc(100% - 80px);
   display: grid;
-  grid-template-columns: repeat(7, calc(100% / 7));
-  grid-template-rows: 40px repeat(6, calc(100% / 7));
+  grid-template-columns: repeat(7, calc(100% / 7 - 4px));
+  grid-template-rows: 40px repeat(6, calc(100% / 7 - 4px));
+  gap: 4px;
 }
 
 .calendarView__months-roulette {
