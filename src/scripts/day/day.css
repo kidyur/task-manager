@@ -6,7 +6,7 @@
   color: var(--font-main-color);
   align-items: center;
   cursor: pointer;
-  height: 80px;
+  height: fit-content;
   flex-direction: column;
   justify-content: space-between;
   padding-top: var(--padding-small);
@@ -26,7 +26,12 @@
   opacity: 100%;
 }
 
+.calendarView__day_week .calendarView__icon {
+  display: block;
+}
+
 .calendarView__icon {
+  display: none;
   width: 100%;
   background-position: center;
   background-repeat: no-repeat;

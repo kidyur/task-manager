@@ -5,6 +5,7 @@ import CalendarModel from './scripts/calendar/calendar-model.mjs';
 import TaskList from "/src/scripts/tasks/taskList.mjs";
 import SchedulesTableModel from './scripts/schedules-table/schedules-table-model.mjs';
 import ShiftEditor from "./scripts/shift-editor/shift-editor.mjs";
+import Footer from './scripts/footer/footer.mjs';
 import ScheduleEditor from './scripts/schedule-editor/schedule-editor.mjs';
 
 window.addEventListener('beforeunload', () => {
@@ -21,6 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const schedulesTableModel = new SchedulesTableModel();
     const shiftEditor = new ShiftEditor();
     const scheduleEditor = new ScheduleEditor();
+    const footer = new Footer();
+
 
     schedulesTableModel.clear();
     schedulesTableModel.addSchedule("Учёба");

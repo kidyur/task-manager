@@ -1,0 +1,35 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 20px;
+  width: 400px;
+  height: 80px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+ }
+
+.footer__btn {
+  width: 30%;
+  color: white;
+  height: 60px;
+  background-color: rgb(42,42,42);
+  border: 2px solid rgb(49, 49, 49);
+  cursor: pointer;  
+}
+
+.footer__btn:first-child {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.footer__btn:last-child {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+
+
+
