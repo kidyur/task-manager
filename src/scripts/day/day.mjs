@@ -14,6 +14,9 @@ class Day {
             const calendarViewModel = new CalendarModel();
             calendarViewModel.setDate(this.#idx);
         })
+        if (!Number.isInteger(idx)) {
+            this.#element.className = "calendarView__day calendar__day-title";
+        }
     }
 
     updateView(idx, border = false, icon = "") {

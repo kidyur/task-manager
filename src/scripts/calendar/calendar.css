@@ -7,6 +7,10 @@
   height: 100%;
 }
 
+.calendar__title {
+  color: white;
+}
+
 .calendarView__days-grid {
   width: 100%;
   height: calc(100% - 80px);
@@ -28,12 +32,13 @@
 .calendarView__arrow-btn {
   height: 100%;
   aspect-ratio: 1;
-  background-color: unset;
+  background-color: rgb(42,42,42);
+  border-radius: 100%;
   background-repeat: no-repeat;
   background-size: 70%;
   background-position: center;
   cursor: pointer;
-  border: none;
+  border: 2px solid rgb(49, 49, 49);
   background-image: url("../../icons/arrow.svg");
 }
 

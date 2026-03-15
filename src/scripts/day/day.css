@@ -1,6 +1,8 @@
 .calendarView__day {
   display: flex;
   opacity: 30%;
+  border-radius: 8px;
+  border: 2px solid rgb(49, 49, 49);
   color: var(--font-main-color);
   align-items: center;
   cursor: pointer;
@@ -9,6 +11,10 @@
   padding-top: var(--padding-small);
   transition: .5s;
   padding-bottom: var(--margin-small);
+}
+
+.calendar__day-title {
+  border: none;
 }
 
 .calendarView__day_week {
