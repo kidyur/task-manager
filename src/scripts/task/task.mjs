@@ -1,0 +1,79 @@
+import "./task.css";
+
+/**
+ * изменять rawString
+ * изменять дату отдельно
+ * изменять теги отдельно
+ */
+
+class Task {
+  #element = null;
+  #date = null;
+
+  constructor(rawString) {
+    this.#render();
+    this.#parseRawString(rawString);
+  } 
+ 
+  complete() {
+    this.remove();
+  }
+
+  remove() {
+    // TODO: it is not removed from the table[] list
+    document.querySelector(".task-list__list").removeChild(this.#element);
+  }
+
+  #render() {
+    this.#element = document.createElement("div");
+    this.#element.className = "task";
+    this.#element.innerHTML = `
+      <p class="task__title"></p>
+      <div class="task__footer">
+        <p class="task__date"></p>
+        <div class="task__tag-list"></div>
+      </div>
+    `;
+    document.querySelector(".task-list__list").appendChild(this.#element);
+  }
+
+  #setDate(day, month, year) {
+    this.#date = new Date(day, month);
+    this.#element.querySelector(".task__date").textContent = this.#date;
+  }
+
+  #setTitle(title) {
+    this.#element.querySelector(".task__title").innerHTML = title;
+  }
+
+  #parseRawString(rawString) {
+    this.#setTitle(rawString);
+
+    this.#parseTags(rawString);
+    this.#parseDate(rawString);
+  }
+
+  #parseTags(rawStr) {
+    const matches = rawStr.matchAll(/#(?<name>.*)/g);
+    for (const tag of matches) {
+      const tagEl = document.createElement("p");
+      tagEl.className = "task__tag";
+      tagEl.textContent = tag.groups.name;
+      this.#element.querySelector(".task__tag-list").appendChild(tagEl);
+    }
+  }
+
+  #parseDate(rawStr) {
+    const dd_mm = /\d\d-\d\d/g
+    const dd_mm_yy = /\d\d-\d\d-\d\d/g
+    const match = [...rawStr.matchAll(/\d\d[-]\d\d/g)];
+    if (match.length == 0) return;
+    this.#setDate(match[-1]);
+  }
+
+  #fmtDate(d) {
+    
+  }
+}
+
+export default Task;

@@ -6,7 +6,7 @@ import SchedulesTableModel from './scripts/schedules-table/schedules-table-model
 import ShiftEditor from "./scripts/shift-editor/shift-editor.mjs";
 import Footer from './scripts/footer/footer.mjs';
 import ScheduleEditor from './scripts/schedule-editor/schedule-editor.mjs';
-import TaskList from './scripts/tasks/task-list.mjs';
+import TaskList from './scripts/task-list/task-list.mjs';
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({
@@ -65,6 +65,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     shiftEditor.close();
 
+    taskList.addTask("Испробуй этих мягких французских булок")
+    taskList.addTask("Испробуй булок 15-02-2027")
+    taskList.addTask("Испробуй булок 15-02-22")
+    taskList.addTask("Испробуй булок 15-02")
+    taskList.addTask("Испробуй этих булок #еда")
 
     const data = await window.electronAPI.getSharedData();
     schedulesTableModel.parseJSON(data.schedules);

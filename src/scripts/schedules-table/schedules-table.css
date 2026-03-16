@@ -8,11 +8,10 @@
 
 .schedules-table__title {
     color: white;
-    font-size: 30px;
-    text-align: start;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: 100%;
-    box-sizing: border-box;
-    padding-inline: 20px;
 }
 
 .schedules-table__table {

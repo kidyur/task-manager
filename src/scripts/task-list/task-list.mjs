@@ -1,10 +1,17 @@
 import "./task-list.css";
+import Task from "../task/task.mjs";
 
 class TaskList {
   #element = null 
- 
+  #tasks = [];
+
   constructor() {
     this.#render();
+  }
+
+  addTask(rawString) {
+    const task = new Task(rawString);
+    this.#tasks.push(task);
   }
 
   #render() {

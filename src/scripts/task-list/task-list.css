@@ -1,0 +1,20 @@
+.task-list {
+  width: 400px;
+  height: 100%;
+}
+
+.task-list__title {
+ color: white;
+   padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.task-list__list {
+ width: 100%;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ flex-wrap: wrap;
+ gap: 4px;
+}
