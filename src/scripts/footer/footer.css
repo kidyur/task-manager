@@ -17,7 +17,22 @@
   height: 60px;
   background-color: rgb(42,42,42);
   border: 2px solid rgb(49, 49, 49);
-  cursor: pointer;  
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;  
+}
+
+.footer__icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 20px;
+  aspect-ratio: 1;
+}
+
+.footer__btn-title {
+  margin: 0;
 }
 
 .footer__btn:first-child {
@@ -30,6 +45,17 @@
   border-bottom-right-radius: 30px;
 }
 
+.footer__icon:nth-child(1) {
+  background-image: url("../../icons/arrow.svg");
+}
+
+.footer__icon:nth-child(2) {
+  background-image: url("../../icons/flower.svg");
+}
+
+.footer__icon:nth-child(3) {
+  background-image: url("../../icons/snowflake.svg");
+}
 
 
 

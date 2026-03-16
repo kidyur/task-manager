@@ -12,16 +12,16 @@ class Footer {
     this.#element.className = "footer";
     this.#element.innerHTML = `
       <button class="footer__btn">
+        <div class="footer__icon"></div>
         <p class="footer__btn-title">Задачи</p>
-        <div class="footer__icon"></div>
       </button>
       <button class="footer__btn">
+        <div class="footer__icon"></div>
         <p class="footer__btn-title">Календарь</p>
-        <div class="footer__icon"></div>
       </button>
       <button class="footer__btn">
-        <p class="footer__btn-title">Расписания</p>
         <div class="footer__icon"></div>
+        <p class="footer__btn-title">Расписания</p>
       </button>
     `;
     document.querySelector('body').appendChild(this.#element);
