@@ -1,7 +1,7 @@
 .calendarView {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   width: 400px;
   height: 100%;
@@ -13,10 +13,9 @@
 
 .calendarView__days-grid {
   width: 100%;
-  height: calc(100% - 80px);
+  height: fit-content;
   display: grid;
   grid-template-columns: repeat(7, calc(100% / 7 - 4px));
-  grid-template-rows: 40px repeat(6, calc(100% / 7 - 4px));
   gap: 4px;
 }
 

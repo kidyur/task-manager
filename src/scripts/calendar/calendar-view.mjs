@@ -47,13 +47,13 @@ class CalendarView {
         this.#calendarViewEl = document.createElement("div");
         this.#calendarViewEl.className = "calendarView";
         this.#calendarViewEl.innerHTML = `
-            <h1 class="calendar__title">Календарь</h1>
+        <h1 class="calendar__title">Календарь</h1>
+        <div class="calendarView__months-roulette">
+            <button class="calendarView__arrow-btn"></button>
+            <p class="calendarView__date-title">Текущая дата</p>
+            <button class="calendarView__arrow-btn"></button>
+        </div>
             <div class="calendarView__days-grid"></div>
-            <div class="calendarView__months-roulette">
-                <button class="calendarView__arrow-btn"></button>
-                <p class="calendarView__date-title">Текущая дата</p>
-                <button class="calendarView__arrow-btn"></button>
-            </div>
         `;
         document.querySelector("body").appendChild(this.#calendarViewEl);
     }
