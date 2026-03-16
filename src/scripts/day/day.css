@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding-top: var(--padding-small);
-  transition: .5s;
+  transition: .3s;
 }
 
 .calendar__day-title {

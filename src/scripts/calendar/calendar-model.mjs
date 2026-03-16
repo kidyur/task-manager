@@ -1,5 +1,4 @@
 import CalendarView from "./calendar-view.mjs";
-import TaskList from "../tasks/taskList.mjs";
 
 class CalendarModel {
     #month = 0;
@@ -80,7 +79,6 @@ class CalendarModel {
     #notifyObservers() {
         const calendarView = new CalendarView();
         calendarView.updateView();  
-        TaskList.filterByDate(new Date(this.year, this.month - 1, this.day));
     }
 }
 

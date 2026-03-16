@@ -2,11 +2,11 @@ import './scripts/common/index.css';
 
 import CalendarView from './scripts/calendar/calendar-view.mjs';
 import CalendarModel from './scripts/calendar/calendar-model.mjs';
-import TaskList from "/src/scripts/tasks/taskList.mjs";
 import SchedulesTableModel from './scripts/schedules-table/schedules-table-model.mjs';
 import ShiftEditor from "./scripts/shift-editor/shift-editor.mjs";
 import Footer from './scripts/footer/footer.mjs';
 import ScheduleEditor from './scripts/schedule-editor/schedule-editor.mjs';
+import TaskList from './scripts/tasks/task-list.mjs';
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({
@@ -17,6 +17,7 @@ window.addEventListener('beforeunload', () => {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+    const taskList = new TaskList();
     const calendarView = new CalendarView();
     const calendarViewModel = new CalendarModel();
     const schedulesTableModel = new SchedulesTableModel();
@@ -65,18 +66,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     shiftEditor.close();
 
 
-    TaskList.start();
-
     const data = await window.electronAPI.getSharedData();
     schedulesTableModel.parseJSON(data.schedules);
-    TaskList.parseJSON(data.tasksData);
-});
-
-
-document.addEventListener('keydown', (ev) => {
-    if (ev.code == 'KeyZ') {
-        console.log(TaskList.tasks);
-        console.log(TaskList.dates);
-        TaskList.toJSON();
-    }
 });
