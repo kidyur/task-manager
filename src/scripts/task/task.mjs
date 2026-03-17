@@ -64,12 +64,17 @@ class Task {
   }
 
   #parseDate(rawStr) {
-    const dd_mm = /\d\d-\d\d/g
-    const dd_mm_yy = /\d\d-\d\d-\d\d/g
-    const match = rawStr.match(/(?<day>\d{2})-(?<month>\d{2})/);
-    if (match == null) return;
-    console.log(match.groups.day);
-    this.#setDate(match.groups.day, match.groups.month);
+    const patterns = [
+      /(?<day>\d{2})[-\. ](?<month>\d{2})[-\. ](?<year>\d{2})/, // XX.XX.XX
+      /(?<day>\d{2})[-\. ](?<month>\d{2})/,                    // XX.XX         
+    ];
+
+    for (const pat of patterns) {
+      const match = rawStr.match(pat);
+      if (match == null) continue;
+      this.#setDate(match.groups.day, match.groups.month);
+      break;
+    }
   }
 }
 
