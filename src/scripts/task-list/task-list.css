@@ -12,6 +12,7 @@
 
 .task-list__list {
  width: 100%;
+ padding: 10px;
  display: flex;
  align-items: center;
  justify-content: flex-start;

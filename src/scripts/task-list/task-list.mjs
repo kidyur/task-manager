@@ -20,6 +20,7 @@ class TaskList {
     this.#element.innerHTML = `
       <h1 class="task-list__title">Задачи</h1>
       <div class="task-list__list"></div>
+      <button class="task-list__add-btn schedules-table__add-btn ">+</button>
     `;
     document.querySelector("body").appendChild(this.#element);
   }

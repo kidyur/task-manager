@@ -39,7 +39,7 @@ class Task {
 
   #setDate(day, month, year) {
     this.#date = new Date(day, month);
-    this.#element.querySelector(".task__date").textContent = this.#date;
+    this.#element.querySelector(".task__date").textContent = day + '.' + month;
   }
 
   #setTitle(title) {
@@ -66,13 +66,10 @@ class Task {
   #parseDate(rawStr) {
     const dd_mm = /\d\d-\d\d/g
     const dd_mm_yy = /\d\d-\d\d-\d\d/g
-    const match = [...rawStr.matchAll(/\d\d[-]\d\d/g)];
-    if (match.length == 0) return;
-    this.#setDate(match[-1]);
-  }
-
-  #fmtDate(d) {
-    
+    const match = rawStr.match(/(?<day>\d{2})-(?<month>\d{2})/);
+    if (match == null) return;
+    console.log(match.groups.day);
+    this.#setDate(match.groups.day, match.groups.month);
   }
 }
 
