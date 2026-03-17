@@ -69,7 +69,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     taskList.addTask("Испробуй булок 15-02-2027")
     taskList.addTask("Испробуй булок 15-02-22")
     taskList.addTask("Испробуй булок 15-02")
-    taskList.addTask("Испробуй этих булок #еда")
+    taskList.addTask("Испробуй этих булок #еда");
+    taskList.addTask("Испробуй этих булок #еда #вода");
+    taskList.addTask("Испробуй этих булок #еда #вода #сон");
+
+
+    footer.openPage(Footer.Pages.TasksPage);
 
     const data = await window.electronAPI.getSharedData();
     schedulesTableModel.parseJSON(data.schedules);

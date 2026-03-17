@@ -54,7 +54,7 @@ class Task {
   }
 
   #parseTags(rawStr) {
-    const matches = rawStr.matchAll(/#(?<name>.*)/g);
+    const matches = rawStr.matchAll(/(?<name>#[^ ]*)/g);
     for (const tag of matches) {
       const tagEl = document.createElement("p");
       tagEl.className = "task__tag";
