@@ -28,7 +28,8 @@
 
 .task__date {
  margin: 0;
- color: white;
+ color: rgb(161, 161, 161);
+ font-size: 14px;
 }
 
 .task__tag-list {

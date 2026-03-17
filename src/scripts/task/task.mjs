@@ -47,20 +47,23 @@ class Task {
   }
 
   #parseRawString(rawString) {
-    this.#setTitle(rawString);
+    rawString = this.#parseTags(rawString);
+    rawString = this.#parseDate(rawString);
 
-    this.#parseTags(rawString);
-    this.#parseDate(rawString);
+    this.#setTitle(rawString);
   }
 
   #parseTags(rawStr) {
-    const matches = rawStr.matchAll(/(?<name>#[^ ]*)/g);
+    const pattern = /(?<name>#[^ ]*)/g;
+    const matches = rawStr.matchAll(pattern);
     for (const tag of matches) {
+      rawStr = rawStr.replace(pattern, "");
       const tagEl = document.createElement("p");
       tagEl.className = "task__tag";
       tagEl.textContent = tag.groups.name;
       this.#element.querySelector(".task__tag-list").appendChild(tagEl);
     }
+    return rawStr;
   }
 
   #parseDate(rawStr) {
@@ -72,9 +75,12 @@ class Task {
     for (const pat of patterns) {
       const match = rawStr.match(pat);
       if (match == null) continue;
+      rawStr = rawStr.replace(pat, "");
       this.#setDate(match.groups.day, match.groups.month);
       break;
     }
+
+    return rawStr;
   }
 }
 
