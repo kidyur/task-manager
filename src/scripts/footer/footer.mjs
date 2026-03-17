@@ -6,12 +6,6 @@ import CalendarView from "../calendar/calendar-view.mjs";
 
 class Footer {
   #element = null;
-  #openedPage = null;
-  #btnPairs = [
-    [new TaskList(), ".footer__tasks-btn"],
-    [new CalendarView(), ".footer__calendar-btn"],
-    [new SchedulesTable(), ".footer__schedule-btn"]
-  ]
 
   static Pages = {
     CalendarPage: new CalendarView(),
@@ -26,16 +20,13 @@ class Footer {
   }
 
   openPage(page) {
-    if (this.#openedPage) {
-      this.#openedPage.close();
-    }
+    this.offAllPages();
     page.open();
-    this.#openedPage = page;
   }
 
   offAllPages() {
-    for (const [page, trash] of this.#btnPairs) {
-      page.close();
+    for (let pageIdx in Footer.Pages) {
+      Footer.Pages[pageIdx].close();
     }
   }
 
@@ -60,7 +51,13 @@ class Footer {
   }
 
   #pinListeners() {
-    for (const [page, pageElClassName] of this.#btnPairs) {
+    const btnPairs = [
+      [new TaskList(), ".footer__tasks-btn"],
+      [new CalendarView(), ".footer__calendar-btn"],
+      [new SchedulesTable(), ".footer__schedule-btn"]
+    ];
+
+    for (const [page, pageElClassName] of btnPairs) {
       this.#element.querySelector(pageElClassName).addEventListener("click", () => {
         this.openPage(page);
       }) 
