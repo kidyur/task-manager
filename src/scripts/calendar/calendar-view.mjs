@@ -6,7 +6,7 @@ import "./calendar.css";
 
 
 class CalendarView {
-    #calendarViewEl = undefined;
+    #element = undefined;
     #borderFlag = true;
     static #instance = null
 
@@ -29,9 +29,17 @@ class CalendarView {
         this.#updateDateTitle();
     }
 
+    close() {
+        this.#element.style.display = "none";
+    }
+
+    open() {
+        this.#element.style.display = "flex";
+    }
+
     #updateDateTitle() {
         const calendarViewModel = new CalendarModel();
-        const title = this.#calendarViewEl.querySelector(".calendarView__date-title");
+        const title = this.#element.querySelector(".calendarView__date-title");
         const monthsNames = [
              'Январь' , 'Февраль' , 
              'Март' , 'Апрель' , 'Май' , 
@@ -44,9 +52,9 @@ class CalendarView {
     }
 
     #render() {
-        this.#calendarViewEl = document.createElement("div");
-        this.#calendarViewEl.className = "calendarView";
-        this.#calendarViewEl.innerHTML = `
+        this.#element = document.createElement("div");
+        this.#element.className = "calendarView";
+        this.#element.innerHTML = `
         <h1 class="calendar__title">Календарь</h1>
         <div class="calendarView__months-roulette">
             <button class="calendarView__arrow-btn"></button>
@@ -55,18 +63,18 @@ class CalendarView {
         </div>
             <div class="calendarView__days-grid"></div>
         `;
-        document.querySelector("body").appendChild(this.#calendarViewEl);
+        document.querySelector("body").appendChild(this.#element);
     }
 
     #pinListeners() {
         const calendarViewModel = new CalendarModel();
 
-        this.#calendarViewEl.querySelectorAll(".calendarView__arrow-btn")[0]
+        this.#element.querySelectorAll(".calendarView__arrow-btn")[0]
                         .addEventListener("click", () => {
             calendarViewModel.setPreviousMonth();
         })
 
-        this.#calendarViewEl.querySelectorAll(".calendarView__arrow-btn")[1]
+        this.#element.querySelectorAll(".calendarView__arrow-btn")[1]
                         .addEventListener("click", () => {
             calendarViewModel.setNextMonth();
         })

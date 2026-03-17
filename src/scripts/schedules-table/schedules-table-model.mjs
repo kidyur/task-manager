@@ -91,6 +91,14 @@ class SchedulesTableModel {
         }
     }
 
+    close() {
+        this.#element.style.display = "none";
+    }
+
+    open() {
+        this.#element.style.display = "flex";
+    }
+    
     #render() {
         this.#element = document.createElement("div");
         this.#element.className = "schedules-table";

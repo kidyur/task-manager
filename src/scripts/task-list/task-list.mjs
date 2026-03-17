@@ -5,13 +5,29 @@ class TaskList {
   #element = null 
   #tasks = [];
 
+  static #instance = null;
+
   constructor() {
+    if (TaskList.#instance) {
+      return TaskList.#instance;
+    } else {
+      TaskList.#instance = this;
+    }
+
     this.#render();
   }
 
   addTask(rawString) {
     const task = new Task(rawString);
     this.#tasks.push(task);
+  }
+
+  close() {
+      this.#element.style.display = "none";
+  }
+
+  open() {
+      this.#element.style.display = "flex";
   }
 
   #render() {
