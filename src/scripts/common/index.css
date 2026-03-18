@@ -1,28 +1,47 @@
 :root {
-    /* Space */
-    --padding-small: 4px;
-    --padding-medium: 12px;
-    --padding-big: 24px;
+    /* --- Space --- */
+    --padding-S: 8px;
+    --padding-M: 12px;
+    --padding-L: 16px;
+    --padding-XL: 24px;
 
-    --margin-small: 4px;
-    --margin-medium: 12px;
-    --margin-big: 24px;
+    --margin-S: 4px;
+    --margin-M: 4px;
+    --margin-L: 12px;
+    --margin-XL: 24px;
 
-    /* Palette */
-    --color-500: #3f4550;
-    --color-400: #54546c;
-    --color-300: #6e7684;
-    --color-200: #a2aab5;
-    --color-100: #c0c6cf;
 
-    /* Colors */
-    --bg-color: #202020;
-    --fg-color: #535353;
-    --fg-color-active: #A22C29; 
-    --font-main-color: #EFF1F3; 
-    --font-warning-color: rgb(196, 0, 0); 
-    --text-color-500: black;
-    --text-color-300: #434343;
+    /* --- Colors --- */
+    --color-primary: rgb(226, 47, 47);
+    --color-secondary: black;
+    --color-accent: black;
+    
+    --color-bg: #202020;
+    --color-text: white;
+    --color-text-secondary: grey;
+    --color-border: rgb(49,49,49);
+    --color-surface: rgb(42,42,42);
+    
+    --color-hover: black;
+    --color-active: rgb(217, 217, 217);
+    --color-focus: black;
+
+    --color-success: black;
+    --color-warning: black;
+    --color-danger: red;
+    --color-error: var(--color-danger);
+
+
+    /* --- font-size --- */
+    --font-size-S: 14px;
+    --font-size-M: 16px;
+    --font-size-L: 20px;
+    --font-size-XL: 32px;
+
+
+    /* --- "Magic" values --- */
+    --absolute-round-border: 9999px;
+    --last-idx-in-order: 9999;
 }
 
 * {
@@ -31,9 +50,18 @@
     padding: 0;
 }
 
+h1 {
+    font-size: var(--font-size-XL);
+    padding: var(--padding-XL);
+    color: var(--color-text);
+}
+
+p {
+    font-size: var(--font-size-M);
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -44,14 +72,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--bg-color);
+    background-color: var(--color-bg);
 }
 
-.page {
-    width: 400px;
-    height: 100vh;
-    background-color: var(--bg-color);
-    flex-direction: column;
-    align-items: center;
-}
 

@@ -1,9 +1,9 @@
 .calendarView__day {
   display: flex;
-  background-color: rgb(42, 42, 42);
+  background-color: var(--color-surface);
   border-radius: 10px;
-  border: 2px solid rgb(49, 49, 49);
-  color: var(--font-main-color);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-secondary);
   align-items: center;
   cursor: pointer;
   height: fit-content;
@@ -15,19 +15,16 @@
 
 .calendar__day-title {
   border: none;
-  background-color: var(--bg-color);
-}
-
-.calendarView__day * {
-  opacity: 30%;
-}
-
-.calendarView__day_week * {
-  opacity: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
 }
 
 .calendarView__day_week .calendarView__icon {
   display: block;
+}
+
+.calendarView__day_week {
+  color: var(--color-text);
 }
 
 .calendarView__icon {
@@ -46,15 +43,15 @@
 }
 
 .calendarView__day--active1 {
-  background-color: rgb(217, 217, 217);
+  background-color: var(--color-active);
   color: black;
   z-index: 1;
   border: 2px solid white;
 }
 
 .calendarView__day--active2 {
-  background-color: red;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-text);
   z-index: 1;
   border: 2px solid rgb(255, 70, 70);
 }

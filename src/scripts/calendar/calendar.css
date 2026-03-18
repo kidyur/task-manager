@@ -3,15 +3,13 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-  width: 400px;
+  width: 100%;
+  padding-inline: var(--padding-L);
   height: 100%;
 }
 
 .calendar__title {
-  padding-left: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  color: white;
+  color: var(--color-text);
 }
 
 .calendarView__days-grid {
@@ -35,13 +33,13 @@
 .calendarView__arrow-btn {
   height: 100%;
   aspect-ratio: 1;
-  background-color: rgb(42,42,42);
+  background-color: var(--color-surface);
   border-radius: 100%;
   background-repeat: no-repeat;
   background-size: 70%;
   background-position: center;
   cursor: pointer;
-  border: 2px solid rgb(49, 49, 49);
+  border: 2px solid var(--color-border);
   background-image: url("../../icons/arrow.svg");
 }
 
@@ -50,7 +48,7 @@
 }
 
 .calendarView__date-title {
-  color: white;
+  color: var(--color-text);
   font-size: 24px;
 }
 

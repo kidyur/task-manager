@@ -14,11 +14,11 @@
   border: 1px solid whitesmoke;
   border-radius: 4px;
   padding: 10px 20px;
-  background-color: var(--bg-color);
+  background-color: var(--color-bg);
 }
 
 .shift-editor__icons-grid {
-  background-color: var(--bg-color);
+  background-color: var(--color-bg);
   display: grid;
   grid-template-columns: repeat(5, 40px);
   grid-template-rows: repeat(2, 40px);

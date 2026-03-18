@@ -10,14 +10,14 @@
 
 
 .shift__title {
-  color: white;
+  color: var(--color-text);
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-left: 10px;
-  border-bottom: 2px solid rgb(49, 49, 49);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .shift__icon {
@@ -28,8 +28,8 @@
     background-position: center;
     background-size: 70%;
     background-repeat: no-repeat;
-    background-color: rgb(42, 42, 42);
-    border: 2px solid rgb(49, 49, 49);
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border);
     border-radius: 10px;
 }
 

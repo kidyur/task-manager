@@ -13,10 +13,10 @@
 
 .footer__btn {
   width: 30%;
-  color: white;
+  color: var(--color-text);
   height: 60px;
-  background-color: rgb(42,42,42);
-  border: 2px solid rgb(49, 49, 49);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
   cursor: pointer;
   display: flex;
   align-items: center;
