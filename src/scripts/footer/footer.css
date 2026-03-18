@@ -13,7 +13,7 @@
 
 .footer__btn {
   width: 30%;
-  color: var(--color-text);
+  color: var(--color-text-secondary);
   height: 60px;
   background-color: var(--color-surface);
   border: 2px solid var(--color-border);
@@ -22,6 +22,10 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;  
+}
+
+.footer__btn--active {
+  color: var(--color-text);
 }
 
 .footer__icon {

@@ -60,6 +60,9 @@ class Footer {
     for (const [page, pageElClassName] of btnPairs) {
       this.#element.querySelector(pageElClassName).addEventListener("click", () => {
         this.openPage(page);
+        const prevBtn = this.#element.querySelector(".footer__btn--active");
+        if (prevBtn) prevBtn.classList.remove("footer__btn--active");
+        this.#element.querySelector(pageElClassName).classList.add("footer__btn--active");
       }) 
     }
   }
