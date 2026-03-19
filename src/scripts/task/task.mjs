@@ -1,3 +1,4 @@
+import TaskEditor from "../../task-editor/task-editor.mjs";
 import CalendarModel from "../calendar/calendar-model.mjs";
 import "./task.css";
 
@@ -22,7 +23,8 @@ class Task {
 
   constructor(rawString) {
     this.#render();
-    this.#parseRawString(rawString);
+    this.#pinListeners();
+    this.editTask(rawString);
   } 
  
   complete() {
@@ -55,6 +57,13 @@ class Task {
     document.querySelector(".task-list__list").appendChild(this.#element);
   }
 
+  #pinListeners() {
+    this.#element.addEventListener("click", () => {
+      const te = new TaskEditor();
+      te.open(this);
+    })
+  }
+
   #setDate(day, month, year) {
     this.#date = {
       day: day, 
@@ -69,7 +78,7 @@ class Task {
     this.#element.querySelector(".task__title").innerHTML = title;
   }
 
-  #parseRawString(rawString) {
+  editTask(rawString) {
     rawString = this.#parseTags(rawString);
     rawString = this.#parseDate(rawString);
 

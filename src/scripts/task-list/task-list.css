@@ -13,31 +13,6 @@
   gap: var(--margin-S);
 }
 
-.task-list__tag {
-  padding-inline: var(--padding-S);
-  cursor: pointer;
-  background-color: var(--color-surface);
-  border: 2px solid var(--color-border);
-  color: var(--color-text);
-  height: 24px;
-  border-radius: var(--absolute-round-border);
-}
-
-.task-list__tag--active {
-  width: 100%;
-  height: 48px;
-  text-align: left;
-  padding-inline: var(--padding-L);
-  font-size: var(--font-size-L);
-  order: var(--last-idx-in-order);
-  background-color: unset;
-  border: none;
-  border-bottom: 2px solid var(--color-border);
-  border-radius: 0;
-  /* background-color: var(--color-active);
-  color: var(--color-bg); */
-}
-
 .task-list__list {
  width: 100%;
  display: flex;

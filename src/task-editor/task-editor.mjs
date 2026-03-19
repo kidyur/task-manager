@@ -1,10 +1,13 @@
 import TaskList from "../scripts/task-list/task-list.mjs";
+import Task from "../scripts/task/task.mjs";
 import "./task-editor.css";
 
 class TaskEditor {
-  #element = null
+  #element = null;
+  #task = null;
 
   static #instance = null;
+
   constructor() {
     if (TaskEditor.#instance) {
       return TaskEditor.#instance;
@@ -16,26 +19,42 @@ class TaskEditor {
     this.#pinListeners();
   }
 
-  open() {
+  open(task = null) {
+    if (task instanceof Task) {
+      this.#task = task;
+      this.#element.querySelector(".task-editor__title").textContent = "Измените задачу";
+      this.#element.querySelector(".task-editor__input").value = task.title;
+      this.#element.querySelector(".task-editor__submit-btn").textContent = "Изменить";
+    } 
+    else {
+      this.#element.querySelector(".task-editor__title").textContent = "Создайте задачу";
+      this.#element.querySelector(".task-editor__submit-btn").textContent = "Создать";
+    }
     this.#element.style.display = "flex";
   }
   
   close() {
     this.#element.style.display = "none";
+    this.#element.querySelector(".task-editor__input").value = "";
   }
 
   #submit() {
     const userInput = this.#element.querySelector(".task-editor__input").value;
     if (userInput == "") return;
-    const tl = new TaskList();
-    tl.addTask(userInput);
+    
+    if (this.#task) {
+      this.#task.editTask(userInput);
+    } 
+    else {
+      const tl = new TaskList();
+      tl.addTask(userInput);
+    }
     this.close();  
   }
 
   #pinListeners() {
     this.#element.querySelector(".task-editor__close-btn").addEventListener("click", () => this.close());
     this.#element.querySelector(".task-editor__submit-btn").addEventListener("click", () => this.#submit());
-
   }
 
   #render() {
@@ -44,7 +63,7 @@ class TaskEditor {
     this.#element.innerHTML = `
       <div class="task-editor">
         <button class="task-editor__close-btn">Закрыть</button>
-        <h2>Создайте задачу</h2>
+        <h2 class="task-editor__title">Создайте задачу</h2>
         <input class="task-editor__input" placeholder="Введите задачу" />
         <button class="task-editor__submit-btn">Создать</button>
       </div>

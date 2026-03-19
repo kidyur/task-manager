@@ -3,6 +3,7 @@ import Task from "../task/task.mjs";
 import CalendarModel from "../calendar/calendar-model.mjs";
 import CalendarView from "../calendar/calendar-view.mjs";
 import TaskEditor from "../../task-editor/task-editor.mjs";
+import Tag from "../tag/tag.mjs";
 
 class TaskList {
   #element = null 
@@ -26,12 +27,14 @@ class TaskList {
     const task = new Task(rawString);
     this.#tasks.push(task);
 
-    for (const tag of task.tags) {
-      if (this.#tags.get(tag) == undefined) {
-        this.#tags.set(tag, 1);
-        this.#createTag(tag);
+    for (const tagTitle of task.tags) {
+      if (this.#tags.get(tagTitle) == undefined) {
+        // TODO: remove tags with cnt = 0
+        this.#tags.set(tagTitle, 1);
+        // Add it somewhere to spy on it
+        const tag = new Tag(tagTitle);
       } else {
-        this.#tags[tag] += 1;
+        this.#tags[tagTitle] += 1;
       }
     }
 
@@ -73,19 +76,6 @@ class TaskList {
       if (task.tags.length == 0) task.show();
       else task.hide();
     }
-  }
-
-  #createTag(name) {
-    const tagElem = document.createElement("button");
-    tagElem.textContent = name;
-    tagElem.addEventListener("click", () => {
-      this.listTasksWithTag(name);
-      const lastTag = this.#element.querySelector(".task-list__tag--active");
-      if (lastTag) lastTag.className = "task-list__tag";
-      tagElem.className = "task-list__tag task-list__tag--active";
-    })
-    tagElem.className = "task-list__tag";
-    this.#element.querySelector(".tasks-list__tag-list").appendChild(tagElem);
   }
 
   #render() {
