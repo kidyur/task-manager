@@ -90,7 +90,9 @@ class TaskList {
     this.#element.className = "task-list";
     this.#element.innerHTML = `
       <h1 class="task-list__title">Задачи</h1>
-      <div class="tasks-list__tag-list"></div>
+      <div class="tasks-list__tag-list">
+        <button class="task-list__tag task-list__show-untagged-btn">Без тега</button>
+      </div>
       <div class="task-list__list"></div>
       <button class="task-list__add-btn schedules-table__add-btn ">+</button>
     `;
@@ -101,6 +103,10 @@ class TaskList {
     this.#element.querySelector(".task-list__add-btn").addEventListener("click", () => {
       const te = new TaskEditor();
       te.open();
+    })
+
+    this.#element.querySelector(".task-list__show-untagged-btn").addEventListener("click", () => {
+      this.listTasksWithNoTag();
     })
   }
 
