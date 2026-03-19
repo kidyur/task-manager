@@ -9,6 +9,7 @@
 .tasks-list__tag-list {
   padding-bottom: var(--padding-L);
   display: flex;
+  flex-wrap: wrap;
   gap: var(--margin-S);
 }
 
@@ -20,6 +21,21 @@
   color: var(--color-text);
   height: 24px;
   border-radius: var(--absolute-round-border);
+}
+
+.task-list__tag--active {
+  width: 100%;
+  height: 48px;
+  text-align: left;
+  padding-inline: var(--padding-L);
+  font-size: var(--font-size-L);
+  order: var(--last-idx-in-order);
+  background-color: unset;
+  border: none;
+  border-bottom: 2px solid var(--color-border);
+  border-radius: 0;
+  /* background-color: var(--color-active);
+  color: var(--color-bg); */
 }
 
 .task-list__list {

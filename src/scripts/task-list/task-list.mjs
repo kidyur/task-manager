@@ -80,6 +80,9 @@ class TaskList {
     tagElem.textContent = name;
     tagElem.addEventListener("click", () => {
       this.listTasksWithTag(name);
+      const lastTag = this.#element.querySelector(".task-list__tag--active");
+      if (lastTag) lastTag.className = "task-list__tag";
+      tagElem.className = "task-list__tag task-list__tag--active";
     })
     tagElem.className = "task-list__tag";
     this.#element.querySelector(".tasks-list__tag-list").appendChild(tagElem);
@@ -104,9 +107,13 @@ class TaskList {
       const te = new TaskEditor();
       te.open();
     })
-
-    this.#element.querySelector(".task-list__show-untagged-btn").addEventListener("click", () => {
+    
+    const showUntaggedBtn = this.#element.querySelector(".task-list__show-untagged-btn");
+    showUntaggedBtn.addEventListener("click", () => {
       this.listTasksWithNoTag();
+      const lastTag = this.#element.querySelector(".task-list__tag--active");
+      if (lastTag) lastTag.className = "task-list__tag";
+      showUntaggedBtn.classList.add("task-list__tag--active");
     })
   }
 
