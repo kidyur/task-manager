@@ -6,6 +6,21 @@
   padding-inline: var(--padding-L);
 }
 
+.tasks-list__tag-list {
+  padding-bottom: var(--padding-L);
+  display: flex;
+  gap: var(--margin-S);
+}
+
+.task-list__tag {
+  padding-inline: var(--padding-S);
+  cursor: pointer;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
+  height: 24px;
+  border-radius: var(--absolute-round-border);
+}
 
 .task-list__list {
  width: 100%;

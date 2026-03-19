@@ -53,7 +53,11 @@
 h1 {
     font-size: var(--font-size-XL);
     padding: var(--padding-XL);
-    color: var(--color-text);
+}
+
+h2 {
+    padding: var(--padding-L);
+    font-size: var(--font-size-L);
 }
 
 p {
@@ -61,12 +65,9 @@ p {
 }
 
 body {
+    color: var(--color-text);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: center;
     top: 0;
     overflow: hidden;
     left: 0;

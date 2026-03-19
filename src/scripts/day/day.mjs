@@ -6,7 +6,9 @@ class Day {
     #borderFlag = false;
     #element    = null;
     #idx        = 0;
-    
+    #shiftTitle = "";
+    get shiftTitle() { return this.#shiftTitle; }
+
     constructor(idx) {
         this.#render();
         this.#setIdx(idx);
@@ -19,10 +21,13 @@ class Day {
         }
     }
 
-    updateView(idx, border = false, icon = "") {
+    updateView(idx, border = false, shift = null) {
         this.#setIdx(idx);
-        this.#setBorder(border);
-        this.#setIcon(icon);
+        if (shift) {
+            this.#setBorder(border);
+            this.#setIcon(shift.icon);
+            this.#shiftTitle = shift.title;
+        }
         this.#setClass();
     }
     

@@ -3,12 +3,21 @@ import CalendarModel from "./calendar-model.mjs";
 import Day from "../day/day.mjs";
 import { getFirstShiftIdxOfCurrMonth } from "../common/sched-seq-algo.mjs";
 import "./calendar.css";
+import DayPanel from "../day-panel/day-panel.mjs";
 
 
 class CalendarView {
     #element = undefined;
     #borderFlag = true;
     static #instance = null
+    
+    monthsNames = [
+        'Январь' , 'Февраль' , 
+        'Март' , 'Апрель' , 'Май' , 
+        'Июнь' , 'Июль' , 'Август' , 
+        'Сентябрь' , 'Октябрь' , 'Ноябрь' , 
+        'Декабрь'
+    ];
 
     days = [];
 
@@ -24,9 +33,17 @@ class CalendarView {
         this.#pinListeners();
     };
 
+    getCurrentDay() {
+        const model = new CalendarModel();
+        const idx = model.day + model.getFirstDayIdxOfCurrMonth() - 1;
+        return this.days[idx];
+    }
+
     updateView() {
         this.#updateDays();
         this.#updateDateTitle();
+        const dayPanel = new DayPanel();
+        dayPanel.updateView();
     }
 
     close() {
@@ -40,14 +57,8 @@ class CalendarView {
     #updateDateTitle() {
         const calendarViewModel = new CalendarModel();
         const title = this.#element.querySelector(".calendarView__date-title");
-        const monthsNames = [
-             'Январь' , 'Февраль' , 
-             'Март' , 'Апрель' , 'Май' , 
-             'Июнь' , 'Июль' , 'Август' , 
-             'Сентябрь' , 'Октябрь' , 'Ноябрь' , 
-             'Декабрь'
-        ];
-        let newTitle = `${calendarViewModel.year}, ${monthsNames[calendarViewModel.month - 1]}`;
+
+        let newTitle = `${calendarViewModel.year}, ${this.monthsNames[calendarViewModel.month - 1]}`;
         title.innerHTML = newTitle;
     }
 
@@ -117,10 +128,10 @@ class CalendarView {
                     this.#borderFlag = !this.#borderFlag;
                 }
                 icon = shifts[shiftIdx].getIcon()
-                shiftIdx = (shiftIdx + 1) % shifts.length;
             }
-            this.days[d].updateView(d - firstDay + 1, this.#borderFlag, icon);
-            
+            this.days[d].updateView(d - firstDay + 1, this.#borderFlag, shifts[shiftIdx]);
+
+            if (shiftIdx != -1) shiftIdx = (shiftIdx + 1) % shifts.length;
         }
         this.#borderFlag = true;
     }

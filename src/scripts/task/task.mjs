@@ -1,3 +1,4 @@
+import CalendarModel from "../calendar/calendar-model.mjs";
 import "./task.css";
 
 /**
@@ -8,7 +9,16 @@ import "./task.css";
 
 class Task {
   #element = null;
-  #date = null;
+  #date = {
+    day: 0,
+    month: 0,
+    year: 0
+  };
+  #title = "";
+  #tags = [];
+  get tags() { return this.#tags; }
+  get title() { return this.#title; }
+  get date() { return this.#date; }
 
   constructor(rawString) {
     this.#render();
@@ -17,6 +27,14 @@ class Task {
  
   complete() {
     this.remove();
+  }
+
+  hide() {
+    this.#element.style.display = "none";
+  }
+
+  show() {
+    this.#element.style.display = "flex";
   }
 
   remove() {
@@ -38,11 +56,16 @@ class Task {
   }
 
   #setDate(day, month, year) {
-    this.#date = new Date(day, month);
+    this.#date = {
+      day: day, 
+      month: month,
+      year: year
+    };
     this.#element.querySelector(".task__date").textContent = day + '.' + month;
   }
 
   #setTitle(title) {
+    this.#title = title;
     this.#element.querySelector(".task__title").innerHTML = title;
   }
 
@@ -54,6 +77,7 @@ class Task {
   }
 
   #parseTags(rawStr) {
+    this.#tags = [];
     const pattern = /(?<name>#[^ ]*)/g;
     const matches = rawStr.matchAll(pattern);
     for (const tag of matches) {
@@ -62,13 +86,14 @@ class Task {
       tagEl.className = "task__tag";
       tagEl.textContent = tag.groups.name;
       this.#element.querySelector(".task__tag-list").appendChild(tagEl);
+      this.#tags.push(tag.groups.name);
     }
     return rawStr;
   }
 
   #parseDate(rawStr) {
     const patterns = [
-      /(?<day>\d{2})[-\. ](?<month>\d{2})[-\. ](?<year>\d{2})/, // XX.XX.XX
+      /(?<day>\d{2})[-\. ](?<month>\d{2})[-\. ](?<year>\d{4})/, // XX.XX.XXXX
       /(?<day>\d{2})[-\. ](?<month>\d{2})/,                    // XX.XX         
     ];
 
@@ -76,7 +101,12 @@ class Task {
       const match = rawStr.match(pat);
       if (match == null) continue;
       rawStr = rawStr.replace(pat, "");
-      this.#setDate(match.groups.day, match.groups.month);
+      const cm = new CalendarModel();
+      let [day, month, year] = [match.groups.day, match.groups.month, match.groups.year];
+      if (!day) day = cm.day;
+      if (!month) month = cm.month;
+      if (!year) year = cm.year;
+      this.#setDate(Number.parseInt(day), Number.parseInt(month), Number.parseInt(year));
       break;
     }
 

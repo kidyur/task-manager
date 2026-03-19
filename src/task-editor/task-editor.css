@@ -1,0 +1,22 @@
+.task-editor-outer {
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 100vh;
+ width: 100vw;
+ backdrop-filter: brightness(40%) blur(1px);
+ display: none;
+ align-items: flex-end;
+ justify-content: center;
+ padding-inline: var(--padding-L);
+}
+
+.task-editor {
+ width: 100%;
+ background-color: var(--color-bg);
+ border: 2px solid var(--color-border);
+ height: 40%;
+ padding: var(--padding-L);
+ border-top-left-radius: 6px;
+ border-top-right-radius: 6px;
+}

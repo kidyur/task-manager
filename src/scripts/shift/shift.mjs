@@ -9,6 +9,8 @@ class Shift {
     #title      = "";
     #isCurrent = false;
     #icon   = "";
+    get icon() { return this.#icon; }
+    get title() { return this.#title; }
 
     constructor(title, icon) {
         this.#render();

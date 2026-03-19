@@ -7,6 +7,7 @@ import ShiftEditor from "./scripts/shift-editor/shift-editor.mjs";
 import Footer from './scripts/footer/footer.mjs';
 import ScheduleEditor from './scripts/schedule-editor/schedule-editor.mjs';
 import TaskList from './scripts/task-list/task-list.mjs';
+import TaskEditor from './task-editor/task-editor.mjs';
 
 window.addEventListener('beforeunload', () => {
     window.electronAPI.setSharedData({
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const shiftEditor = new ShiftEditor();
     const scheduleEditor = new ScheduleEditor();
     const footer = new Footer();
-
+    const taskEditor = new TaskEditor();
 
     schedulesTableModel.clear();
     schedulesTableModel.addSchedule("Учёба");
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     shiftEditor.close();
 
     taskList.addTask("Испробуй этих мягких французских булок")
-    taskList.addTask("Испробуй булок 15-02-2027")
+    taskList.addTask("Испробуй булок 19-03-2026 #еда")
     taskList.addTask("Испробуй булок 15-02-22")
     taskList.addTask("Испробуй булок 15-02")
     taskList.addTask("Испробуй этих булок #еда");
